@@ -15,8 +15,8 @@ Purpose: Header file for Camera.cpp
 
 class Camera {
 public:
-	Camera::Camera(float x, float y, float z, float camera_rotation);
-	void Rotate(float number_of_degrees);
+	Camera::Camera(float _x, float _y, float _z, float _cameraRotation);
+	void Rotate(float degrees);
 	void Forward(float distance);
 	void MoveLeftRight(float distance);
 	XMVECTOR Up();
@@ -26,8 +26,8 @@ public:
 	float GetY();
 	float GetZ();
 private:
-	float mX, m_y, m_z, m_dx, m_dz, m_camera_rotation;
-	XMVECTOR m_position, m_lookat, m_up;
+	float mX, mY, mZ, mDX, mDZ, mCameraRotation;
+	XMVECTOR mPosition, mLookat, mUp;
 
 	
 };

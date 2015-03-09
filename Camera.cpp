@@ -11,30 +11,30 @@ Purpose: Camera Object
 
 Camera::Camera(float x, float y, float z, float camera_rotation){
 	mX = x;
-	m_y = y;
-	m_z = z;
-	m_camera_rotation = camera_rotation;
+	mY = y;
+	mZ = z;
+	mCameraRotation = camera_rotation;
 
 	CalcDXDY();
 }
 
 void Camera::Rotate(float number_of_degrees)
 {
-	m_camera_rotation += number_of_degrees;
+	mCameraRotation += number_of_degrees;
 	CalcDXDY();
 }
 
 void Camera::Forward(float distance)
 {
-	mX += distance * m_dx;
-	m_z += distance * m_dz;
+	mX += distance * mDX;
+	mZ += distance * mDZ;
 }
 
 void Camera::MoveLeftRight(float distance)
 {
-	XMVECTOR crossProduct = XMVector3Cross(m_position, m_lookat);
+	XMVECTOR crossProduct = XMVector3Cross(mPosition, mLookat);
 	mX += crossProduct.x * distance;
-	m_z += crossProduct.z * distance;
+	mZ += crossProduct.z * distance;
 }
 
 XMVECTOR Camera::Up()
@@ -44,15 +44,15 @@ XMVECTOR Camera::Up()
 
 XMMATRIX Camera::GetViewMatrix()
 {
-	m_position = XMVectorSet(mX, m_y, m_z, 0.0);
-	m_lookat = XMVectorSet(mX + m_dx, m_y, m_z + m_dz, 0.0);
-	return XMMatrixLookAtLH(m_position, m_lookat, Up());
+	mPosition = XMVectorSet(mX, mY, mZ, 0.0);
+	mLookat = XMVectorSet(mX + mDX, mY, mZ + mDZ, 0.0);
+	return XMMatrixLookAtLH(mPosition, mLookat, Up());
 }
 
 void Camera::CalcDXDY()
 {
-	m_dx = sin(XMConvertToRadians(m_camera_rotation));
-	m_dz = cos(XMConvertToRadians(m_camera_rotation));
+	mDX = sin(XMConvertToRadians(mCameraRotation));
+	mDZ = cos(XMConvertToRadians(mCameraRotation));
 }
 
 float Camera::GetX()
@@ -62,12 +62,12 @@ float Camera::GetX()
 
 float Camera::GetY()
 {
-	return m_y;
+	return mY;
 }
 
 float Camera::GetZ()
 {
-	return m_z;
+	return mZ;
 }
 
 
