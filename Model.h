@@ -48,9 +48,8 @@ public:
 	void DecZAngle(float num);
 	void DecScale(float num);
 	void DecRotation(float num);
-	void LookAt_XZ(float x, float z);
+	void LookAtXZ(float x, float z);
 	void MoveForward(float distance);
-	void Log(float x);
 private:
 	ID3D11Device *mD3DDevice;
 	ID3D11DeviceContext *mImmediateContext;

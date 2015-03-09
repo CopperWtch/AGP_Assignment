@@ -38,8 +38,9 @@ Model::~Model()
 	if (mSampler) mSampler->Release();
 }
 
-
-
+//////////////////////////////////////////////////////////////////////////////////////
+// Load OBJ Model
+//////////////////////////////////////////////////////////////////////////////////////
 int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 {
 	mObject = new ObjFileModel(filename, mD3DDevice, mImmediateContext);
@@ -131,6 +132,9 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+// Draw Model
+//////////////////////////////////////////////////////////////////////////////////////
 void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	
 	MODEL_CONSTANT_BUFFER model_cb_values;
@@ -152,7 +156,10 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	mObject->Draw();
 }
 
-void Model::LookAt_XZ(float x, float z)
+//////////////////////////////////////////////////////////////////////////////////////
+// Transform Model
+//////////////////////////////////////////////////////////////////////////////////////
+void Model::LookAtXZ(float x, float z)
 {
 	mDX = x - mX;
 	mDZ = z - mZ;
@@ -165,47 +172,155 @@ void Model::MoveForward(float distance)
 	mZ += distance * mDZ;
 }
 
-void Model::Log(float x){
-	AllocConsole();
-	HANDLE myConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-	DWORD cCharsWritten;
-	char buffer[1014];
-	int n, a = 5, b = 3;
-	n = sprintf_s(buffer, " x is %f \n", x);
-	string thisString = buffer;
-	WriteConsole(myConsoleHandle, thisString.c_str(), thisString.size(), &cCharsWritten, NULL);
+//////////////////////////////////////////////////////////////////////////////////////
+// Getter and Setter
+//////////////////////////////////////////////////////////////////////////////////////
+
+// mX, mY, mZ
+void Model::SetXPos(float num)
+{ 
+	mX = num; 
+}
+void Model::SetYPos(float num)
+{ 
+	mY = num; 
+}
+void Model::SetZPos(float num)
+{ 
+	mZ = num; 
+}
+float Model::GetXPos()
+{
+	return mX;
+}
+float Model::GetYPos()
+{
+	return mY;
+}
+float Model::GetZPos()
+{
+	return mZ;
 }
 
-void Model::SetXPos(float num){ mX = num; }
-void Model::SetYPos(float num){ mY = num; }
-void Model::SetZPos(float num){ mZ = num; }
-void Model::SetXAngle(float num){ mXAngle = num; }
-void Model::SetYAngle(float num){ mYAngle = num; }
-void Model::SetZAngle(float num){ mZAngle = num; }
-void Model::SetScale(float num){ mScale = num; }
-void Model::SetRotation(float num){ mRotation = num; }
-float Model::GetXPos(){ return mX; }
-float Model::GetYPos(){ return mY; }
-float Model::GetZPos(){ return mZ; }
-float Model::GetXAngle(){ return mXAngle; }
-float Model::GetYAngle(){ return mYAngle;  }
-float Model::GetZAngle(){ return mZAngle; }
-float Model::GetScale(){ return mScale; }
-float Model::GetRotation(){ return mRotation; }
-void Model::IncXPos(float num){ mX += num; }
-void Model::IncYPos(float num){ mY += num; }
-void Model::IncZPos(float num){ mZ += num; }
-void Model::IncXAngle(float num){ mXAngle += num; }
-void Model::IncYAngle(float num){ mYAngle += num; }
-void Model::IncZAngle(float num){ mZAngle += num; }
-void Model::IncScale(float num){ mScale += num; }
-void Model::IncRotation(float num){ mRotation += num; }
-void Model::DecXPos(float num){ mX -= num; }
-void Model::DecYPos(float num){ mY -= num; }
-void Model::DecZPos(float num){ mZ -= num; }
-void Model::DecXAngle(float num){ mXAngle -= num; }
-void Model::DecYAngle(float num){ mYAngle -= num; }
-void Model::DecZAngle(float num){ mZAngle -= num; }
-void Model::DecScale(float num){ mScale -= num; }
-void Model::DecRotation(float num){ mRotation -= num; }
+// mXAngle, mYAngle, mZAngle
+void Model::SetXAngle(float num)
+{ 
+	mXAngle = num; 
+}
+void Model::SetYAngle(float num)
+{ 
+	mYAngle = num;
+}
+void Model::SetZAngle(float num)
+{ 
+	mZAngle = num;
+}
+float Model::GetXAngle()
+{
+	return mXAngle;
+}
+float Model::GetYAngle()
+{
+	return mYAngle;
+}
+float Model::GetZAngle()
+{
+	return mZAngle;
+}
+
+// mScale
+void Model::SetScale(float num)
+{ 
+	mScale = num;
+}
+float Model::GetScale()
+{
+	return mScale;
+}
+
+// mRotation
+void Model::SetRotation(float num)
+{ 
+	mRotation = num; 
+}
+float Model::GetRotation()
+{ 
+	return mRotation;
+}
+
+// Increase mX, mY, mZ
+void Model::IncXPos(float num)
+{ 
+	mX += num; 
+}
+void Model::IncYPos(float num)
+{ 
+	mY += num;
+}
+void Model::IncZPos(float num)
+{ 
+	mZ += num;
+}
+// Decrease mX, mY, mZ
+void Model::DecXPos(float num)
+{
+	mX -= num;
+}
+void Model::DecYPos(float num)
+{
+	mY -= num;
+}
+void Model::DecZPos(float num)
+{
+	mZ -= num;
+}
+
+//  Increase mXAngle, mYAngle, mZAngle
+void Model::IncXAngle(float num)
+{ 
+	mXAngle += num; 
+}
+void Model::IncYAngle(float num)
+{ 
+	mYAngle += num;
+}
+void Model::IncZAngle(float num)
+{ 
+	mZAngle += num;
+}
+//  Decrease mXAngle, mYAngle, mZAngle
+void Model::DecXAngle(float num)
+{ 
+	mXAngle -= num; 
+}
+void Model::DecYAngle(float num)
+{ 
+	mYAngle -= num;
+}
+void Model::DecZAngle(float num)
+{ 
+	mZAngle -= num;
+}
+
+// Increase mScale
+void Model::IncScale(float num)
+{
+	mScale += num;
+}
+// Decrease mScale
+void Model::DecScale(float num)
+{
+	mScale -= num;
+}
+
+// Increase mRotation
+void Model::IncRotation(float num)
+{
+	mRotation += num;
+}
+// Decrease mRotation
+void Model::DecRotation(float num)
+{ 
+	mRotation -= num; 
+}
 

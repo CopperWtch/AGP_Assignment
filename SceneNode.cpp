@@ -77,9 +77,22 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 	}
 }
 
-void SceneNode::SetModel(Model *m) { mModel = m; }
-Model* SceneNode::GetModel() { return mModel; }
 
+//////////////////////////////////////////////////////////////////////////////////////
+//	Getter and Setter
+//////////////////////////////////////////////////////////////////////////////////////
+
+// mModel
+void SceneNode::SetModel(Model *m) 
+{
+	mModel = m; 
+}
+Model* SceneNode::GetModel() 
+{ 
+	return mModel;
+}
+
+// mX, mY, mZ
 void SceneNode::SetXPos(float num)
 {
 	mX = num;
@@ -92,6 +105,20 @@ void SceneNode::SetZPos(float num)
 {
 	mZ = num; 
 }
+float SceneNode::GetXPos()
+{
+	return mX;
+}
+float SceneNode::GetYPos()
+{
+	return mY;
+}
+float SceneNode::GetZPos()
+{
+	return mZ;
+}
+
+// mXAngle, mYAngle, mZAngle
 void SceneNode::SetXAngle(float num)
 { 
 	mXAngle = num;
@@ -103,26 +130,6 @@ void SceneNode::SetYAngle(float num)
 void SceneNode::SetZAngle(float num)
 {
 	mZAngle = num;
-}
-void SceneNode::SetScale(float num)
-{
-	mScale = num;
-}
-void SceneNode::SetRotation(float num)
-{ 
-	mRotation = num;
-}
-float SceneNode::GetXPos()
-{ 
-	return mX;
-}
-float SceneNode::GetYPos()
-{
-	return mY; 
-}
-float SceneNode::GetZPos()
-{ 
-	return mZ;
 }
 float SceneNode::GetXAngle()
 { 
@@ -136,14 +143,28 @@ float SceneNode::GetZAngle()
 { 
 	return mZAngle; 
 }
+
+// mScale
 float SceneNode::GetScale()
 { 
 	return mScale; 
 }
+void SceneNode::SetScale(float num)
+{
+	mScale = num;
+}
+
+// mRotation
 float SceneNode::GetRotation()
 { 
 	return mRotation;
 }
+void SceneNode::SetRotation(float num)
+{
+	mRotation = num;
+}
+
+// mHideObject
 bool SceneNode::IsObjectHidden()
 {
 	return mHideObject;

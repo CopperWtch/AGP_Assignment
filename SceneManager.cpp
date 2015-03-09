@@ -15,6 +15,9 @@ SceneManager::SceneManager(HWND _hWnd, HINSTANCE _hInst)
 	mHInst = _hInst;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////
+//	Initialise
+//////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::Initialise()
 {
 	mInput = new Input(mHWnd, mHInst);
@@ -32,11 +35,9 @@ void SceneManager::Initialise()
 	{
 		DXTRACE_MSG("Failed to initialise graphics");
 	}
-
-
-	
 }
 
+// initialise camera, scenes and get the directX pointers
 HRESULT SceneManager::initialiseGraphics()
 {
 	// create camera
@@ -56,13 +57,9 @@ HRESULT SceneManager::initialiseGraphics()
 	return S_OK;
 }
 
-
-void SceneManager::ShutDown3D()
-{
-	mD3DManager->ShutdownD3D();
-	if(mScene01) delete mScene01;
-}
-
+//////////////////////////////////////////////////////////////////////////////////////
+//	Render
+//////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::RenderFrame()
 {
 	mInput->ReadInputStates();
@@ -84,5 +81,14 @@ void SceneManager::RenderFrame()
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);
 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+//	Shutdown
+//////////////////////////////////////////////////////////////////////////////////////
+void SceneManager::ShutDown3D()
+{
+	mD3DManager->ShutdownD3D();
+	if (mScene01) delete mScene01;
 }
 
