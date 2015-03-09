@@ -1,8 +1,16 @@
+/**
+AGP Assignment
+Camera.cpp
+Purpose: Camera Object
+
+@author Marcel Zobus
+*/
+
 #include "camera.h"
 
 
 Camera::Camera(float x, float y, float z, float camera_rotation){
-	m_x = x;
+	mX = x;
 	m_y = y;
 	m_z = z;
 	m_camera_rotation = camera_rotation;
@@ -18,14 +26,14 @@ void Camera::Rotate(float number_of_degrees)
 
 void Camera::Forward(float distance)
 {
-	m_x += distance * m_dx;
+	mX += distance * m_dx;
 	m_z += distance * m_dz;
 }
 
 void Camera::MoveLeftRight(float distance)
 {
 	XMVECTOR crossProduct = XMVector3Cross(m_position, m_lookat);
-	m_x += crossProduct.x * distance;
+	mX += crossProduct.x * distance;
 	m_z += crossProduct.z * distance;
 }
 
@@ -36,8 +44,8 @@ XMVECTOR Camera::Up()
 
 XMMATRIX Camera::GetViewMatrix()
 {
-	m_position = XMVectorSet(m_x, m_y, m_z, 0.0);
-	m_lookat = XMVectorSet(m_x + m_dx, m_y, m_z + m_dz, 0.0);
+	m_position = XMVectorSet(mX, m_y, m_z, 0.0);
+	m_lookat = XMVectorSet(mX + m_dx, m_y, m_z + m_dz, 0.0);
 	return XMMatrixLookAtLH(m_position, m_lookat, Up());
 }
 
@@ -49,7 +57,7 @@ void Camera::CalcDXDY()
 
 float Camera::GetX()
 {
-	return m_x;
+	return mX;
 }
 
 float Camera::GetY()

@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+Scene.h
+Purpose: Header file for Scene.cpp
+
+@author Marcel Zobus
+*/
+
 #pragma once
 #include <windows.h>
 #include <d3d11.h>
@@ -10,20 +18,21 @@
 class Scene
 {
 public:
-	Scene(ID3D11Device *g_pD3DDevice, ID3D11DeviceContext *g_pImmediateContext);
+	Scene(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext);
+	Scene::~Scene();
 	void Create();
 	void RenderScene(XMMATRIX view, XMMATRIX projection);
-	Scene_Node* GetRootNode();
-private:
-	ID3D11Device *m_pD3DDevice;
-	ID3D11DeviceContext *m_pImmediateContext;
-	ID3D11ShaderResourceView *m_pTexture0;
-	Model *mCube;
-	Model *mSphere;
 
-	Scene_Node *m_root_node;
-	Scene_Node *m_node1;
-	Scene_Node *m_node2;
-	Scene_Node *m_node3;
-	Scene_Node *m_node4;
+private:
+	ID3D11Device *mD3DDevice;
+	ID3D11DeviceContext *mImmediateContext;
+	ID3D11ShaderResourceView *mTexture0;
+	
+	//crates 
+	void createCrates();
+	Model *mCube;
+	SceneNode *mRootNodeCrates;
+	SceneNode *mNode1;
+	SceneNode *mNode2;
+	SceneNode *mNode3;
 };

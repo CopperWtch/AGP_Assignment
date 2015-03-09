@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+Camera.h
+Purpose: Header file for Camera.cpp
+
+@author Marcel Zobus
+*/
+
 #include "d3d11.h"
 #include "math.h"
 
@@ -18,7 +26,7 @@ public:
 	float GetY();
 	float GetZ();
 private:
-	float m_x, m_y, m_z, m_dx, m_dz, m_camera_rotation;
+	float mX, m_y, m_z, m_dx, m_dz, m_camera_rotation;
 	XMVECTOR m_position, m_lookat, m_up;
 
 	

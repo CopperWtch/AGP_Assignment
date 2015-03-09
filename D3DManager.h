@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+D3DManager.h
+Purpose: Header file for D3DManager.cpp
+
+@author Marcel Zobus
+*/
+
 #pragma once
 #include <windows.h>
 #include <d3d11.h>
@@ -9,7 +17,7 @@ class D3DManager
 {
 public:
 	D3DManager();
-	void Start(HWND g_hWnd);
+	void Start(HWND _hWnd);
 	void ShutdownD3D();
 	ID3D11Device* GetDevice();
 	ID3D11DeviceContext* GetContext();
@@ -20,14 +28,14 @@ public:
 private:
 	HRESULT initialiseD3D();
 	HRESULT initialiseGraphics();
-	HWND m_hWnd;
-	D3D_DRIVER_TYPE g_driverType;
-	D3D_FEATURE_LEVEL g_featureLevel;
-	ID3D11Device* g_pD3DDevice;
-	ID3D11DeviceContext* g_pImmediateContext;
-	IDXGISwapChain* g_pSwapChain;
-	ID3D11RenderTargetView* g_pBackBufferRTView;
-	ID3D11DepthStencilView* g_pZBuffer;
+	HWND mHWnd;
+	D3D_DRIVER_TYPE mDriverType;
+	D3D_FEATURE_LEVEL mFeatureLevel;
+	ID3D11Device* mD3DDevice;
+	ID3D11DeviceContext* mImmediateContext;
+	IDXGISwapChain* mSwapChain;
+	ID3D11RenderTargetView* mBackBufferRTView;
+	ID3D11DepthStencilView* mZBuffer;
 	
 };
 

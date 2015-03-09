@@ -13,7 +13,6 @@ struct VOut
 	float2 texcoord : TEXCOORD;
 };
 
-//VOut ModelVS(float4 position : SV_POSITION, float4 color : COLOR, float2 texcoord : TEXCOORD)
 VOut ModelVS(float4 position : SV_POSITION, float2 texcoord : TEXCOORD, float3 normal : NORMAL)
 {
 	VOut output;

@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+Model.cpp
+Purpose: Model Object
+
+@author Marcel Zobus
+*/
+
 #include "Model.h"
 
 struct MODEL_CONSTANT_BUFFER
@@ -5,33 +13,37 @@ struct MODEL_CONSTANT_BUFFER
 	XMMATRIX WorldViewProjection; //64 bytes
 };
 
-Model::Model(ID3D11Device *d3DDevice, ID3D11DeviceContext *immediateContext)
+Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext)
 {
-	m_pD3DDevice = d3DDevice;
-	m_pImmediateContext = immediateContext;
-	m_x = 0.0f;
-	m_y = 0.0f;
-	m_z = 0.0f;
-	m_xangle = 0.0f;
-	m_yangle = 0.0f;
-	m_zangle = 0.0f;
-	m_scale = 1.0f;
-	m_rotation = 0.0f;
+	mD3DDevice = _d3DDevice;
+	mImmediateContext = _immediateContext;
+	mX = 0.0f;
+	mY = 0.0f;
+	mZ = 0.0f;
+	mXAngle = 0.0f;
+	mYAngle = 0.0f;
+	mZAngle = 0.0f;
+	mScale = 1.0f;
+	mRotation = 0.0f;
 }
 
 Model::~Model()
 {
-	delete m_pObject;
-	if (m_pVShader) m_pVShader->Release();
-	if (m_pPShader) m_pPShader->Release();
-	if (m_pInputLayout) m_pInputLayout->Release();
-	if (m_pConstantBuffer) m_pConstantBuffer->Release();
+	if (mObject) delete mObject;
+	if (mVShader) mVShader->Release();
+	if (mPShader) mPShader->Release();
+	if (mInputLayout) mInputLayout->Release();
+	if (mConstantBuffer) mConstantBuffer->Release();
+	if (mTexture) mTexture->Release();
+	if (mSampler) mSampler->Release();
 }
 
-int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_m_pTexture0)
+
+
+int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 {
-	m_pObject = new ObjFileModel(filename, m_pD3DDevice, m_pImmediateContext);
-	if (m_pObject->filename == "FILE NOT LOADED") return S_FALSE;
+	mObject = new ObjFileModel(filename, mD3DDevice, mImmediateContext);
+	if (mObject->filename == "FILE NOT LOADED") return S_FALSE;
 
 	HRESULT hr = S_OK;
 
@@ -42,11 +54,11 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_m_pTexture0)
 	constant_buffer_desc.ByteWidth = 64; //MUST be a multiple of 16, calculate from CB struct
 	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // use as a constant buffer
 
-	hr = m_pD3DDevice->CreateBuffer(&constant_buffer_desc, NULL, &m_pConstantBuffer);
+	hr = mD3DDevice->CreateBuffer(&constant_buffer_desc, NULL, &mConstantBuffer);
 	if (FAILED(hr)) return hr;
 
 	//texture 
-	m_pTexture0 = _m_pTexture0;
+	mTexture = _mTexture0;
 
 	//sampler
 	D3D11_SAMPLER_DESC sampler_desc;
@@ -57,7 +69,7 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_m_pTexture0)
 	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
 
-	m_pD3DDevice->CreateSamplerState(&sampler_desc, &m_pSampler0);
+	mD3DDevice->CreateSamplerState(&sampler_desc, &mSampler);
 
 	//load and compile pixel and vertex shaders - use  vs_5_0 to target DX11 Hardware only
 	ID3DBlob *VS, *PS, *error;
@@ -86,20 +98,20 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_m_pTexture0)
 	}
 
 	//create shader object
-	hr = m_pD3DDevice->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &m_pVShader);
+	hr = mD3DDevice->CreateVertexShader(VS->GetBufferPointer(), VS->GetBufferSize(), NULL, &mVShader);
 	if (FAILED(hr))
 	{
 		return hr;
 	}
-	hr = m_pD3DDevice->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &m_pPShader);
+	hr = mD3DDevice->CreatePixelShader(PS->GetBufferPointer(), PS->GetBufferSize(), NULL, &mPShader);
 	if (FAILED(hr))
 	{
 		return hr;
 	}
 
 	//Set the shader objects as active 
-	m_pImmediateContext->VSSetShader(m_pVShader, 0, 0);
-	m_pImmediateContext->PSSetShader(m_pPShader, 0, 0);
+	mImmediateContext->VSSetShader(mVShader, 0, 0);
+	mImmediateContext->PSSetShader(mPShader, 0, 0);
 
 	//create and set the input lazout object
 	D3D11_INPUT_ELEMENT_DESC iedesc[] =
@@ -109,13 +121,13 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_m_pTexture0)
 		{ "NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 	};
 
-	hr = m_pD3DDevice->CreateInputLayout(iedesc, ARRAYSIZE(iedesc), VS->GetBufferPointer(), VS->GetBufferSize(), &m_pInputLayout);
+	hr = mD3DDevice->CreateInputLayout(iedesc, ARRAYSIZE(iedesc), VS->GetBufferPointer(), VS->GetBufferSize(), &mInputLayout);
 	if (FAILED(hr))
 	{
 		return hr;
 	}
 
-	m_pImmediateContext->IASetInputLayout(m_pInputLayout);
+	mImmediateContext->IASetInputLayout(mInputLayout);
 
 }
 
@@ -125,32 +137,32 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	model_cb_values.WorldViewProjection = (*world)*(*view)*(*projection);
 
 	//upload the new values for the constant buffer
-	m_pImmediateContext->VSSetConstantBuffers(0, 1, &m_pConstantBuffer);
-	m_pImmediateContext->UpdateSubresource(m_pConstantBuffer, 0, 0, &model_cb_values, 0, 0);
+	mImmediateContext->VSSetConstantBuffers(0, 1, &mConstantBuffer);
+	mImmediateContext->UpdateSubresource(mConstantBuffer, 0, 0, &model_cb_values, 0, 0);
 
 	// set shaders
-	m_pImmediateContext->VSSetShader(m_pVShader, 0, 0);
-	m_pImmediateContext->PSSetShader(m_pPShader, 0, 0);
-	m_pImmediateContext->IASetInputLayout(m_pInputLayout);
+	mImmediateContext->VSSetShader(mVShader, 0, 0);
+	mImmediateContext->PSSetShader(mPShader, 0, 0);
+	mImmediateContext->IASetInputLayout(mInputLayout);
 
 	// sampler
-	m_pImmediateContext->PSSetShaderResources(0, 1, &m_pTexture0);
-	m_pImmediateContext->PSSetSamplers(0, 1, &m_pSampler0);
+	mImmediateContext->PSSetShaderResources(0, 1, &mTexture);
+	mImmediateContext->PSSetSamplers(0, 1, &mSampler);
 
-	m_pObject->Draw();
+	mObject->Draw();
 }
 
 void Model::LookAt_XZ(float x, float z)
 {
-	m_dx = x - m_x;
-	m_dz = z - m_z;
-	m_yangle = atan2(m_dx, m_dz);
+	mDX = x - mX;
+	mDZ = z - mZ;
+	mYAngle = atan2(mDX, mDZ);
 }
 
 void Model::MoveForward(float distance)
 {
-	m_x += distance * m_dx;
-	m_z += distance * m_dz;
+	mX += distance * mDX;
+	mZ += distance * mDZ;
 }
 
 void Model::Log(float x){
@@ -164,36 +176,36 @@ void Model::Log(float x){
 	WriteConsole(myConsoleHandle, thisString.c_str(), thisString.size(), &cCharsWritten, NULL);
 }
 
-void Model::SetXPos(float num){ m_x = num; }
-void Model::SetYPos(float num){ m_y = num; }
-void Model::SetZPos(float num){ m_z = num; }
-void Model::SetXAngle(float num){ m_xangle = num; }
-void Model::SetYAngle(float num){ m_yangle = num; }
-void Model::SetZAngle(float num){ m_zangle = num; }
-void Model::SetScale(float num){ m_scale = num; }
-void Model::SetRotation(float num){ m_rotation = num; }
-float Model::GetXPos(){ return m_x; }
-float Model::GetYPos(){ return m_y; }
-float Model::GetZPos(){ return m_z; }
-float Model::GetXAngle(){ return m_xangle; }
-float Model::GetYAngle(){ return m_yangle;  }
-float Model::GetZAngle(){ return m_zangle; }
-float Model::GetScale(){ return m_scale; }
-float Model::GetRotation(){ return m_rotation; }
-void Model::IncXPos(float num){ m_x += num; }
-void Model::IncYPos(float num){ m_y += num; }
-void Model::IncZPos(float num){ m_z += num; }
-void Model::IncXAngle(float num){ m_xangle += num; }
-void Model::IncYAngle(float num){ m_yangle += num; }
-void Model::IncZAngle(float num){ m_zangle += num; }
-void Model::IncScale(float num){ m_scale += num; }
-void Model::IncRotation(float num){ m_rotation += num; }
-void Model::DecXPos(float num){ m_x -= num; }
-void Model::DecYPos(float num){ m_y -= num; }
-void Model::DecZPos(float num){ m_z -= num; }
-void Model::DecXAngle(float num){ m_xangle -= num; }
-void Model::DecYAngle(float num){ m_yangle -= num; }
-void Model::DecZAngle(float num){ m_zangle -= num; }
-void Model::DecScale(float num){ m_scale -= num; }
-void Model::DecRotation(float num){ m_rotation -= num; }
+void Model::SetXPos(float num){ mX = num; }
+void Model::SetYPos(float num){ mY = num; }
+void Model::SetZPos(float num){ mZ = num; }
+void Model::SetXAngle(float num){ mXAngle = num; }
+void Model::SetYAngle(float num){ mYAngle = num; }
+void Model::SetZAngle(float num){ mZAngle = num; }
+void Model::SetScale(float num){ mScale = num; }
+void Model::SetRotation(float num){ mRotation = num; }
+float Model::GetXPos(){ return mX; }
+float Model::GetYPos(){ return mY; }
+float Model::GetZPos(){ return mZ; }
+float Model::GetXAngle(){ return mXAngle; }
+float Model::GetYAngle(){ return mYAngle;  }
+float Model::GetZAngle(){ return mZAngle; }
+float Model::GetScale(){ return mScale; }
+float Model::GetRotation(){ return mRotation; }
+void Model::IncXPos(float num){ mX += num; }
+void Model::IncYPos(float num){ mY += num; }
+void Model::IncZPos(float num){ mZ += num; }
+void Model::IncXAngle(float num){ mXAngle += num; }
+void Model::IncYAngle(float num){ mYAngle += num; }
+void Model::IncZAngle(float num){ mZAngle += num; }
+void Model::IncScale(float num){ mScale += num; }
+void Model::IncRotation(float num){ mRotation += num; }
+void Model::DecXPos(float num){ mX -= num; }
+void Model::DecYPos(float num){ mY -= num; }
+void Model::DecZPos(float num){ mZ -= num; }
+void Model::DecXAngle(float num){ mXAngle -= num; }
+void Model::DecYAngle(float num){ mYAngle -= num; }
+void Model::DecZAngle(float num){ mZAngle -= num; }
+void Model::DecScale(float num){ mScale -= num; }
+void Model::DecRotation(float num){ mRotation -= num; }
 

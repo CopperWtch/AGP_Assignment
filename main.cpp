@@ -34,8 +34,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 	
-	SceneManager *sceneManager = new SceneManager();
-	sceneManager->Initialise(g_hWnd);
+	SceneManager *sceneManager = new SceneManager(g_hWnd, g_hInst);
+	sceneManager->Initialise();
 
 	// Main message loop
 	MSG msg = { 0 };

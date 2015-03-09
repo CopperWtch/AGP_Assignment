@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+SceneNode.h
+Purpose: Header file for SceneNode.cpp
+
+@author Marcel Zobus
+*/
+
 #pragma once
 #include "d3d11.h"
 #include "math.h"
@@ -8,18 +16,13 @@
 #include "Model.h"
 
 
-class Scene_Node
+class SceneNode
 {
-	Model *m_p_model;
-	vector<Scene_Node*> m_children;
-	float m_x, m_y, m_z, m_dx, m_dz;
-	float m_xangle, m_zangle, m_yangle;
-	float m_scale, m_rotation;
-
 public:
-	Scene_Node::Scene_Node();
-	void addChildNode(Scene_Node *n);
-	bool detatchNode(Scene_Node *n);
+	SceneNode();
+	~SceneNode();
+	void addChildNode(SceneNode *n);
+	bool detatchNode(SceneNode *n);
 	void execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection);
 	void SetModel(Model *m);
 	void SetXPos(float num);
@@ -39,4 +42,13 @@ public:
 	float GetScale();
 	float GetRotation();
 	Model* GetModel();
+	bool IsObjectHidden();
+	void HideObject(bool hide);
+private: 
+	Model *mModel;
+	vector<SceneNode*> mChildren;
+	float mX, mY, mZ, mDx, mDz;
+	float mXAngle, mZAngle, mYAngle;
+	float mScale, mRotation;
+	bool mHideObject;
 };

@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+SceneManager.h
+Purpose: Header file for SceneManager.cpp
+
+@author Marcel Zobus
+*/
+
 #pragma once
 #include <windows.h>
 #include <d3d11.h>
@@ -6,23 +14,28 @@
 
 #include "D3DManager.h"
 #include "Scene.h"
+#include "Input.h"
 
 class SceneManager
 {
 public:
-	SceneManager();
-	void Initialise(HWND g_hWnd);
+	SceneManager(HWND _hWnd, HINSTANCE _hInst);
+	void Initialise();
 	void ShutDown3D();
 	void RenderFrame();
+
 private: 
-	D3DManager *d3dManager;
-	Camera *camera;
-	Scene *scene01;
-	Scene_Node *g_rootNode;
-	IDXGISwapChain* g_pSwapChain;
-	ID3D11Device* g_pD3DDevice;
-	ID3D11DeviceContext* g_pImmediateContext;
-	ID3D11RenderTargetView* g_pBackBufferRTView;
-	ID3D11DepthStencilView* g_pZBuffer;
+	HRESULT initialiseGraphics();
+	D3DManager *mD3DManager;
+	Camera *mCamera;
+	Scene *mScene01;
+	Input *mInput;
+	HWND mHWnd;
+	HINSTANCE mHInst;
+	IDXGISwapChain* mSwapChain;
+	ID3D11Device* mD3DDevice;
+	ID3D11DeviceContext* mImmediateContext;
+	ID3D11RenderTargetView* mBackBufferRTView;
+	ID3D11DepthStencilView* mZBuffer;
 
 };

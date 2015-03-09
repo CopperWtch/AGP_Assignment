@@ -1,28 +1,20 @@
+/**
+AGP Assignment
+Model.h
+Purpose: Header file for Model.cpp
+
+@author Marcel Zobus
+*/
+
 #pragma once
 #include "objfilemodel.h"
 
 class Model
 {
-private:
-	ID3D11Device *m_pD3DDevice;
-	ID3D11DeviceContext *m_pImmediateContext;
-
-	ObjFileModel *m_pObject;
-	ID3D11VertexShader *m_pVShader;
-	ID3D11PixelShader *m_pPShader;
-	ID3D11InputLayout *m_pInputLayout;
-	ID3D11Buffer *m_pConstantBuffer;
-	ID3D11ShaderResourceView *m_pTexture0;
-	ID3D11SamplerState *m_pSampler0;
-
-
-	float m_x, m_y, m_z, m_dx, m_dz;
-	float m_xangle, m_zangle, m_yangle;
-	float m_scale, m_rotation;
 public:
-	Model::Model(ID3D11Device *d3DDevice, ID3D11DeviceContext *immediateContext);
+	Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext);
 	Model::~Model();
-	int LoadObjModel(char *filename, ID3D11ShaderResourceView *m_pTexture0);
+	int LoadObjModel(char *filename, ID3D11ShaderResourceView *texture);
 	void Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection);
 	void SetXPos(float num);
 	void SetYPos(float num);
@@ -59,4 +51,19 @@ public:
 	void LookAt_XZ(float x, float z);
 	void MoveForward(float distance);
 	void Log(float x);
+private:
+	ID3D11Device *mD3DDevice;
+	ID3D11DeviceContext *mImmediateContext;
+
+	ObjFileModel *mObject;
+	ID3D11VertexShader *mVShader;
+	ID3D11PixelShader *mPShader;
+	ID3D11InputLayout *mInputLayout;
+	ID3D11Buffer *mConstantBuffer;
+	ID3D11ShaderResourceView *mTexture;
+	ID3D11SamplerState *mSampler;
+
+	float mX, mY, mZ, mDX, mDZ;
+	float mXAngle, mZAngle, mYAngle;
+	float mScale, mRotation;
 };

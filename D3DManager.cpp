@@ -1,26 +1,30 @@
+/**
+AGP Assignment
+D3DManager.cpp
+Purpose: Manages the DirectX initialisation
+
+@author Marcel Zobus
+*/
+
 #include "D3DManager.h"
 
 
 D3DManager::D3DManager()
 {
-	g_driverType = D3D_DRIVER_TYPE_NULL;
-	g_featureLevel = D3D_FEATURE_LEVEL_11_0;
-	g_pD3DDevice = NULL;
-	g_pImmediateContext = NULL;
-	g_pSwapChain = NULL;
-	g_pBackBufferRTView = NULL;
+	mDriverType = D3D_DRIVER_TYPE_NULL;
+	mFeatureLevel = D3D_FEATURE_LEVEL_11_0;
+	mD3DDevice = NULL;
+	mImmediateContext = NULL;
+	mSwapChain = NULL;
+	mBackBufferRTView = NULL;
 }
 
-void D3DManager::Start(HWND g_hWnd)
+void D3DManager::Start(HWND _hWnd)
 {
-	m_hWnd = g_hWnd;
+	mHWnd = _hWnd;
 	if (FAILED(initialiseD3D()))
 	{
 		DXTRACE_MSG("Failed to create Device");
-	}
-	if (FAILED(initialiseGraphics())) 
-	{
-		DXTRACE_MSG("Failed to initialise graphics");
 	}
 }
 
@@ -33,7 +37,7 @@ HRESULT D3DManager::initialiseD3D()
 	HRESULT hr = S_OK;
 
 	RECT rc;
-	GetClientRect(m_hWnd, &rc);
+	GetClientRect(mHWnd, &rc);
 	UINT width = rc.right - rc.left;
 	UINT height = rc.bottom - rc.top;
 
@@ -68,18 +72,18 @@ HRESULT D3DManager::initialiseD3D()
 	sd.BufferDesc.RefreshRate.Numerator = 60;
 	sd.BufferDesc.RefreshRate.Denominator = 1;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	sd.OutputWindow = m_hWnd;
+	sd.OutputWindow = mHWnd;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.Windowed = true;
 
 	for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; driverTypeIndex++)
 	{
-		g_driverType = driverTypes[driverTypeIndex];
-		hr = D3D11CreateDeviceAndSwapChain(NULL, g_driverType, NULL,
+		mDriverType = driverTypes[driverTypeIndex];
+		hr = D3D11CreateDeviceAndSwapChain(NULL, mDriverType, NULL,
 			createDeviceFlags, featureLevels, numFeatureLevels,
-			D3D11_SDK_VERSION, &sd, &g_pSwapChain,
-			&g_pD3DDevice, &g_featureLevel, &g_pImmediateContext);
+			D3D11_SDK_VERSION, &sd, &mSwapChain,
+			&mD3DDevice, &mFeatureLevel, &mImmediateContext);
 		if (SUCCEEDED(hr))
 			break;
 	}
@@ -89,14 +93,14 @@ HRESULT D3DManager::initialiseD3D()
 
 	// Get pointer to back buffer texture
 	ID3D11Texture2D *pBackBufferTexture;
-	hr = g_pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
+	hr = mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
 		(LPVOID*)&pBackBufferTexture);
 
 	if (FAILED(hr)) return hr;
 
 	// Use the back buffer texture pointer to create the render target view
-	hr = g_pD3DDevice->CreateRenderTargetView(pBackBufferTexture, NULL,
-		&g_pBackBufferRTView);
+	hr = mD3DDevice->CreateRenderTargetView(pBackBufferTexture, NULL,
+		&mBackBufferRTView);
 	pBackBufferTexture->Release();
 
 	if (FAILED(hr)) return hr;
@@ -115,7 +119,7 @@ HRESULT D3DManager::initialiseD3D()
 	tex2dDesc.Usage = D3D11_USAGE_DEFAULT;
 
 	ID3D11Texture2D *pZBufferTexture;
-	hr = g_pD3DDevice->CreateTexture2D(&tex2dDesc, NULL, &pZBufferTexture);
+	hr = mD3DDevice->CreateTexture2D(&tex2dDesc, NULL, &pZBufferTexture);
 
 	if (FAILED(hr)) return hr;
 
@@ -126,11 +130,11 @@ HRESULT D3DManager::initialiseD3D()
 	dsvDesc.Format = tex2dDesc.Format;
 	dsvDesc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 
-	g_pD3DDevice->CreateDepthStencilView(pZBufferTexture, &dsvDesc, &g_pZBuffer);
+	mD3DDevice->CreateDepthStencilView(pZBufferTexture, &dsvDesc, &mZBuffer);
 	pZBufferTexture->Release();
 
 	// Set the render target view
-	g_pImmediateContext->OMSetRenderTargets(1, &g_pBackBufferRTView, g_pZBuffer);
+	mImmediateContext->OMSetRenderTargets(1, &mBackBufferRTView, mZBuffer);
 
 	// Set the viewport
 	D3D11_VIEWPORT viewport;
@@ -142,15 +146,7 @@ HRESULT D3DManager::initialiseD3D()
 	viewport.MinDepth = 0.0f;
 	viewport.MaxDepth = 1.0f;
 
-	g_pImmediateContext->RSSetViewports(1, &viewport);
-
-	return S_OK;
-}
-
-HRESULT D3DManager::initialiseGraphics()
-{
-
-	
+	mImmediateContext->RSSetViewports(1, &viewport);
 
 	return S_OK;
 }
@@ -161,32 +157,32 @@ HRESULT D3DManager::initialiseGraphics()
 //////////////////////////////////////////////////////////////////////////////////////
 void D3DManager::ShutdownD3D()
 {
-	if (g_pSwapChain) g_pSwapChain->Release();
-	if (g_pImmediateContext) g_pImmediateContext->Release();
-	if (g_pD3DDevice) g_pD3DDevice->Release();
-	if (g_pBackBufferRTView) g_pBackBufferRTView->Release();
+	if (mSwapChain) mSwapChain->Release();
+	if (mImmediateContext) mImmediateContext->Release();
+	if (mD3DDevice) mD3DDevice->Release();
+	if (mBackBufferRTView) mBackBufferRTView->Release();
 }
 
 
 ID3D11Device* D3DManager::GetDevice()
 {
-	return g_pD3DDevice;
+	return mD3DDevice;
 }
 ID3D11DeviceContext* D3DManager::GetContext()
 {
-	return g_pImmediateContext;
+	return mImmediateContext;
 }
 
 IDXGISwapChain* D3DManager::GetSwapChain()
 {
-	return g_pSwapChain;
+	return mSwapChain;
 }
 ID3D11RenderTargetView* D3DManager::GetBackBufferRTView()
 {
-	return g_pBackBufferRTView;
+	return mBackBufferRTView;
 }
 
 ID3D11DepthStencilView* D3DManager::GetZBuffer()
 {
-	return g_pZBuffer;
+	return mZBuffer;
 }
