@@ -70,6 +70,6 @@ void Scene::createCrates()
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/crate002.jpg", NULL, NULL, &mTexture0, NULL);
 
-	mCube->LoadObjModel("cube.obj", mTexture0);
+	mCube->LoadObjModel("models/cube.obj", mTexture0);
 }
 
