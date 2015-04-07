@@ -55,11 +55,11 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 	// the local wiorkd matrix will be used to calc the local transformations for this node
 	XMMATRIX local_world = XMMatrixIdentity();
 
+	local_world *= XMMatrixScaling(mScale, mScale, mScale);
+
 	local_world = XMMatrixRotationX(XMConvertToRadians(mXAngle));
 	local_world *= XMMatrixRotationY(XMConvertToRadians(mYAngle));
 	local_world *= XMMatrixRotationZ(XMConvertToRadians(mZAngle));
-
-	local_world *= XMMatrixScaling(mScale, mScale, mScale);
 
 	local_world *= XMMatrixTranslation(mX, mY, mZ);
 

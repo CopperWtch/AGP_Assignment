@@ -78,4 +78,9 @@ float Camera::GetZ()
 	return mZ;
 }
 
+XMFLOAT3 Camera::GetPosition()
+{
+	return XMFLOAT3(GetX(), GetY(), GetZ());
+}
+
 

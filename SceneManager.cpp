@@ -8,18 +8,26 @@ Purpose: A Controller to manage different scenes and the initialisation of the g
 
 #include "SceneManager.h"
 
+static SceneManager* instance = NULL;
 
-SceneManager::SceneManager(HWND _hWnd, HINSTANCE _hInst)
+SceneManager::SceneManager()
 {
-	mHWnd = _hWnd;
-	mHInst = _hInst;
+	//constructor
+}
+
+SceneManager::~SceneManager()
+{
+	//destructor
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
 //	Initialise
 //////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::Initialise()
+void SceneManager::Initialise(HWND _hWnd, HINSTANCE _hInst)
 {
+	data = SceneData::GetInstance();
+	mHWnd = _hWnd;
+	mHInst = _hInst;
 	mInput = new Input(mHWnd, mHInst);
 	if (FAILED(mInput->InitialiseInput()))
 	{
@@ -40,19 +48,27 @@ void SceneManager::Initialise()
 // initialise camera, scenes and get the directX pointers
 HRESULT SceneManager::initialiseGraphics()
 {
-	// create camera
-	mCamera = new Camera(1.0f, 0.1f, -9.0f, -0.5f);
-
-	// create scene 01
-	mScene01 = new Scene(mD3DManager->GetDevice(), mD3DManager->GetContext());
-	mScene01->Create();
-
 	// get all neccessary pointer from the d3dmanger
 	mSwapChain = mD3DManager->GetSwapChain();
 	mImmediateContext = mD3DManager->GetContext();
-	mD3DDevice = mD3DManager->GetDevice();
+	//mD3DDevice = 
 	mBackBufferRTView = mD3DManager->GetBackBufferRTView();
 	mZBuffer = mD3DManager->GetZBuffer();
+
+	data->SetDevice(mD3DManager->GetDevice());
+	data->SetImmediateContext(mImmediateContext);
+
+
+	// create camera
+	mCamera = new Camera(1.0f, 0.1f, -9.0f, -0.5f);
+	data->SetCamera(mCamera);
+	// create particlegenerator;
+	/*mParticle = new ParticleGenerator(mD3DDevice, mImmediateContext);
+	mParticle->InitialiseGenerator();*/
+
+	// create scene 01
+	mScene = TestScene::create();
+
 
 	return S_OK;
 }
@@ -71,12 +87,15 @@ void SceneManager::RenderFrame()
 	mImmediateContext->ClearDepthStencilView(mZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
-	XMMATRIX projection, view;
-	view = mCamera->GetViewMatrix();
-	projection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 640.0 / 480.0, 1.0, 100.0);
+	
+	mView = mCamera->GetViewMatrix();
+	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 640.0 / 480.0, 1.0, 100.0);
 
-	mScene01->RenderScene(view, projection);
+	data->SetView(&mView);
+	data->SetProjection(&mProjection);
+	//mParticle->Draw(&mView, &mProjection, mCamera->GetPosition());
 
+	mScene->RenderScene();
 
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);
@@ -89,6 +108,6 @@ void SceneManager::RenderFrame()
 void SceneManager::ShutDown3D()
 {
 	mD3DManager->ShutdownD3D();
-	if (mScene01) delete mScene01;
 }
+
 

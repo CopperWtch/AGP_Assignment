@@ -25,6 +25,7 @@ public:
 	float GetX();
 	float GetY();
 	float GetZ();
+	XMFLOAT3 GetPosition();
 private:
 	float mX, mY, mZ, mDX, mDZ, mCameraRotation;
 	XMVECTOR mPosition, mLookat, mUp;

@@ -11,7 +11,6 @@ Purpose: Header file for D3DManager.cpp
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <dxerr.h>
-#include "Camera.h"
 
 class D3DManager 
 {
