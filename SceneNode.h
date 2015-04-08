@@ -44,8 +44,11 @@ public:
 	Model* GetModel();
 	bool IsObjectHidden();
 	void HideObject(bool hide);
+	void SetGameObject(GameObject* go);
+	GameObject* GetGameObject();
 private: 
-	Model *mModel;
+	//Model *mModel;
+	GameObject* gameObject;
 	vector<SceneNode*> mChildren;
 	float mX, mY, mZ, mDx, mDz;
 	float mXAngle, mZAngle, mYAngle;

@@ -57,9 +57,9 @@ void TestScene::createCrates()
 
 	mCube = new Model(mD3DDevice, mImmediateContext);
 
-	mNode1->SetModel(mCube);
-	mNode2->SetModel(mCube);
-	mNode3->SetModel(mCube);
+	mNode1->SetGameObject(mCube);
+	mNode2->SetGameObject(mCube);
+	mNode3->SetGameObject(mCube);
 
 	mRootNodeCrates->addChildNode(mNode1);
 	mNode1->addChildNode(mNode2);

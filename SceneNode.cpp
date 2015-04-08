@@ -10,7 +10,8 @@ Purpose: SceneNode Object
 
 SceneNode::SceneNode()
 {
-	mModel = NULL;
+	//mModel = NULL;
+	gameObject = NULL;
 	mX = 0.0f;
 	mY = 0.0f;
 	mZ = 0.0f;
@@ -68,7 +69,17 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 	local_world *= *world;
 
 	// only draw if there is a model attached 
-	if (!mHideObject && mModel) mModel->Draw(&local_world, view, projection);
+	//if (!mHideObject && mModel) mModel->Draw(&local_world, view, projection);
+	if (!mHideObject && gameObject)
+	{
+		Model* model = dynamic_cast<Model*>(gameObject);
+		// draw if cast is not null, which means the object is a model
+		if (model != nullptr)
+		{
+			model->Draw(&local_world, view, projection);
+		}
+	}
+
 
 	//traverse all child nodes, passing in the concatenated world matrix
 	for (int i = 0; i < mChildren.size(); i++)
@@ -83,13 +94,22 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 //////////////////////////////////////////////////////////////////////////////////////
 
 // mModel
-void SceneNode::SetModel(Model *m) 
+//void SceneNode::SetModel(Model *m) 
+//{
+//	mModel = m; 
+//}
+//Model* SceneNode::GetModel() 
+//{ 
+//	return mModel;
+//}
+
+void SceneNode::SetGameObject(GameObject* go)
 {
-	mModel = m; 
+	gameObject = go;
 }
-Model* SceneNode::GetModel() 
-{ 
-	return mModel;
+GameObject* SceneNode::GetGameObject()
+{
+	return gameObject;
 }
 
 // mX, mY, mZ

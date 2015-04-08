@@ -12,8 +12,9 @@ Purpose: Header file for Camera.cpp
 #define _XM_NO_INTRINSICS_
 #define XM_NO_ALIGNMENTS
 #include <xnamath.h>
+#include "GameObject.h"
 
-class Camera {
+class Camera : public GameObject {
 public:
 	Camera::Camera(float _x, float _y, float _z, float _cameraRotation);
 	void Rotate(float degrees);

@@ -8,8 +8,9 @@ Purpose: Header file for Model.cpp
 
 #pragma once
 #include "objfilemodel.h"
+#include "GameObject.h"
 
-class Model
+class Model : public GameObject
 {
 public:
 	Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext);

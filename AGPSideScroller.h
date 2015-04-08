@@ -16,6 +16,7 @@ Purpose: Header file for all important includes
 #include <d3dx11.h>
 #include <dxerr.h>
 
+#include "GameObject.h"
 #include "Marcos.h"
 #include "Scene.h"
 #include "SceneNode.h"
@@ -23,5 +24,6 @@ Purpose: Header file for all important includes
 #include "Input.h"
 #include "ParticleGenerator.h"
 #include "Camera.h"
+
 
 #endif

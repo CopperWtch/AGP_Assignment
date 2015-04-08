@@ -62,6 +62,7 @@ HRESULT SceneManager::initialiseGraphics()
 	// create camera
 	mCamera = new Camera(1.0f, 0.1f, -9.0f, -0.5f);
 	data->SetCamera(mCamera);
+	
 	// create particlegenerator;
 	/*mParticle = new ParticleGenerator(mD3DDevice, mImmediateContext);
 	mParticle->InitialiseGenerator();*/
