@@ -20,6 +20,8 @@ TestScene::~TestScene()
 	if (mNode2) delete mNode2;
 	if (mNode3) delete mNode3;
 	if (mCube) delete mCube;
+
+	if (mlight) delete mlight;
 }
 
 bool TestScene::Init() 
@@ -56,6 +58,28 @@ void TestScene::createCrates()
 	mNode3 = new SceneNode();
 
 	mCube = new Model(mD3DDevice, mImmediateContext);
+
+	//Create Light objects & Set them for the model
+	mlight = new Light();
+	mCube->SetLightData(mlight);
+
+	mPlight1 = new PointLight();
+	mPlight1->SetLightPosition(1.0f,1.0f,1.0f);
+	mPlight1->SetColour(0.1f,0.1f,0.1f,0.5f);
+
+	mPlight2 = new PointLight();
+	mPlight2->SetLightPosition(1.0f, 1.0f, 1.0f);
+	mPlight2->SetColour(0.1f, 0.1f, 0.1f, 0.5f);
+
+	mPlight3 = new PointLight();
+	mPlight3->SetLightPosition(1.0f, 1.0f, 1.0f);
+	mPlight3->SetColour(0.1f, 0.1f, 0.1f, 0.5f);
+
+	mPlight4 = new PointLight();
+	mPlight4->SetLightPosition(1.0f, 1.0f, 1.0f);
+	mPlight4->SetColour(0.1f, 0.1f, 0.1f, 0.5f);
+
+	mCube->SetPointLights(mPlight1,mPlight2,mPlight3,mPlight4);
 
 	mNode1->SetGameObject(mCube);
 	mNode2->SetGameObject(mCube);

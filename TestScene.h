@@ -12,6 +12,8 @@ Purpose: Header file for Scene.cpp
 
 #include "AGPSideScroller.h"
 #include "SceneData.h"
+#include "Light.h"
+#include "PointLight.h"
 
 
 class TestScene : public Scene
@@ -36,6 +38,12 @@ private:
 	SceneNode *mNode2;
 	SceneNode *mNode3;
 	SceneData* data;
+
+	Light *mlight;
+	PointLight* mPlight1;
+	PointLight* mPlight2;
+	PointLight* mPlight3;
+	PointLight* mPlight4;
 };
 
 #endif

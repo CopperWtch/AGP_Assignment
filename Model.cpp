@@ -8,9 +8,22 @@ Purpose: Model Object
 
 #include "Model.h"
 
+const int NUM_LIGHTS = 4;
+
 struct MODEL_CONSTANT_BUFFER
 {
 	XMMATRIX WorldViewProjection; //64 bytes
+
+	//Light
+	XMVECTOR directional_light_vector; //16bytes
+	XMVECTOR directional_light_colour; //16bytes
+	XMVECTOR ambient_light_colour; //16bytes
+
+	XMVECTOR point_position[NUM_LIGHTS];
+	XMVECTOR point_colour[NUM_LIGHTS];
+	//XMVECTOR point_light_colour; //16bytes
+	//XMVECTOR point_light_position; //16bytes //total: 144 bytes
+	//240?
 };
 
 Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext)
@@ -25,6 +38,12 @@ Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext)
 	mZAngle = 0.0f;
 	mScale = 1.0f;
 	mRotation = 0.0f;
+
+	mpLight1 = 0;
+	mpLight2 = 0;
+	mpLight3 = 0;
+	mpLight4 = 0;
+	mLight = 0;
 }
 
 Model::~Model()
@@ -36,6 +55,13 @@ Model::~Model()
 	if (mConstantBuffer) mConstantBuffer->Release();
 	if (mTexture) mTexture->Release();
 	if (mSampler) mSampler->Release();
+
+	if (mLight) delete mLight;
+	if (mpLight1) delete mpLight1;
+	if (mpLight2) delete mpLight2;
+	if (mpLight3) delete mpLight3;
+	if (mpLight4) delete mpLight4;
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -52,7 +78,7 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 	D3D11_BUFFER_DESC constant_buffer_desc;
 	ZeroMemory(&constant_buffer_desc, sizeof(constant_buffer_desc));
 	constant_buffer_desc.Usage = D3D11_USAGE_DEFAULT; //can use UpdateSubresource() to update
-	constant_buffer_desc.ByteWidth = 64; //MUST be a multiple of 16, calculate from CB struct
+	constant_buffer_desc.ByteWidth = 240; //MUST be a multiple of 16, calculate from CB struct
 	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // use as a constant buffer
 
 	hr = mD3DDevice->CreateBuffer(&constant_buffer_desc, NULL, &mConstantBuffer);
@@ -139,6 +165,55 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	
 	MODEL_CONSTANT_BUFFER model_cb_values;
 	model_cb_values.WorldViewProjection = (*world)*(*view)*(*projection);
+
+	//Lighting
+	XMMATRIX transpose = XMMatrixTranspose(*world);
+
+	XMVECTOR determinant;
+	XMMATRIX inverse;
+	inverse = XMMatrixInverse(&determinant, *world);
+
+
+	if (mLight != nullptr)
+	{
+
+		XMVECTOR dirColour = mLight->GetDirectionalLightColour();
+		XMVECTOR ambColour = mLight->GetAmbientLightColour();
+		XMVECTOR dirVector = mLight->GetLightDirection();
+
+		//XMVECTOR pointColour = mLight->GetPointLightColour();
+		//XMVECTOR pointVector = mLight->GetPointLightPosition();
+
+		/*model_cb_values.point_light_colour = pointColour;
+		model_cb_values.point_light_position = XMVector3Transform(pointVector, inverse);;*/
+
+		model_cb_values.directional_light_colour = dirColour;
+		model_cb_values.ambient_light_colour = ambColour;
+		model_cb_values.directional_light_vector = XMVector3Transform(dirVector, transpose);
+		model_cb_values.directional_light_vector = XMVector3Normalize(model_cb_values.directional_light_vector);
+
+	}
+
+	if (mpLight1)
+	{
+		model_cb_values.point_colour[0] = mpLight1->GetPointLightColour();
+		model_cb_values.point_position[0] = XMVector3Transform(mpLight1->GetPointLightPosition(), inverse);
+	}
+	if (mpLight2)
+	{
+		model_cb_values.point_colour[1] = mpLight2->GetPointLightColour();
+		model_cb_values.point_position[1] = XMVector3Transform(mpLight2->GetPointLightPosition(), inverse);
+	}
+	if (mpLight3)
+	{
+		model_cb_values.point_colour[2] = mpLight3->GetPointLightColour();
+		model_cb_values.point_position[2] = XMVector3Transform(mpLight3->GetPointLightPosition(), inverse);
+	}
+	if (mpLight4)
+	{
+		model_cb_values.point_colour[3] = mpLight4->GetPointLightColour();
+		model_cb_values.point_position[3] = XMVector3Transform(mpLight4->GetPointLightPosition(), inverse);
+	}
 
 	//upload the new values for the constant buffer
 	mImmediateContext->VSSetConstantBuffers(0, 1, &mConstantBuffer);
@@ -322,5 +397,24 @@ void Model::IncRotation(float num)
 void Model::DecRotation(float num)
 { 
 	mRotation -= num; 
+}
+
+//Set General Light Light
+void Model::SetLightData(Light* lightObject)
+{
+	mLight = lightObject;
+}
+
+void Model::SetPointLights(PointLight* light1, PointLight* light2, PointLight* light3, PointLight* light4)
+{
+	if (!mpLight1)
+		mpLight1 = light1;
+	if (!mpLight2)
+		mpLight2 = light2;
+	if (!mpLight3)
+		mpLight3 = light3;
+	if (!mpLight4)
+		mpLight4 = light4;
+
 }
 
