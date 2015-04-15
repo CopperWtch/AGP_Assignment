@@ -12,8 +12,7 @@ Purpose: Header file for Scene.cpp
 
 #include "AGPSideScroller.h"
 #include "SceneData.h"
-#include "Light.h"
-#include "PointLight.h"
+
 
 
 class TestScene : public Scene
