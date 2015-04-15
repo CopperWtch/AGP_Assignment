@@ -11,7 +11,7 @@ Purpose: Generates the Levels
 LevelGenerator::LevelGenerator()
 {
 	agpRandom = AGPRandom::GetInstance();
-	mSeed = new Seed(10, 5, 5, 1, 5, 1);
+	mSeed = new Seed(10, 5, 5, 1, 5, 1, 10);
 }
 
 LevelGenerator::LevelGenerator(Seed* seed)
@@ -20,10 +20,10 @@ LevelGenerator::LevelGenerator(Seed* seed)
 	mSeed = seed;
 }
 
-LevelGenerator::LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin)
+LevelGenerator::LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements)
 {
 	agpRandom = AGPRandom::GetInstance();
-	mSeed = new Seed(scaleMax, scaleMin, spanMax, spanMin, yPosMax, yPosMin);
+	mSeed = new Seed(scaleMax, scaleMin, spanMax, spanMin, yPosMax, yPosMin, levelElements);
 }
 
 LevelGenerator::~LevelGenerator()
@@ -53,7 +53,7 @@ SceneNode* LevelGenerator::generateLevel()
 
 	SceneNode* prevNode = mRootNodeLevel;
 	float span = 1.5f;
-	for (int i = 0; i < 10; i++)
+	for (int i = 0; i < mSeed->GetLevelElements(); i++)
 	{
 		SceneNode* mNodeLevelPart = new SceneNode();
 		if (isMultipleModel)
@@ -128,9 +128,10 @@ Seed::Seed()
 	mSpanMin = 1;
 	mYPosMax = 5;
 	mYPosMin = 1;
+	mLevelElements = 10;
 }
 
-Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin)
+Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements)
 {
 	mScaleMax = 2;
 	mScaleMin = 1;
@@ -145,6 +146,7 @@ Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, in
 	SetSpanMin(spanMin);
 	SetYPosMax(yPosMax);
 	SetYPosMin(yPosMin);
+	SetLevelElements(levelElements);
 }
 
 void Seed::SetScaleMax(int val)
@@ -195,6 +197,12 @@ void Seed::SetYPosMin(int val)
 		mYPosMin = val;
 }
 
+void Seed::SetLevelElements(int val)
+{
+	if (val > 0)
+		mLevelElements = val;
+}
+
 int Seed::GetScaleMax()
 {
 	return mScaleMax;
@@ -218,5 +226,9 @@ int Seed::GetYPosMax()
 int Seed::GetYPosMin()
 {
 	return mYPosMin;
+}
+int Seed::GetLevelElements()
+{
+	return mLevelElements;
 }
 

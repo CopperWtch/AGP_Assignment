@@ -83,6 +83,7 @@ void GameScene::initLevel()
 	mRootNodeLevel = new SceneNode();
 
 	LevelGenerator* levelGenerator = new LevelGenerator();
+	levelGenerator->GetSeed()->SetLevelElements(10);
 	mRootNodeLevel = levelGenerator->Generate(mCube, mCube2);
 
 }
