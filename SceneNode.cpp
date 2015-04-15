@@ -7,6 +7,7 @@ Purpose: SceneNode Object
 */
 
 #include "SceneNode.h"
+#include "Player.h"
 
 SceneNode::SceneNode()
 {
@@ -18,7 +19,9 @@ SceneNode::SceneNode()
 	mXAngle = 0.0f;
 	mYAngle = 0.0f;
 	mZAngle = 0.0f;
-	mScale = 1.0f;
+	mScaleX = 1.0f;
+	mScaleY = 1.0f;
+	mScaleZ = 1.0f;
 	mRotation = 0.0f;
 	mHideObject = false;
 }
@@ -56,9 +59,9 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 	// the local wiorkd matrix will be used to calc the local transformations for this node
 	XMMATRIX local_world = XMMatrixIdentity();
 
-	local_world *= XMMatrixScaling(mScale, mScale, mScale);
+	local_world = XMMatrixScaling(mScaleX, mScaleY, mScaleZ);
 
-	local_world = XMMatrixRotationX(XMConvertToRadians(mXAngle));
+	local_world *= XMMatrixRotationX(XMConvertToRadians(mXAngle));
 	local_world *= XMMatrixRotationY(XMConvertToRadians(mYAngle));
 	local_world *= XMMatrixRotationZ(XMConvertToRadians(mZAngle));
 
@@ -78,6 +81,20 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 		{
 			model->Draw(&local_world, view, projection);
 		}
+
+		Player* player = dynamic_cast<Player*>(gameObject);
+		if (player != nullptr)
+		{
+			player->Draw(&local_world, view, projection);
+		}
+
+		Camera* cam = dynamic_cast<Camera*>(gameObject);
+		if (cam != nullptr)
+		{
+			/*float val = local_world._41;
+			cam->MoveLeftRight(val / 100000);*/
+		}
+
 	}
 
 
@@ -171,8 +188,27 @@ float SceneNode::GetScale()
 }
 void SceneNode::SetScale(float num)
 {
-	mScale = num;
+	mScaleX = num;
+	mScaleY = num;
+	mScaleZ = num;
 }
+void SceneNode::SetXScale(float num)
+{
+	mScaleX = num;
+}
+void SceneNode::SetYScale(float num)
+{
+	mScaleY = num;
+}
+void SceneNode::SetZScale(float num)
+{
+	mScaleZ = num;
+}
+float SceneNode::GetXScale()
+{
+	return mScaleX;
+}
+
 
 // mRotation
 float SceneNode::GetRotation()

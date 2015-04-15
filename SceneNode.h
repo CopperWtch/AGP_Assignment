@@ -33,6 +33,9 @@ public:
 	void SetZAngle(float num);
 	void SetScale(float num);
 	void SetRotation(float num);
+	void SetXScale(float num);
+	void SetYScale(float num);
+	void SetZScale(float num);
 	float GetXPos();
 	float GetYPos();
 	float GetZPos();
@@ -41,6 +44,8 @@ public:
 	float GetZAngle();
 	float GetScale();
 	float GetRotation();
+	float GetXScale();
+	
 	Model* GetModel();
 	bool IsObjectHidden();
 	void HideObject(bool hide);
@@ -52,6 +57,6 @@ private:
 	vector<SceneNode*> mChildren;
 	float mX, mY, mZ, mDx, mDz;
 	float mXAngle, mZAngle, mYAngle;
-	float mScale, mRotation;
+	float mScale, mRotation, mScaleX, mScaleY, mScaleZ;
 	bool mHideObject;
 };

@@ -19,6 +19,7 @@ Purpose: Header file for SceneManager.cpp
 
 #include "D3DManager.h"
 #include "TestScene.h"
+#include "GameScene.h"
 
 
 class SceneManager
@@ -48,6 +49,7 @@ private:
 	XMMATRIX mView;
 	SceneData* data;
 	TestScene *mScene;
+	GameScene *mGameScene;
 };
 
 #endif

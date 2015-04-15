@@ -60,7 +60,7 @@ HRESULT SceneManager::initialiseGraphics()
 
 
 	// create camera
-	mCamera = new Camera(1.0f, 0.1f, -9.0f, -0.5f);
+	mCamera = new Camera(0, 5, -15.0f, 0);
 	data->SetCamera(mCamera);
 	
 	// create particlegenerator;
@@ -70,6 +70,7 @@ HRESULT SceneManager::initialiseGraphics()
 	// create scene 01
 	mScene = TestScene::create();
 
+	mGameScene = GameScene::create();
 
 	return S_OK;
 }
@@ -81,7 +82,10 @@ void SceneManager::RenderFrame()
 {
 	mInput->ReadInputStates();
 	if (mInput->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(mHWnd);
-	if (mInput->IsKeyPressed(DIK_W)) mCamera->Forward(0.0005);
+	if (mInput->IsKeyPressed(DIK_W)) mCamera->Forward(0.005);
+	if (mInput->IsKeyPressed(DIK_S)) mCamera->Forward(-0.005);
+	if (mInput->IsKeyPressed(DIK_A)) mCamera->MoveLeftRight(-0.005);
+	if (mInput->IsKeyPressed(DIK_D)) mCamera->MoveLeftRight(0.005);
 	// Clear the back buffer - choose a colour you like
 	float rgba_clear_colour[4] = { 0.1f, 0.2f, 0.6f, 1.0f };
 	mImmediateContext->ClearRenderTargetView(mBackBufferRTView, rgba_clear_colour);
@@ -96,7 +100,8 @@ void SceneManager::RenderFrame()
 	data->SetProjection(&mProjection);
 	//mParticle->Draw(&mView, &mProjection, mCamera->GetPosition());
 
-	mScene->RenderScene();
+	//mScene->RenderScene();
+	mGameScene->RenderScene();
 
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);
