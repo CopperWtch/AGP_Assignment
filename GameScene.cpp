@@ -18,11 +18,9 @@ bool GameScene::Init()
 	mD3DDevice = mSceneData->GetDevice();
 	mImmediateContext = mSceneData->GetImmediateContext();
 	
-	mlight = new Light();
-	mlight->SetAmbientLight(XMVectorSet(1.0f, 1.0f, 1.0f, 0.5f));
-	
+	mLight = mSceneData->GetLight();
 
-	initPlayer();
+	//initPlayer();
 
 	initLevel();
 
@@ -34,8 +32,8 @@ bool GameScene::Init()
 float pos = 0.00f;
 void GameScene::RenderScene()
 {
-	mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + pos);
-	mRootNodePlayer->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
+///	mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + pos);
+//	mRootNodePlayer->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
 	mRootNodeLevel->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
 
 }
@@ -49,7 +47,7 @@ void GameScene::initPlayer()
 
 	mPlayerModel->LoadObjModel("assets/chuck.obj", mTexture);
 	
-	mPlayerModel->SetLightData(mlight);
+	mPlayerModel->SetLightData(mLight);
 
 	Player* mPlayer = new Player(mPlayerModel);
 	
@@ -71,14 +69,14 @@ void GameScene::initLevel()
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/stone.jpg", NULL, NULL, &mTexture, NULL);
 	mCube->LoadObjModel("assets/cube.obj", mTexture);
-	mCube->SetLightData(mlight);
+	mCube->SetLightData(mLight);
 
 	Model* mCube2 = new Model(mD3DDevice, mImmediateContext);
 
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/metal.jpg", NULL, NULL, &mTexture, NULL);
 	mCube2->LoadObjModel("assets/cube.obj", mTexture);
-	mCube2->SetLightData(mlight);
+	mCube2->SetLightData(mLight);
 
 	mRootNodeLevel = new SceneNode();
 

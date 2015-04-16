@@ -49,6 +49,10 @@ XMMATRIX* SceneData::GetView()
 {
 	return mView;
 }
+Light* SceneData::GetLight()
+{
+	return mLight;
+}
 
 void SceneData::SetCamera(Camera* camera)
 {
@@ -69,5 +73,9 @@ void SceneData::SetProjection(XMMATRIX* projection)
 void SceneData::SetView(XMMATRIX* view)
 {
 	mView = view;
+}
+void SceneData::SetLight(Light* light)
+{
+	mLight = light;
 }
 

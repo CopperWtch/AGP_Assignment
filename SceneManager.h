@@ -20,6 +20,7 @@ Purpose: Header file for SceneManager.cpp
 #include "D3DManager.h"
 #include "TestScene.h"
 #include "GameScene.h"
+#include "Player.h"
 
 
 class SceneManager
@@ -29,10 +30,13 @@ public:
 	~SceneManager();
 	void Initialise(HWND _hWnd, HINSTANCE _hInst);
 	void ShutDown3D();
-	void RenderFrame();
+	void RenderFrame(float dt);
+	void Log(float x);
 
 private: 
-	
+	void initPlayer();
+	SceneNode* mRootNodePlayer;
+	Light* mLight;
 	HRESULT initialiseGraphics();
 	D3DManager *mD3DManager;
 	Camera *mCamera;
@@ -50,6 +54,8 @@ private:
 	SceneData* data;
 	TestScene *mScene;
 	GameScene *mGameScene;
+	Player* mPlayer;
+	ID3D11ShaderResourceView* mTexture;
 };
 
 #endif

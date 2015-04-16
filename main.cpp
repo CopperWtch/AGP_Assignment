@@ -40,6 +40,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	// Main message loop
 	MSG msg = { 0 };
 
+	static float previousTime = (float)timeGetTime();
+	static const float targetFramerate = 30.0f;
+	static const float maxTimeStep = 1.0f / targetFramerate;
+
 	while (msg.message != WM_QUIT)
 	{
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
@@ -49,7 +53,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		}
 		else
 		{
-			sceneManager->RenderFrame();
+			float currentTime = (float)timeGetTime();
+			// Calculate the delta time (in seconds)
+			float deltaTime = (currentTime - previousTime) / 1000.0f;
+			previousTime = currentTime;
+
+			// Cap the delta (useful for debugging)
+			//deltaTime = min(deltaTime, maxTimeStep);
+
+			// If there are no messages to handle on the message queue,
+			// update render our game.
+			sceneManager->RenderFrame(deltaTime);
 		}
 	}
 

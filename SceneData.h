@@ -21,11 +21,13 @@ public:
 	ID3D11DeviceContext* GetImmediateContext();
 	XMMATRIX* GetProjection();
 	XMMATRIX* GetView();
+	Light* GetLight();
 	void SetCamera(Camera* camera);
 	void SetDevice(ID3D11Device* device);
 	void SetImmediateContext(ID3D11DeviceContext* context);
 	void SetProjection(XMMATRIX* projection);
 	void SetView(XMMATRIX* view);
+	void SetLight(Light* light);
 private:
 	SceneData();
 	~SceneData();
@@ -34,6 +36,7 @@ private:
 	ID3D11DeviceContext* mImmediateContext;
 	XMMATRIX* mProjection;
 	XMMATRIX* mView;
+	Light* mLight;
 	
 };
 

@@ -51,7 +51,7 @@ HRESULT SceneManager::initialiseGraphics()
 	// get all neccessary pointer from the d3dmanger
 	mSwapChain = mD3DManager->GetSwapChain();
 	mImmediateContext = mD3DManager->GetContext();
-	//mD3DDevice = 
+	mD3DDevice = mD3DManager->GetDevice();
 	mBackBufferRTView = mD3DManager->GetBackBufferRTView();
 	mZBuffer = mD3DManager->GetZBuffer();
 
@@ -67,10 +67,19 @@ HRESULT SceneManager::initialiseGraphics()
 	/*mParticle = new ParticleGenerator(mD3DDevice, mImmediateContext);
 	mParticle->InitialiseGenerator();*/
 
-	// create scene 01
+	mLight = new Light();
+	mLight->SetAmbientLight(XMVectorSet(1.0f, 1.0f, 1.0f, 0.5f));
+
+	data->SetLight(mLight);
+
+	initPlayer();
+
+
 	mScene = TestScene::create();
 
 	mGameScene = GameScene::create();
+
+
 
 	return S_OK;
 }
@@ -78,7 +87,12 @@ HRESULT SceneManager::initialiseGraphics()
 //////////////////////////////////////////////////////////////////////////////////////
 //	Render
 //////////////////////////////////////////////////////////////////////////////////////
-void SceneManager::RenderFrame()
+float positionY = 0;     // Position of the character
+float velocityY = 0;     // Velocity of the character
+float gravity = 25.0f;
+bool isJump = false;
+
+void SceneManager::RenderFrame(float dt)
 {
 	mInput->ReadInputStates();
 	if (mInput->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(mHWnd);
@@ -86,6 +100,22 @@ void SceneManager::RenderFrame()
 	if (mInput->IsKeyPressed(DIK_S)) mCamera->Forward(-0.005);
 	if (mInput->IsKeyPressed(DIK_A)) mCamera->MoveLeftRight(-0.005);
 	if (mInput->IsKeyPressed(DIK_D)) mCamera->MoveLeftRight(0.005);
+
+	float velociy =  10;
+
+	if (mInput->IsKeyPressed(DIK_LEFTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() - dt * velociy);
+	if (mInput->IsKeyPressed(DIK_RIGHTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + dt * velociy);
+	if (mInput->IsKeyPressed(DIK_SPACE))
+	{
+		if (!isJump)
+		{
+			velocityY = 12;
+			isJump = true;
+		}
+			
+	}
+		
+
 	// Clear the back buffer - choose a colour you like
 	float rgba_clear_colour[4] = { 0.1f, 0.2f, 0.6f, 1.0f };
 	mImmediateContext->ClearRenderTargetView(mBackBufferRTView, rgba_clear_colour);
@@ -93,12 +123,31 @@ void SceneManager::RenderFrame()
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	
+
+	positionY += velocityY * dt;      // Apply vertical velocity to X position
+	velocityY -= gravity * dt;        // Apply gravity to vertical velocity
+	mRootNodePlayer->SetYPos(positionY);
+
+	// if on ground
+	if (mRootNodePlayer->GetYPos() <= 1)
+	{
+		velocityY = 0.0f;
+		positionY = 1.0f;
+		mRootNodePlayer->SetYPos(positionY);
+		isJump = false;
+	}
+
+	
+
+
 	mView = mCamera->GetViewMatrix();
 	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 640.0 / 480.0, 1.0, 100.0);
 
 	data->SetView(&mView);
 	data->SetProjection(&mProjection);
 	//mParticle->Draw(&mView, &mProjection, mCamera->GetPosition());
+
+	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
 	//mScene->RenderScene();
 	mGameScene->RenderScene();
@@ -108,12 +157,52 @@ void SceneManager::RenderFrame()
 
 }
 
+
+void SceneManager::initPlayer()
+{
+	Model* mPlayerModel = new Model(mD3DDevice, mImmediateContext);
+
+	//textrue
+	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/chuck.bmp", NULL, NULL, &mTexture, NULL);
+
+	mPlayerModel->LoadObjModel("assets/chuck.obj", mTexture);
+
+	mPlayerModel->SetLightData(mLight);
+
+	mPlayer = new Player(mPlayerModel);
+
+	mRootNodePlayer = new SceneNode();
+	SceneNode* mNode = new SceneNode();
+
+	mRootNodePlayer->SetGameObject(mPlayer);
+	mRootNodePlayer->addChildNode(mNode);
+	mRootNodePlayer->SetScale(0.03f);
+	mRootNodePlayer->SetYAngle(90);
+	mRootNodePlayer->SetYPos(1);
+	mNode->SetGameObject(mCamera);
+}
+
+
 //////////////////////////////////////////////////////////////////////////////////////
 //	Shutdown
 //////////////////////////////////////////////////////////////////////////////////////
 void SceneManager::ShutDown3D()
 {
 	mD3DManager->ShutdownD3D();
+}
+
+
+
+
+void SceneManager::Log(float x){
+	AllocConsole();
+	HANDLE myConsoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
+	DWORD cCharsWritten;
+	char buffer[1014];
+	int n, a = 5, b = 3;
+	n = sprintf_s(buffer, " x is %f \n", x);
+	string thisString = buffer;
+	WriteConsole(myConsoleHandle, thisString.c_str(), thisString.size(), &cCharsWritten, NULL);
 }
 
 

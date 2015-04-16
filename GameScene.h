@@ -30,7 +30,7 @@ private:
 	SceneNode* mRootNodePlayer;
 	SceneNode* mRootNodeLevel;
 
-	Light *mlight;
+	Light *mLight;
 	PointLight* mPlight1;
 	PointLight* mPlight2;
 	PointLight* mPlight3;
