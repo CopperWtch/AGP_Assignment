@@ -10,6 +10,11 @@ Purpose: Main Scene for the Game
 
 GameScene::~GameScene()
 {
+	if (mUpDownFlag) delete mUpDownFlag;
+	if (mUpDownFlag2) delete mUpDownFlag2;
+	if (mUpDownVelocity) delete mUpDownVelocity;
+	if (mUpDownVelocity2) delete mUpDownVelocity2;
+	if (mRootNodeLevel) delete mRootNodeLevel;
 }
 
 bool GameScene::Init()
@@ -21,45 +26,27 @@ bool GameScene::Init()
 	mLight = mSceneData->GetLight();
 
 	//initPlayer();
+	mUpDownFlag = new bool();
+	mUpDownFlag2 = new bool();
+	mUpDownVelocity = new float();
+	mUpDownVelocity2 = new float();
+	*mUpDownFlag = true;
+	*mUpDownFlag2 = false;
+	*mUpDownVelocity = 10;
+	*mUpDownVelocity2 = -6;
 
 	initLevel();
-
 
 	return true;
 }
 
 
-float pos = 0.00f;
-void GameScene::RenderScene()
+void GameScene::RenderScene(float dt)
 {
-///	mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + pos);
-//	mRootNodePlayer->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
+	moveGameObjectUpAndDown(mMovingChild, mUpDownVelocity, mUpDownFlag, 8, dt);
+	moveGameObjectUpAndDown(mMovingChild2, mUpDownVelocity2, mUpDownFlag2, 10, dt);
+
 	mRootNodeLevel->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
-
-}
-
-void GameScene::initPlayer()
-{
-	mPlayerModel = new Model(mD3DDevice, mImmediateContext);
-
-	//textrue
-	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/chuck.bmp", NULL, NULL, &mTexture, NULL);
-
-	mPlayerModel->LoadObjModel("assets/chuck.obj", mTexture);
-	
-	mPlayerModel->SetLightData(mLight);
-
-	Player* mPlayer = new Player(mPlayerModel);
-	
-	mRootNodePlayer = new SceneNode();
-	SceneNode* mNode = new SceneNode();
-	
-	mRootNodePlayer->SetGameObject(mPlayer);
-	mRootNodePlayer->addChildNode(mNode);
-	mRootNodePlayer->SetScale(0.03f);
-	mRootNodePlayer->SetYAngle(90);
-	mRootNodePlayer->SetYPos(1);
-	mNode->SetGameObject(mSceneData->GetCamera());
 }
 
 void GameScene::initLevel()
@@ -81,7 +68,31 @@ void GameScene::initLevel()
 	mRootNodeLevel = new SceneNode();
 
 	LevelGenerator* levelGenerator = new LevelGenerator();
-	levelGenerator->GetSeed()->SetLevelElements(10);
+	levelGenerator->GetSeed()->SetLevelElements(5);
 	mRootNodeLevel = levelGenerator->Generate(mCube, mCube2);
 
+	mMovingChild = mRootNodeLevel->GetChildren().at(2);
+	mMovingChild2 = mRootNodeLevel->GetChildren().at(4);
+
 }
+
+
+void GameScene::moveGameObjectUpAndDown(SceneNode* movingChild, float* velocity, bool* updownflag, float maxPos, float dt)
+{
+	movingChild->SetYPos(movingChild->GetYPos() + (*velocity*dt));
+
+	if (*updownflag && movingChild->GetYPos() >= maxPos)
+	{
+		*velocity *= -1;
+		*updownflag = false;
+	}
+	if (*updownflag && movingChild->GetYPos() <= -maxPos)
+	{
+		*velocity *= -1;
+		*updownflag = false;
+	}
+
+	if (movingChild->GetYPos() < maxPos && movingChild->GetYPos() > -maxPos)
+		*updownflag = true;
+}
+

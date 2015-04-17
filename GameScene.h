@@ -18,7 +18,7 @@ class GameScene : public Scene
 public:
 	~GameScene();
 	virtual bool Init();
-	virtual void RenderScene();
+	virtual void RenderScene(float dt);
 	CREATE_FUNC(GameScene);
 private:
 	ID3D11Device* mD3DDevice;
@@ -26,9 +26,9 @@ private:
 	ID3D11ShaderResourceView *mTexture;
 	SceneData* mSceneData;
 
-	Model* mPlayerModel;
-	SceneNode* mRootNodePlayer;
 	SceneNode* mRootNodeLevel;
+	SceneNode* mMovingChild;
+	SceneNode* mMovingChild2;
 
 	Light *mLight;
 	PointLight* mPlight1;
@@ -36,10 +36,16 @@ private:
 	PointLight* mPlight3;
 	PointLight* mPlight4;
 
-	void initPlayer();
+	void moveGameObjectUpAndDown(SceneNode* movingChild, float* velocity, bool* updownflag, float maxPos, float dt);
 	void initLevel();
 
 	void Log(float x);
+
+	bool* mUpDownFlag;
+	bool* mUpDownFlag2;
+	float* mUpDownVelocity;
+	float* mUpDownVelocity2;
+	float maxPos = 8;
 };
 
 

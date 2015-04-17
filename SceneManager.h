@@ -20,6 +20,7 @@ Purpose: Header file for SceneManager.cpp
 #include "D3DManager.h"
 #include "TestScene.h"
 #include "GameScene.h"
+#include "LevelTwo.h"
 #include "Player.h"
 
 
@@ -54,7 +55,10 @@ private:
 	SceneData* data;
 	TestScene *mScene;
 	GameScene *mGameScene;
+	LevelTwo* mLevelTwo;
 	Player* mPlayer;
+	int mLevel;
+	const int MAXLEVELCOUNT = 2;
 	ID3D11ShaderResourceView* mTexture;
 };
 

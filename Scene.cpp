@@ -30,7 +30,7 @@ Scene *Scene::create()
 	}
 }
 
-void Scene::RenderScene()
+void Scene::RenderScene(float dt)
 {
 	// render stuff here
 }

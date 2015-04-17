@@ -60,7 +60,7 @@ HRESULT SceneManager::initialiseGraphics()
 
 
 	// create camera
-	mCamera = new Camera(0, 5, -15.0f, 0);
+	mCamera = new Camera(0, 5, -35.0f, 0);
 	data->SetCamera(mCamera);
 	
 	// create particlegenerator;
@@ -74,12 +74,13 @@ HRESULT SceneManager::initialiseGraphics()
 
 	initPlayer();
 
+	mLevel = 1;
 
 	mScene = TestScene::create();
 
 	mGameScene = GameScene::create();
 
-
+	mLevelTwo = LevelTwo::create();
 
 	return S_OK;
 }
@@ -89,7 +90,7 @@ HRESULT SceneManager::initialiseGraphics()
 //////////////////////////////////////////////////////////////////////////////////////
 float positionY = 0;     // Position of the character
 float velocityY = 0;     // Velocity of the character
-float gravity = 25.0f;
+float gravity = 45.0f;
 bool isJump = false;
 
 void SceneManager::RenderFrame(float dt)
@@ -109,12 +110,28 @@ void SceneManager::RenderFrame(float dt)
 	{
 		if (!isJump)
 		{
-			velocityY = 12;
+			velocityY = 14;
 			isJump = true;
 		}
 			
 	}
-		
+	if (mInput->IsKeyPressed(DIK_END))
+	{
+		if (mLevel < MAXLEVELCOUNT)
+		{
+			mLevel++;
+			mRootNodePlayer->SetXPos(0);
+			mRootNodePlayer->SetYPos(1);
+		}	
+	}
+
+	// just for debug
+	if (mInput->IsKeyPressed(DIK_HOME))
+	{
+		mLevel = 1;
+		mRootNodePlayer->SetXPos(0);
+		mRootNodePlayer->SetYPos(1);
+	}
 
 	// Clear the back buffer - choose a colour you like
 	float rgba_clear_colour[4] = { 0.1f, 0.2f, 0.6f, 1.0f };
@@ -149,8 +166,15 @@ void SceneManager::RenderFrame(float dt)
 
 	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
-	//mScene->RenderScene();
-	mGameScene->RenderScene();
+	switch (mLevel)
+	{
+	case 1:
+		mGameScene->RenderScene(dt);
+		break;
+	case 2:
+		mLevelTwo->RenderScene(dt);
+		break;
+	}
 
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);

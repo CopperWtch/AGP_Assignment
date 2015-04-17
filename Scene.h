@@ -20,7 +20,7 @@ public:
 	~Scene();
 	static Scene *create(void);
 	bool Init();
-	void RenderScene();
+	void RenderScene(float dt);
 };
 
 #endif

@@ -120,6 +120,11 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 //	return mModel;
 //}
 
+vector<SceneNode*> SceneNode::GetChildren()
+{
+	return mChildren;
+}
+
 void SceneNode::SetGameObject(GameObject* go)
 {
 	gameObject = go;
