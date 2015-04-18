@@ -140,9 +140,9 @@ void SceneManager::RenderFrame(float dt)
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	
-
-	positionY += velocityY * dt;      // Apply vertical velocity to X position
-	velocityY -= gravity * dt;        // Apply gravity to vertical velocity
+	// jump
+	positionY += velocityY * dt;     
+	velocityY -= gravity * dt;        
 	mRootNodePlayer->SetYPos(positionY);
 
 	// if on ground
@@ -166,6 +166,7 @@ void SceneManager::RenderFrame(float dt)
 
 	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
+	// render correct scene depending on level
 	switch (mLevel)
 	{
 	case 1:
