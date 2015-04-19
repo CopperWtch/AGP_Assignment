@@ -54,15 +54,6 @@ bool SceneNode::detatchNode(SceneNode *n)
 	return false; //node not in this tree
 }
 
-
-void SceneNode::DeleteAllChildren()
-{
-	for each (SceneNode* node in mChildren)
-	{
-		delete node;
-	}
-}
-
 void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 {
 	// the local wiorkd matrix will be used to calc the local transformations for this node

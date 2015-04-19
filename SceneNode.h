@@ -24,7 +24,6 @@ public:
 	void addChildNode(SceneNode *n);
 	bool detatchNode(SceneNode *n);
 	void execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection);
-	void DeleteAllChildren();
 	void SetModel(Model *m);
 	void SetXPos(float num);
 	void SetYPos(float num);
