@@ -34,7 +34,7 @@ void LevelTwo::RenderScene(float dt)
 
 void LevelTwo::initLevel()
 {
-	Model* mCube = new Model(mD3DDevice, mImmediateContext);
+	mCube = new Model(mD3DDevice, mImmediateContext);
 
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/plastic.jpg", NULL, NULL, &mTexture, NULL);
@@ -43,8 +43,15 @@ void LevelTwo::initLevel()
 
 	mRootNodeLevel = new SceneNode();
 
-	LevelGenerator* levelGenerator = new LevelGenerator();
+	levelGenerator = new LevelGenerator();
 	levelGenerator->GetSeed()->SetLevelElements(10);
 	mRootNodeLevel = levelGenerator->Generate(mCube);
 
+}
+
+void LevelTwo::ReGenerateLevel()
+{
+	delete mRootNodeLevel;
+	mRootNodeLevel = new SceneNode();
+	mRootNodeLevel = levelGenerator->Generate(mCube);
 }

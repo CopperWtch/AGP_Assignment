@@ -1,0 +1,172 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AGPRandom">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAABAAAIAAAAAAAAAAAhAA=</HashCode>
+      <FileName>AGPRandom.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera" Collapsed="true">
+    <Position X="5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAGAAAAAAgAAYAQIAECAAAAAAYBEAAAAAAgI=</HashCode>
+      <FileName>Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="D3DManager">
+    <Position X="22.5" Y="5.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAKAAAAAEAYAAAIGACAAAgAgAACgAACAQUAA=</HashCode>
+      <FileName>D3DManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameObject">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>GameObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScene">
+    <Position X="9.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABBIBAgAAAIAAABAAAAKBAKAAAgAACAJgBACATAAQAA=</HashCode>
+      <FileName>GameScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Seed">
+    <Position X="18.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAYEIAAAAAEAAAAQAEAAYgAJBgAAAAAAAAEJAAAAIJA=</HashCode>
+      <FileName>LevelGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelGenerator">
+    <Position X="16.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AMAACAAAAIAAAIAAAAAEAIAAAAAAAAAAAAAAAEAAAAQ=</HashCode>
+      <FileName>LevelGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Light" Collapsed="true">
+    <Position X="7" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAEQAAAAAAAAACAAAAAAwAAgAAAAAAAAAAQACAAAAE=</HashCode>
+      <FileName>Light.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model" Collapsed="true">
+    <Position X="3" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Y7ASAGgABQCMAkpAyAGYAAABIDlhCAwAMhgIEiEAUBA=</HashCode>
+      <FileName>Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ObjFileModel" Collapsed="true">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAQBEAAARAgyABAgAAIBCAQAUAAQAAAAAQAQDAAI=</HashCode>
+      <FileName>objfilemodel.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ParticleGenerator" Collapsed="true">
+    <Position X="16.25" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>I6AaAGgABQCMAmpIzAGYAEABADlgCAwQOBAoEikAUAk=</HashCode>
+      <FileName>ParticleGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="1" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAgAAAAAAQAAABA=</HashCode>
+      <FileName>Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PointLight">
+    <Position X="7" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIBIAAAAAAAAAARAABAAAAAAAIAACAAA=</HashCode>
+      <FileName>PointLight.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scene">
+    <Position X="10.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAgAAAAAAAQAAAAAAAAABCAAAAAAA=</HashCode>
+      <FileName>Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneData">
+    <Position X="25" Y="5.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ABEIoQASAAAAAAAAAAACIAAAFACAAAiQAAgBADAAQAA=</HashCode>
+      <FileName>SceneData.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneManager">
+    <Position X="20" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgIgBBCAAAAEUBAAEAAAIAgKAzEgAQAAAAQADAQQAQ=</HashCode>
+      <FileName>SceneManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneNode">
+    <Position X="32.25" Y="4.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AQASBCAADAGEAEgAiATcAgQBrCkgSAgAIhgAggAQIAA=</HashCode>
+      <FileName>SceneNode.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Text2D" Collapsed="true">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAIAAQIACAAABBAEAQAAAgAAQAAAAAQAAgQAAAAI=</HashCode>
+      <FileName>text2D.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LevelTwo">
+    <Position X="11.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAkAAAAAAABAAAAAAAAAAAAAAAAJgBACACAAQAA=</HashCode>
+      <FileName>LevelTwo.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Input">
+    <Position X="28.75" Y="7.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgABABAAAgAEAAAAAQAAAAGACAAAAAACAAAAAIAAA=</HashCode>
+      <FileName>Input.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="MODEL_CONSTANT_BUFFER" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAQAAIAAAAAAAAAAAAAAAAAAQAAACAAIAA=</HashCode>
+      <FileName>Model.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PARTICLE_CONSTANT_BUFFER" Collapsed="true">
+    <Position X="16.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAgAAAAAA=</HashCode>
+      <FileName>ParticleGenerator.cpp</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="string_2d" Collapsed="true">
+    <Position X="12.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAIBgAAAAAAA=</HashCode>
+      <FileName>text2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="POS_TEX_VERTEX" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>text2D.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

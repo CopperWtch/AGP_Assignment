@@ -73,17 +73,17 @@ SceneNode* LevelGenerator::generateLevel()
 		mRootNodeLevel->addChildNode(mNodeLevelPart);
 
 		// random scale
-		float scale = (int)agpRandom->GetRandomRange(mSeed->GetScaleMax(), mSeed->GetScaleMin());
+		float scale = (int)agpRandom->GetRandomRange(mSeed->GetScaleMax() + 1, mSeed->GetScaleMin());
 		mNodeLevelPart->SetXScale(scale);
 		mNodeLevelPart->SetZScale(scale);
 
 		// random span between the blocks
-		span = agpRandom->GetRandomRange(mSeed->GetSpanMax(), mSeed->GetSpanMin());
+		span = agpRandom->GetRandomRange(mSeed->GetSpanMax() + 1, mSeed->GetSpanMin());
 		// xpos calculation 
 		mNodeLevelPart->SetXPos(prevNode->GetXPos() + prevNode->GetXScale() + scale + span);
 
 		// random ypos
-		float ypos = agpRandom->GetRandomRange(mSeed->GetYPosMax(), mSeed->GetYPosMin());
+		float ypos = agpRandom->GetRandomRange(mSeed->GetYPosMax() + 1, mSeed->GetYPosMin());
 		// random value between 0.999 and 0 
 		float val = agpRandom->GetRandom0To1();
 		// if <= 0.5 then normal ypos value else the value is minus

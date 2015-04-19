@@ -82,6 +82,8 @@ HRESULT SceneManager::initialiseGraphics()
 
 	mLevelTwo = LevelTwo::create();
 
+	mActiveLevelSetting = LevelSetting::Setting1;
+	mNextLevel = false;
 	return S_OK;
 }
 
@@ -92,9 +94,14 @@ float positionY = 0;     // Position of the character
 float velocityY = 0;     // Velocity of the character
 float gravity = 45.0f;
 bool isJump = false;
+bool isDoubleJump = true;
+bool deletebool = true;
+bool nextLevelKey = true;
+
 
 void SceneManager::RenderFrame(float dt)
 {
+	/*********************** Input ***********************/
 	mInput->ReadInputStates();
 	if (mInput->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(mHWnd);
 	if (mInput->IsKeyPressed(DIK_W)) mCamera->Forward(0.005);
@@ -106,42 +113,64 @@ void SceneManager::RenderFrame(float dt)
 
 	if (mInput->IsKeyPressed(DIK_LEFTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() - dt * velociy);
 	if (mInput->IsKeyPressed(DIK_RIGHTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + dt * velociy);
+	
+	// jump velocity 
 	if (mInput->IsKeyPressed(DIK_SPACE))
 	{
 		if (!isJump)
 		{
-			velocityY = 14;
+			velocityY = 16;
 			isJump = true;
 		}
 			
 	}
+	// double jump
+	if (mInput->IsKeyReleased(DIK_SPACE))
+	{
+		if (isDoubleJump)
+		{
+			isJump = false;
+			isDoubleJump = false;
+		}
+	}
+
+	// debug next level
 	if (mInput->IsKeyPressed(DIK_END))
 	{
-		if (mLevel < MAXLEVELCOUNT)
+		if (nextLevelKey)
 		{
-			mLevel++;
+			nextLevelSetting();
 			mRootNodePlayer->SetXPos(0);
 			mRootNodePlayer->SetYPos(1);
+			nextLevelKey = false;
 		}	
 	}
-
-	// just for debug
-	if (mInput->IsKeyPressed(DIK_HOME))
+	if (mInput->IsKeyReleased(DIK_END))
 	{
-		mLevel = 1;
-		mRootNodePlayer->SetXPos(0);
-		mRootNodePlayer->SetYPos(1);
+		nextLevelKey = true;
 	}
 
+	
+
+	/*********************** view & projection ***********************/
+
 	// Clear the back buffer - choose a colour you like
-	float rgba_clear_colour[4] = { 0.1f, 0.2f, 0.6f, 1.0f };
+	//float rgba_clear_colour[4] = { 0.1f, 0.2f, 0.6f, 1.0f };
+	float rgba_clear_colour[4] = { 0.15f, 0.15f, 0.15f, 1.0f };
 	mImmediateContext->ClearRenderTargetView(mBackBufferRTView, rgba_clear_colour);
 	mImmediateContext->ClearDepthStencilView(mZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	// set view and projection
+	mView = mCamera->GetViewMatrix();
+	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 640.0 / 480.0, 1.0, 100.0);
 
-	
+	data->SetView(&mView);
+	data->SetProjection(&mProjection);
+
+	/*********************** player jump ***********************/
+
 	// jump
-	positionY += velocityY * dt;     
+	positionY += velocityY * dt;
 	velocityY -= gravity * dt;        
 	mRootNodePlayer->SetYPos(positionY);
 
@@ -152,27 +181,31 @@ void SceneManager::RenderFrame(float dt)
 		positionY = 1.0f;
 		mRootNodePlayer->SetYPos(positionY);
 		isJump = false;
+		isDoubleJump = true;
 	}
 
-	
-
-
-	mView = mCamera->GetViewMatrix();
-	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 640.0 / 480.0, 1.0, 100.0);
-
-	data->SetView(&mView);
-	data->SetProjection(&mProjection);
-	//mParticle->Draw(&mView, &mProjection, mCamera->GetPosition());
-
+	// execute player (render)
 	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
 	// render correct scene depending on level
-	switch (mLevel)
+	switch (mActiveLevelSetting)
 	{
-	case 1:
+	case LevelSetting::Setting1:
+		if (mNextLevel && mLevel > 2)
+		{
+			mGameScene->ReGenerateLevel();
+			mNextLevel = false;
+		}
+			
 		mGameScene->RenderScene(dt);
 		break;
-	case 2:
+	case LevelSetting::Setting2:
+		if (mNextLevel && mLevel > 2)
+		{
+			mLevelTwo->ReGenerateLevel();
+			mNextLevel = false;
+		}
+			
 		mLevelTwo->RenderScene(dt);
 		break;
 	}
@@ -207,6 +240,18 @@ void SceneManager::initPlayer()
 	mNode->SetGameObject(mCamera);
 }
 
+void SceneManager::nextLevelSetting()
+{
+	if (mActiveLevelSetting == LevelSetting::Setting1)
+		mActiveLevelSetting = LevelSetting::Setting2;
+	else if (mActiveLevelSetting == LevelSetting::Setting2)
+		mActiveLevelSetting = LevelSetting::Setting1;
+	/*else if (mActiveLevelSetting == LevelSetting::Setting3)
+		mActiveLevelSetting = LevelSetting::Setting1;*/
+	mLevel++;
+	mNextLevel = true;
+}
+
 
 //////////////////////////////////////////////////////////////////////////////////////
 //	Shutdown
@@ -215,8 +260,6 @@ void SceneManager::ShutDown3D()
 {
 	mD3DManager->ShutdownD3D();
 }
-
-
 
 
 void SceneManager::Log(float x){

@@ -69,3 +69,10 @@ bool Input::IsKeyPressed(unsigned char DI_keycode)
 {
 	return mKeyboardKeysState[DI_keycode] & 0x80;
 }
+
+
+// not working yet
+bool Input::IsKeyReleased(unsigned char DI_keycode)
+{
+	return !((mKeyboardKeysState[DI_keycode]) & 0x80);
+}

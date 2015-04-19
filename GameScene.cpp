@@ -25,15 +25,7 @@ bool GameScene::Init()
 	
 	mLight = mSceneData->GetLight();
 
-	//initPlayer();
-	mUpDownFlag = new bool();
-	mUpDownFlag2 = new bool();
-	mUpDownVelocity = new float();
-	mUpDownVelocity2 = new float();
-	*mUpDownFlag = true;
-	*mUpDownFlag2 = false;
-	*mUpDownVelocity = 10;
-	*mUpDownVelocity2 = -6;
+	initMovingChilds(false);
 
 	initLevel();
 
@@ -51,14 +43,14 @@ void GameScene::RenderScene(float dt)
 
 void GameScene::initLevel()
 {
-	Model* mCube = new Model(mD3DDevice, mImmediateContext);
+	mCube = new Model(mD3DDevice, mImmediateContext);
 
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/stone.jpg", NULL, NULL, &mTexture, NULL);
 	mCube->LoadObjModel("assets/cube.obj", mTexture);
 	mCube->SetLightData(mLight);
 
-	Model* mCube2 = new Model(mD3DDevice, mImmediateContext);
+	mCube2 = new Model(mD3DDevice, mImmediateContext);
 
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/metal.jpg", NULL, NULL, &mTexture, NULL);
@@ -67,13 +59,29 @@ void GameScene::initLevel()
 
 	mRootNodeLevel = new SceneNode();
 
-	LevelGenerator* levelGenerator = new LevelGenerator();
+	levelGenerator = new LevelGenerator();
 	levelGenerator->GetSeed()->SetLevelElements(5);
-	mRootNodeLevel = levelGenerator->Generate(mCube, mCube2);
+	generate();
+}
 
-	mMovingChild = mRootNodeLevel->GetChildren().at(2);
-	mMovingChild2 = mRootNodeLevel->GetChildren().at(4);
-
+void GameScene::initMovingChilds(bool isReset)
+{
+	if (isReset)
+	{
+		delete mUpDownFlag;
+		delete mUpDownFlag2;
+		delete mUpDownVelocity;
+		delete mUpDownVelocity2;
+	}
+	
+	mUpDownFlag = new bool();
+	mUpDownFlag2 = new bool();
+	mUpDownVelocity = new float();
+	mUpDownVelocity2 = new float();
+	*mUpDownFlag = true;
+	*mUpDownFlag2 = false;
+	*mUpDownVelocity = 10;
+	*mUpDownVelocity2 = -6;
 }
 
 
@@ -94,5 +102,21 @@ void GameScene::moveGameObjectUpAndDown(SceneNode* movingChild, float* velocity,
 
 	if (movingChild->GetYPos() < maxPos && movingChild->GetYPos() > -maxPos)
 		*updownflag = true;
+}
+
+void GameScene::ReGenerateLevel()
+{
+	delete mRootNodeLevel;
+	mRootNodeLevel = new SceneNode();
+	generate();
+}
+
+void GameScene::generate()
+{
+	mRootNodeLevel = levelGenerator->Generate(mCube, mCube2);
+
+	initMovingChilds(true);
+	mMovingChild = mRootNodeLevel->GetChildren().at((int)AGPRandom::GetInstance()->GetRandomRange(3, 1));
+	mMovingChild2 = mRootNodeLevel->GetChildren().at((int)AGPRandom::GetInstance()->GetRandomRange(5, 3));
 }
 

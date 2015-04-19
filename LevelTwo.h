@@ -11,7 +11,6 @@ Purpose: Header file for LevelTwo.cpp
 #define _LEVELTWO_H_
 
 #include "AGPSideScroller.h"
-#include "SceneData.h"
 
 class LevelTwo : public Scene
 {
@@ -19,6 +18,7 @@ public:
 	~LevelTwo();
 	virtual bool Init();
 	virtual void RenderScene(float dt);
+	void ReGenerateLevel();
 	CREATE_FUNC(LevelTwo);
 private:
 	ID3D11Device* mD3DDevice;
@@ -27,6 +27,8 @@ private:
 	SceneData* mSceneData;
 
 	SceneNode* mRootNodeLevel;
+	LevelGenerator* levelGenerator;
+	Model* mCube;
 
 	Light *mLight;
 	void initLevel();

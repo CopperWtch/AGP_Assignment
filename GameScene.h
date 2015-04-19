@@ -11,7 +11,6 @@ Purpose: Header file for GameScene.cpp
 #define _GAMESCENE_H_
 
 #include "AGPSideScroller.h"
-#include "SceneData.h"
 
 class GameScene : public Scene
 {
@@ -19,6 +18,7 @@ public:
 	~GameScene();
 	virtual bool Init();
 	virtual void RenderScene(float dt);
+	void ReGenerateLevel();
 	CREATE_FUNC(GameScene);
 private:
 	ID3D11Device* mD3DDevice;
@@ -30,15 +30,16 @@ private:
 	SceneNode* mMovingChild;
 	SceneNode* mMovingChild2;
 
-	Light *mLight;
-	PointLight* mPlight1;
-	PointLight* mPlight2;
-	PointLight* mPlight3;
-	PointLight* mPlight4;
+	LevelGenerator* levelGenerator;
+	Model* mCube;
+	Model* mCube2;
 
+	Light *mLight;
+	
 	void moveGameObjectUpAndDown(SceneNode* movingChild, float* velocity, bool* updownflag, float maxPos, float dt);
 	void initLevel();
-
+	void initMovingChilds(bool isReset);
+	void generate();
 	void Log(float x);
 
 	bool* mUpDownFlag;

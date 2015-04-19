@@ -16,6 +16,7 @@ public:
 	HRESULT InitialiseInput();
 	void ReadInputStates();
 	bool IsKeyPressed(unsigned char DI_keycode);
+	bool IsKeyReleased(unsigned char DI_keycode);
 private:
 	HWND mHWnd;
 	HINSTANCE mHInst;

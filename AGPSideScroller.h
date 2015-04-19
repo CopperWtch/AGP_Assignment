@@ -28,5 +28,6 @@ Purpose: Header file for all important includes
 #include "PointLight.h"
 #include "LevelGenerator.h"
 #include "AGPRandom.h"
+#include "SceneData.h"
 
 #endif

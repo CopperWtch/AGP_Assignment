@@ -24,9 +24,4 @@ private:
 	AGPRandom();
 };
 
-class AGPRandomInit
-{
-	static AGPRandom agpRandom;
-};
-
 #endif

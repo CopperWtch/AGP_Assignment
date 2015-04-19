@@ -28,12 +28,11 @@ SceneNode::SceneNode()
 
 SceneNode::~SceneNode()
 {
-	for each (SceneNode* node in mChildren)
+	for (int i = mChildren.size() - 1; i >= 0; i--)
 	{
-		delete node;
+		delete mChildren.at(i);
+		mChildren.pop_back();
 	}
-	if(mChildren.size() > 0) mChildren.pop_back();
-	mChildren.clear();
 }
 
 void SceneNode::addChildNode(SceneNode *n)
@@ -54,6 +53,16 @@ bool SceneNode::detatchNode(SceneNode *n)
 	}
 	return false; //node not in this tree
 }
+
+
+void SceneNode::DeleteAllChildren()
+{
+	for each (SceneNode* node in mChildren)
+	{
+		delete node;
+	}
+}
+
 void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 {
 	// the local wiorkd matrix will be used to calc the local transformations for this node

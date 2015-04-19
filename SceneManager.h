@@ -58,8 +58,11 @@ private:
 	LevelTwo* mLevelTwo;
 	Player* mPlayer;
 	int mLevel;
-	const int MAXLEVELCOUNT = 2;
 	ID3D11ShaderResourceView* mTexture;
+	enum LevelSetting { Setting1, Setting2, Setting3 };
+	LevelSetting mActiveLevelSetting;
+	void nextLevelSetting();
+	bool mNextLevel;
 };
 
 #endif
