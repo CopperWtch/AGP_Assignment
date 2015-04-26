@@ -14,7 +14,7 @@ Purpose: Header file for Camera.cpp
 #include <xnamath.h>
 #include "GameObject.h"
 
-class Camera : public GameObject {
+class Camera {
 public:
 	Camera::Camera(float _x, float _y, float _z, float _cameraRotation);
 	void Rotate(float degrees);
@@ -22,6 +22,7 @@ public:
 	void MoveLeftRight(float distance);
 	XMVECTOR Up();
 	XMMATRIX GetViewMatrix();
+	XMMATRIX GetViewMatrixThirdPerson(XMVECTOR pos);
 	void CalcDXDY();
 	float GetX();
 	float GetY();

@@ -33,6 +33,7 @@ SceneNode::~SceneNode()
 		delete mChildren.at(i);
 		mChildren.pop_back();
 	}
+	local_view = XMMatrixIdentity();
 }
 
 void SceneNode::addChildNode(SceneNode *n)
@@ -66,7 +67,7 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 	local_world *= XMMatrixRotationZ(XMConvertToRadians(mZAngle));
 
 	local_world *= XMMatrixTranslation(mX, mY, mZ);
-
+	
 	// the local matrix is multiplied y the passed in world matrix that contains the concatenated
 	// transformations of all parent nodes so that this nodes transformations are relative to those
 	local_world *= *world;
@@ -85,16 +86,9 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 		Player* player = dynamic_cast<Player*>(gameObject);
 		if (player != nullptr)
 		{
+		//	local_view *= XMMatrixTranslation(mX, mY, mZ);
 			player->Draw(&local_world, view, projection);
 		}
-
-		Camera* cam = dynamic_cast<Camera*>(gameObject);
-		if (cam != nullptr)
-		{
-			/*float val = local_world._41;
-			cam->MoveLeftRight(val / 100000);*/
-		}
-
 	}
 
 

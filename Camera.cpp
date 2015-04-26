@@ -53,6 +53,12 @@ XMMATRIX Camera::GetViewMatrix()
 	return XMMatrixLookAtLH(mPosition, mLookat, Up());
 }
 
+XMMATRIX Camera::GetViewMatrixThirdPerson(XMVECTOR pos)
+{
+	mLookat = XMVectorSet(pos.x, pos.y, 0, 0.0);
+	return XMMatrixLookAtLH(pos, mLookat, Up());
+}
+
 void Camera::CalcDXDY()
 {
 	mDX = sin(XMConvertToRadians(mCameraRotation));

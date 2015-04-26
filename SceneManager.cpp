@@ -60,7 +60,8 @@ HRESULT SceneManager::initialiseGraphics()
 
 
 	// create camera
-	mCamera = new Camera(0, 5, -35.0f, 0);
+	//mCamera = new Camera(0, 5, -35.0f, 0);
+	mCamera = new Camera(0, 0, 0, 0);
 	data->SetCamera(mCamera);
 	
 	// create particlegenerator;
@@ -104,10 +105,10 @@ void SceneManager::RenderFrame(float dt)
 	/*********************** Input ***********************/
 	mInput->ReadInputStates();
 	if (mInput->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(mHWnd);
-	if (mInput->IsKeyPressed(DIK_W)) mCamera->Forward(0.005);
-	if (mInput->IsKeyPressed(DIK_S)) mCamera->Forward(-0.005);
-	if (mInput->IsKeyPressed(DIK_A)) mCamera->MoveLeftRight(-0.005);
-	if (mInput->IsKeyPressed(DIK_D)) mCamera->MoveLeftRight(0.005);
+	//if (mInput->IsKeyPressed(DIK_W)) mCamera->Forward(0.005);
+	//if (mInput->IsKeyPressed(DIK_S)) mCamera->Forward(-0.005);
+	//if (mInput->IsKeyPressed(DIK_A)) mCamera->MoveLeftRight(-0.005);
+	//if (mInput->IsKeyPressed(DIK_D)) mCamera->MoveLeftRight(0.005);
 
 	float velociy =  10;
 
@@ -149,7 +150,6 @@ void SceneManager::RenderFrame(float dt)
 	{
 		nextLevelKey = true;
 	}
-
 	
 
 	/*********************** view & projection ***********************/
@@ -161,7 +161,8 @@ void SceneManager::RenderFrame(float dt)
 	mImmediateContext->ClearDepthStencilView(mZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// set view and projection
-	mView = mCamera->GetViewMatrix();
+	XMVECTOR playerPos = XMVectorSet(mRootNodePlayer->GetXPos(), mRootNodePlayer->GetYPos() + 5, mRootNodePlayer->GetZPos() -25, 0.0f);
+	mView = mCamera->GetViewMatrixThirdPerson(playerPos);
 	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 640.0 / 480.0, 1.0, 100.0);
 
 	data->SetView(&mView);
@@ -212,7 +213,6 @@ void SceneManager::RenderFrame(float dt)
 
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);
-
 }
 
 
@@ -237,7 +237,7 @@ void SceneManager::initPlayer()
 	mRootNodePlayer->SetScale(0.03f);
 	mRootNodePlayer->SetYAngle(90);
 	mRootNodePlayer->SetYPos(1);
-	mNode->SetGameObject(mCamera);
+	
 }
 
 void SceneManager::nextLevelSetting()
