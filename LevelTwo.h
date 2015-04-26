@@ -21,6 +21,7 @@ public:
 	void ReGenerateLevel();
 	CREATE_FUNC(LevelTwo);
 private:
+	void generate();
 	ID3D11Device* mD3DDevice;
 	ID3D11DeviceContext* mImmediateContext;
 	ID3D11ShaderResourceView *mTexture;
@@ -34,6 +35,21 @@ private:
 	void initLevel();
 
 	float mLevelMoveVelocity = 0.5f;
+
+	SceneNode* mMovingChild;
+	SceneNode* mMovingChild2;
+	void moveGameObjectUpAndDown(SceneNode* movingChild, float* velocity, bool* updownflag, float maxPos, float minPos, float dt);
+	void initMovingChilds(bool isReset);
+
+	bool* mUpDownFlag;
+	float* mUpDownVelocity;
+	float maxPos;
+	float minPos;
+	bool* mUpDownFlag2;
+	float* mUpDownVelocity2;
+	float maxPos2;
+	float minPos2;
+
 };
 
 

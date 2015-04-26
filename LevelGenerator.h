@@ -19,7 +19,7 @@ class Seed
 {
 public:
 	Seed();
-	Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements);
+	Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements, vector<int>* blocks);
 	void SetScaleMax(int val);
 	void SetScaleMin(int val);
 	void SetSpanMax(int val);
@@ -27,6 +27,7 @@ public:
 	void SetYPosMax(int val);
 	void SetYPosMin(int val);
 	void SetLevelElements(int val);
+	void SetBlockIDs(vector<int>* blocks);
 	int GetScaleMax();
 	int GetScaleMin();
 	int GetSpanMax();
@@ -34,6 +35,7 @@ public:
 	int GetYPosMax();
 	int GetYPosMin();
 	int GetLevelElements();
+	vector<int>* GetBlockIDs();
 private:
 	int mScaleMax;
 	int mScaleMin;
@@ -42,6 +44,7 @@ private:
 	int mYPosMax;
 	int mYPosMin;
 	int mLevelElements;
+	vector<int>* mBlocks;
 };
 
 
@@ -50,7 +53,7 @@ class LevelGenerator
 public:
 	LevelGenerator();
 	LevelGenerator(Seed* seed);
-	LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements);
+	LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements, vector<int>* blocks);
 	~LevelGenerator();
 	SceneNode* Generate(Model* model);
 	SceneNode* Generate(Model* modelA, Model* modelB);

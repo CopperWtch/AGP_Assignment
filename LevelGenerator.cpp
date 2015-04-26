@@ -11,7 +11,7 @@ Purpose: Generates the Levels
 LevelGenerator::LevelGenerator()
 {
 	agpRandom = AGPRandom::GetInstance();
-	mSeed = new Seed(10, 5, 5, 1, 5, 1, 10);
+	mSeed = new Seed(10, 5, 5, 1, 5, 1, 10, new vector<int>());
 	initLightSpheres();
 }
 
@@ -22,10 +22,10 @@ LevelGenerator::LevelGenerator(Seed* seed)
 	initLightSpheres();
 }
 
-LevelGenerator::LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements)
+LevelGenerator::LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements, vector<int>* blocks)
 {
 	agpRandom = AGPRandom::GetInstance();
-	mSeed = new Seed(scaleMax, scaleMin, spanMax, spanMin, yPosMax, yPosMin, levelElements);
+	mSeed = new Seed(scaleMax, scaleMin, spanMax, spanMin, yPosMax, yPosMin, levelElements, blocks);
 	initLightSpheres();
 }
 
@@ -102,24 +102,40 @@ SceneNode* LevelGenerator::generateLevel()
 			mNodeLevelPart->SetYPos(ypos * -1);
 
 		// set fix positions for the first block
-		if (i == 0)
+		if (i == 0) // first element 
 		{
 			mNodeLevelPart->SetXPos(0);
 			mNodeLevelPart->SetYPos(0);
 		}
-		else
+		else // not first element 
 		{
+			
 			SceneNode *item = new SceneNode();
-			if (agpRandom->GetRandom0To1() < 0.7f)
-				item->SetGameObject(mLightSphere);
-			else
-				item->SetGameObject(mDarkSphere);
-			item->SetYPos(3);
-			float resettedScale = 1 / scale;
-			item->SetXScale(resettedScale * 0.25);
-			item->SetZScale(resettedScale * 0.25);
-			item->SetYScale(item->GetYScale() * 0.25);
-			mNodeLevelPart->addChildNode(item);
+			vector<int>* b = mSeed->GetBlockIDs();
+			if (std::find(b->begin(), b->end(), i) != b->end()) // i is in the vector which means a block is created not a sphere
+			{
+				// Element in vector.
+				item->SetGameObject(mModelA);
+				item->SetYPos(scale + 2);
+				float resettedScale = 1 / scale;
+				item->SetYScale(scale);
+				mNodeLevelPart->addChildNode(item);
+			}
+			else // i is not in the vector which means a sphere is created
+			{
+				// 70% chance for light items
+				if (agpRandom->GetRandom0To1() < 0.7f)
+					item->SetGameObject(mLightSphere);
+				else
+					item->SetGameObject(mDarkSphere);
+				item->SetYPos(3);
+				// reset scale from the parent
+				float resettedScale = 1 / scale;
+				item->SetXScale(resettedScale * 0.25);
+				item->SetZScale(resettedScale * 0.25);
+				item->SetYScale(item->GetYScale() * 0.25);
+				mNodeLevelPart->addChildNode(item);
+			}
 		}
 
 		// set pointer of this node to prev node
@@ -169,9 +185,10 @@ Seed::Seed()
 	mYPosMax = 5;
 	mYPosMin = 1;
 	mLevelElements = 10;
+	mBlocks = new vector<int>();
 }
 
-Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements)
+Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements, vector<int>* blocks)
 {
 	mScaleMax = 2;
 	mScaleMin = 1;
@@ -187,6 +204,7 @@ Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, in
 	SetYPosMax(yPosMax);
 	SetYPosMin(yPosMin);
 	SetLevelElements(levelElements);
+	SetBlockIDs(blocks);
 }
 
 void Seed::SetScaleMax(int val)
@@ -243,6 +261,11 @@ void Seed::SetLevelElements(int val)
 		mLevelElements = val;
 }
 
+void Seed::SetBlockIDs(vector<int>* blocks)
+{
+	mBlocks = blocks;
+}
+
 int Seed::GetScaleMax()
 {
 	return mScaleMax;
@@ -270,5 +293,9 @@ int Seed::GetYPosMin()
 int Seed::GetLevelElements()
 {
 	return mLevelElements;
+}
+vector<int>* Seed::GetBlockIDs()
+{
+	return mBlocks;
 }
 
