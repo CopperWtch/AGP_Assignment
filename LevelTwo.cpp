@@ -28,6 +28,7 @@ bool LevelTwo::Init()
 
 void LevelTwo::RenderScene(float dt)
 {
+	mRootNodeLevel->SetXPos(mRootNodeLevel->GetXPos() - mLevelMoveVelocity * dt);
 	mRootNodeLevel->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
 }
 

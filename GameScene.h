@@ -47,6 +47,7 @@ private:
 	float* mUpDownVelocity;
 	float* mUpDownVelocity2;
 	float maxPos = 8;
+	float mLevelMoveVelocity = 0.5f;
 };
 
 

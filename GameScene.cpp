@@ -32,12 +32,11 @@ bool GameScene::Init()
 	return true;
 }
 
-
 void GameScene::RenderScene(float dt)
 {
 	moveGameObjectUpAndDown(mMovingChild, mUpDownVelocity, mUpDownFlag, 8, dt);
 	moveGameObjectUpAndDown(mMovingChild2, mUpDownVelocity2, mUpDownFlag2, 10, dt);
-
+	mRootNodeLevel->SetXPos(mRootNodeLevel->GetXPos() - mLevelMoveVelocity * dt);
 	mRootNodeLevel->execute(&XMMatrixIdentity(), mSceneData->GetView(), mSceneData->GetProjection());
 }
 

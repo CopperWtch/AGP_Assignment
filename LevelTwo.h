@@ -32,6 +32,8 @@ private:
 
 	Light *mLight;
 	void initLevel();
+
+	float mLevelMoveVelocity = 0.5f;
 };
 
 
