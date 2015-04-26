@@ -33,7 +33,6 @@ SceneNode::~SceneNode()
 		delete mChildren.at(i);
 		mChildren.pop_back();
 	}
-	local_view = XMMatrixIdentity();
 }
 
 void SceneNode::addChildNode(SceneNode *n)

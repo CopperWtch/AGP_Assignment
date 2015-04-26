@@ -52,7 +52,6 @@ public:
 	void SetGameObject(GameObject* go);
 	GameObject* GetGameObject();
 private: 
-	//Model *mModel;
 	GameObject* gameObject;
 	vector<SceneNode*> mChildren;
 	float mX, mY, mZ, mDx, mDz;
