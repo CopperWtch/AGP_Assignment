@@ -12,23 +12,32 @@ LevelGenerator::LevelGenerator()
 {
 	agpRandom = AGPRandom::GetInstance();
 	mSeed = new Seed(10, 5, 5, 1, 5, 1, 10);
+	initLightSpheres();
 }
 
 LevelGenerator::LevelGenerator(Seed* seed)
 {
 	agpRandom = AGPRandom::GetInstance();
 	mSeed = seed;
+	initLightSpheres();
 }
 
 LevelGenerator::LevelGenerator(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements)
 {
 	agpRandom = AGPRandom::GetInstance();
 	mSeed = new Seed(scaleMax, scaleMin, spanMax, spanMin, yPosMax, yPosMin, levelElements);
+	initLightSpheres();
 }
 
 LevelGenerator::~LevelGenerator()
 {
-
+	if (mLightSphere) delete mLightSphere;
+	if (mDarkSphere) delete mDarkSphere;
+	if (mTextureLight) delete mTextureLight;
+	if (mTextureDark) delete mTextureDark;
+	if (mSeed) delete mSeed;
+	if (mModelA) delete mModelA;
+	if (mModelB) delete mModelB;
 }
 
 SceneNode* LevelGenerator::Generate(Model* modelA)
@@ -98,12 +107,43 @@ SceneNode* LevelGenerator::generateLevel()
 			mNodeLevelPart->SetXPos(0);
 			mNodeLevelPart->SetYPos(0);
 		}
+		else
+		{
+			SceneNode *item = new SceneNode();
+			if (agpRandom->GetRandom0To1() < 0.7f)
+				item->SetGameObject(mLightSphere);
+			else
+				item->SetGameObject(mDarkSphere);
+			item->SetYPos(3);
+			float resettedScale = 1 / scale;
+			item->SetXScale(resettedScale * 0.25);
+			item->SetZScale(resettedScale * 0.25);
+			item->SetYScale(item->GetYScale() * 0.25);
+			mNodeLevelPart->addChildNode(item);
+		}
 
 		// set pointer of this node to prev node
 		prevNode = mNodeLevelPart;
 	}
 
 	return mRootNodeLevel;
+}
+
+void LevelGenerator::initLightSpheres()
+{
+	mLightSphere = new Model(SceneData::GetInstance()->GetDevice(), SceneData::GetInstance()->GetImmediateContext());
+
+	//textrue
+	D3DX11CreateShaderResourceViewFromFile(SceneData::GetInstance()->GetDevice(), "assets/white.jpg", NULL, NULL, &mTextureLight, NULL);
+	mLightSphere->LoadObjModel("assets/sphere.obj", mTextureLight);
+	mLightSphere->SetLightData(SceneData::GetInstance()->GetLight());
+
+	mDarkSphere = new Model(SceneData::GetInstance()->GetDevice(), SceneData::GetInstance()->GetImmediateContext());
+
+	//textrue
+	D3DX11CreateShaderResourceViewFromFile(SceneData::GetInstance()->GetDevice(), "assets/black.jpg", NULL, NULL, &mTextureDark, NULL);
+	mDarkSphere->LoadObjModel("assets/sphere.obj", mTextureDark);
+	mDarkSphere->SetLightData(SceneData::GetInstance()->GetLight());
 }
 
 

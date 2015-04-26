@@ -45,6 +45,8 @@ public:
 	float GetScale();
 	float GetRotation();
 	float GetXScale();
+	float GetYScale();
+	float GetZScale();
 	vector<SceneNode*> GetChildren();
 	Model* GetModel();
 	bool IsObjectHidden();

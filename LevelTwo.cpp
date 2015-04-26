@@ -45,7 +45,7 @@ void LevelTwo::initLevel()
 	mRootNodeLevel = new SceneNode();
 
 	levelGenerator = new LevelGenerator();
-	levelGenerator->GetSeed()->SetLevelElements(10);
+	levelGenerator->GetSeed()->SetLevelElements(20);
 	mRootNodeLevel = levelGenerator->Generate(mCube);
 
 }

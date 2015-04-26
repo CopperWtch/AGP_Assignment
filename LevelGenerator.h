@@ -13,6 +13,7 @@ Purpose: Header file for LevelGenerator.cpp
 #include "AGPRandom.h";
 #include "SceneNode.h"
 #include "Model.h"
+#include "SceneData.h"
 
 class Seed
 {
@@ -57,9 +58,14 @@ public:
 	Seed* GetSeed();
 	void SetSeed(Seed* seed);
 private:
+	void initLightSpheres();
+	SceneNode* generateLevel();
+	Model* mLightSphere;
+	Model* mDarkSphere;
+	ID3D11ShaderResourceView *mTextureLight;
+	ID3D11ShaderResourceView *mTextureDark;
 	AGPRandom* agpRandom;
 	Seed* mSeed;
-	SceneNode* generateLevel();
 	Model* mModelA;
 	Model* mModelB;
 	bool isMultipleModel;

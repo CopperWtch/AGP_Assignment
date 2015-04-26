@@ -206,6 +206,15 @@ float SceneNode::GetXScale()
 {
 	return mScaleX;
 }
+float SceneNode::GetYScale()
+{
+	return mScaleY;
+}
+float SceneNode::GetZScale()
+{
+	return mScaleZ;
+}
+
 
 
 // mRotation
