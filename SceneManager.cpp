@@ -64,6 +64,7 @@ HRESULT SceneManager::initialiseGraphics()
 
 	// init player object
 	initPlayer();
+	mActivePlayerState = PlayerState::Alive;
 
 	// fill sceneData 
 	// IMPORTANT!!!
@@ -83,7 +84,7 @@ HRESULT SceneManager::initialiseGraphics()
 	mNextLevel = false;
 	
 	// init render variables
-	movementVelociy = 12;
+	mMovementVelociy = 12;
 	positionY = 0;
 	velocityY = 0;
 	gravity = 45.0f;
@@ -98,62 +99,83 @@ HRESULT SceneManager::initialiseGraphics()
 //////////////////////////////////////////////////////////////////////////////////////
 //	Render
 //////////////////////////////////////////////////////////////////////////////////////
-
-
 void SceneManager::RenderFrame(float dt)
 {
-	/*********************** Input ***********************/
 	mInput->ReadInputStates();
 	if (mInput->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(mHWnd);
 
-	if (mInput->IsKeyPressed(DIK_LEFTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() - dt * movementVelociy);
-	if (mInput->IsKeyPressed(DIK_RIGHTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + dt * movementVelociy);
-	
-	// jump velocity 
-	if (mInput->IsKeyPressed(DIK_SPACE))
+	if (mActivePlayerState == PlayerState::Alive)
 	{
-		if (!isJump)
+		/*********************** Input ***********************/
+
+		if (mInput->IsKeyPressed(DIK_LEFTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() - dt * mMovementVelociy);
+		if (mInput->IsKeyPressed(DIK_RIGHTARROW)) mRootNodePlayer->SetXPos(mRootNodePlayer->GetXPos() + dt * mMovementVelociy);
+
+		// jump velocity 
+		if (mInput->IsKeyPressed(DIK_SPACE))
 		{
-			velocityY = 16;
-			isJump = true;
+			if (!isJump)
+			{
+				velocityY = 16;
+				isJump = true;
+			}
 		}
-	}
-	// double jump
-	if (mInput->IsKeyReleased(DIK_SPACE))
-	{
-		if (isDoubleJump)
+		// double jump
+		if (mInput->IsKeyReleased(DIK_SPACE))
 		{
-			isJump = false;
-			isDoubleJump = false;
+			if (isDoubleJump)
+			{
+				isJump = false;
+				isDoubleJump = false;
+			}
+		}
+
+		// debug next level
+		if (mInput->IsKeyPressed(DIK_END))
+		{
+			if (isNextLevelDebugKey)
+			{
+				nextLevel();
+				isNextLevelDebugKey = false;
+			}
+		}
+		if (mInput->IsKeyReleased(DIK_END))
+		{
+			isNextLevelDebugKey = true;
+		}
+
+		if (mInput->IsKeyPressed(DIK_DELETE))
+		{
+			if (isDieDebugKey)
+			{
+				killPlayer();
+				isDieDebugKey = false;
+			}
+		}
+		if (mInput->IsKeyReleased(DIK_DELETE))
+		{
+			isDieDebugKey = true;
 		}
 	}
 
-	// debug next level
-	if (mInput->IsKeyPressed(DIK_END))
+	if (mActivePlayerState == PlayerState::Dead)
 	{
-		if (isNextLevelDebugKey)
-		{
-			nextLevel();
-			isNextLevelDebugKey = false;
-		}	
-	}
-	if (mInput->IsKeyReleased(DIK_END))
-	{
-		isNextLevelDebugKey = true;
-	}
+		if (mRootNodePlayer->GetXAngle() > -90)
+			mRootNodePlayer->SetXAngle(mRootNodePlayer->GetXAngle() + dt * -80);
 
-	if (mInput->IsKeyPressed(DIK_DELETE))
-	{
-		if (isDieDebugKey)
+		if (mInput->IsKeyPressed(DIK_INSERT))
 		{
-			isDieDebugKey = false;
+			if (isResetKey)
+			{
+				resetGame();
+				isResetKey = false;
+			}
+		}
+		if (mInput->IsKeyReleased(DIK_INSERT))
+		{
+			isResetKey = true;
 		}
 	}
-	if (mInput->IsKeyReleased(DIK_DELETE))
-	{
-		isDieDebugKey = true;
-	}
-
 	
 
 	/*********************** view & projection ***********************/
@@ -221,7 +243,6 @@ void SceneManager::initPlayer()
 	mRootNodePlayer->SetScale(0.03f);
 	mRootNodePlayer->SetYAngle(90);
 	mRootNodePlayer->SetYPos(1);
-	
 }
 
 void SceneManager::renderLevelScene(float dt)
@@ -271,9 +292,33 @@ void SceneManager::nextLevelSetting()
 
 void SceneManager::killPlayer()
 {
-
+	//TODO: HUD Message Here
+	mActivePlayerState = PlayerState::Dead;
 }
 
+void SceneManager::resetGame()
+{
+	mLevelCounter = 1;
+	mActiveLevelSetting = LevelSetting::Setting1;
+	mNextLevel = false;
+	mActivePlayerState = PlayerState::Alive;
+
+	mRootNodePlayer->SetXPos(0);
+	mRootNodePlayer->SetYPos(1);
+	mRootNodePlayer->SetXAngle(0);
+
+	isJump = false;
+	isDoubleJump = true;
+	isNextLevelDebugKey = true;
+	isDieDebugKey = true;
+
+	delete mGameScene;
+	delete mLevelTwo;
+	mGameScene = GameScene::create();
+	mLevelTwo = LevelTwo::create();
+
+	//TODO: reset player hud values
+}
 
 //////////////////////////////////////////////////////////////////////////////////////
 //	Shutdown

@@ -41,7 +41,7 @@ private:
 	void nextLevelSetting();
 	void nextLevel();
 	void renderLevelScene(float dt);
-
+	void resetGame();
 
 	HWND mHWnd;
 	HINSTANCE mHInst;
@@ -57,6 +57,8 @@ private:
 	//player
 	SceneNode* mRootNodePlayer;
 	Player* mPlayer;
+	enum PlayerState { Alive, Dead };
+	PlayerState mActivePlayerState;
 	//level
 	enum LevelSetting { Setting1, Setting2, Setting3 };
 	LevelSetting mActiveLevelSetting;
@@ -73,7 +75,7 @@ private:
 	LevelTwo* mLevelTwo;
 
 	// render variables
-	float movementVelociy;
+	float mMovementVelociy;
 	// render variables - jump
 	float positionY;
 	float velocityY;    
@@ -83,6 +85,7 @@ private:
 	bool isDoubleJump;
 	bool isNextLevelDebugKey;
 	bool isDieDebugKey;
+	bool isResetKey;
 };
 
 #endif
