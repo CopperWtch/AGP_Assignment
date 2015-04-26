@@ -35,14 +35,14 @@ public:
 	void Log(float x);
 
 private: 
-	void initPlayer();
-	SceneNode* mRootNodePlayer;
-	Light* mLight;
 	HRESULT initialiseGraphics();
-	D3DManager *mD3DManager;
-	Camera *mCamera;
-	Input *mInput;
-	ParticleGenerator *mParticle;
+	void initPlayer();
+	void killPlayer();
+	void nextLevelSetting();
+	void nextLevel();
+	void renderLevelScene(float dt);
+
+
 	HWND mHWnd;
 	HINSTANCE mHInst;
 	IDXGISwapChain* mSwapChain;
@@ -50,19 +50,39 @@ private:
 	ID3D11DeviceContext* mImmediateContext;
 	ID3D11RenderTargetView* mBackBufferRTView;
 	ID3D11DepthStencilView* mZBuffer;
+	ID3D11ShaderResourceView* mTexture;
 	XMMATRIX mProjection;
 	XMMATRIX mView;
-	SceneData* data;
-	TestScene *mScene;
-	GameScene *mGameScene;
-	LevelTwo* mLevelTwo;
+	
+	//player
+	SceneNode* mRootNodePlayer;
 	Player* mPlayer;
-	int mLevel;
-	ID3D11ShaderResourceView* mTexture;
+	//level
 	enum LevelSetting { Setting1, Setting2, Setting3 };
 	LevelSetting mActiveLevelSetting;
-	void nextLevelSetting();
+	int mLevelCounter;
 	bool mNextLevel;
+	//scene
+	Light* mLight;
+	D3DManager* mD3DManager;
+	Camera* mCamera;
+	Input* mInput;
+	SceneData* data;
+	// level scenes
+	GameScene* mGameScene;
+	LevelTwo* mLevelTwo;
+
+	// render variables
+	float movementVelociy;
+	// render variables - jump
+	float positionY;
+	float velocityY;    
+	float gravity;
+	// render variables - input flags
+	bool isJump;
+	bool isDoubleJump;
+	bool isNextLevelDebugKey;
+	bool isDieDebugKey;
 };
 
 #endif
