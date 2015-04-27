@@ -1,7 +1,7 @@
 /**
 AGP Assignment
 GameScene.cpp
-Purpose: Main Scene for the Game
+Purpose: First level of the game
 
 @author Marcel Zobus
 */

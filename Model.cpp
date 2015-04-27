@@ -61,7 +61,6 @@ Model::~Model()
 	//if (mpLight2) delete mpLight2;
 	//if (mpLight3) delete mpLight3;
 	//if (mpLight4) delete mpLight4;
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -173,6 +172,7 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	XMMATRIX inverse;
 	inverse = XMMatrixInverse(&determinant, *world);
 
+	
 
 	if (mLight != nullptr)
 	{

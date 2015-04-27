@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+Scene.cpp
+Purpose: implements the base class Scene
+
+@author Marcel Zobus
+*/
+#pragma once
 #include "Scene.h"
 
 Scene::Scene()

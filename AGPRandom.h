@@ -1,7 +1,7 @@
 /**
 AGP Assignment
-LevelGenerator.h
-Purpose: Header file for LevelGenerator.cpp
+AGPRandom.h
+Purpose: Header file for AGPRandom.cpp
 
 @author Marcel Zobus
 */

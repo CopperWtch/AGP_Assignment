@@ -17,7 +17,7 @@ Purpose: Header file for all important includes
 #include <dxerr.h>
 
 #include "GameObject.h"
-#include "Marcos.h"
+#include "Macros.h"
 #include "Scene.h"
 #include "SceneNode.h"
 #include "Model.h"

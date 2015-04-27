@@ -1,5 +1,11 @@
-#include "AGPRandom.h"
+/**
+AGP Assignment
+AGPRandom.cpp
+Purpose: Has general functions to generate random values
 
+@author Marcel Zobus
+*/
+#include "AGPRandom.h"
 
 static AGPRandom* instance = NULL;
 
