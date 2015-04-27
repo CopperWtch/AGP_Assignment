@@ -90,7 +90,6 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SceneData.cpp" />
-    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="text2D.cpp" />
   </ItemGroup>
@@ -116,7 +115,6 @@
     <ClInclude Include="SceneData.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNode.h" />
-    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="TestScene.h" />
     <ClInclude Include="text2D.h" />
   </ItemGroup>
