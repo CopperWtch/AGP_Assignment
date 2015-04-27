@@ -10,6 +10,12 @@ Purpose: Main Scene for the Game
 LevelTwo::~LevelTwo()
 {
 	if (mRootNodeLevel) delete mRootNodeLevel;
+	if (levelGenerator) delete levelGenerator;
+	if (mCube) delete mCube;
+	if (mUpDownFlag) delete mUpDownFlag;
+	if (mUpDownVelocity) delete mUpDownVelocity;
+	if (mUpDownFlag2) delete mUpDownFlag2;
+	if (mUpDownVelocity2) delete mUpDownVelocity2;
 }
 
 bool LevelTwo::Init()

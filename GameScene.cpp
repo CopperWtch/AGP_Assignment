@@ -10,11 +10,15 @@ Purpose: Main Scene for the Game
 
 GameScene::~GameScene()
 {
+	if (mRootNodeLevel) delete mRootNodeLevel;
 	if (mUpDownFlag) delete mUpDownFlag;
 	if (mUpDownFlag2) delete mUpDownFlag2;
 	if (mUpDownVelocity) delete mUpDownVelocity;
 	if (mUpDownVelocity2) delete mUpDownVelocity2;
-	if (mRootNodeLevel) delete mRootNodeLevel;
+	
+	if (levelGenerator) delete levelGenerator;
+	if (mCube) delete  mCube;
+	if (mCube2) delete  mCube2;
 }
 
 bool GameScene::Init()

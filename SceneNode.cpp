@@ -12,7 +12,7 @@ Purpose: SceneNode Object
 SceneNode::SceneNode()
 {
 	//mModel = NULL;
-	gameObject = NULL;
+	mGameObject = NULL;
 	mX = 0.0f;
 	mY = 0.0f;
 	mZ = 0.0f;
@@ -73,16 +73,16 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 
 	// only draw if there is a model attached 
 	//if (!mHideObject && mModel) mModel->Draw(&local_world, view, projection);
-	if (!mHideObject && gameObject)
+	if (!mHideObject && mGameObject)
 	{
-		Model* model = dynamic_cast<Model*>(gameObject);
+		Model* model = dynamic_cast<Model*>(mGameObject);
 		// draw if cast is not null, which means the object is a model
 		if (model != nullptr)
 		{
 			model->Draw(&local_world, view, projection);
 		}
 
-		Player* player = dynamic_cast<Player*>(gameObject);
+		Player* player = dynamic_cast<Player*>(mGameObject);
 		if (player != nullptr)
 		{
 		//	local_view *= XMMatrixTranslation(mX, mY, mZ);
@@ -120,11 +120,11 @@ vector<SceneNode*> SceneNode::GetChildren()
 
 void SceneNode::SetGameObject(GameObject* go)
 {
-	gameObject = go;
+	mGameObject = go;
 }
 GameObject* SceneNode::GetGameObject()
 {
-	return gameObject;
+	return mGameObject;
 }
 
 // mX, mY, mZ

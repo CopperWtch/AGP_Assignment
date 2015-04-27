@@ -48,13 +48,12 @@ public:
 	float GetYScale();
 	float GetZScale();
 	vector<SceneNode*> GetChildren();
-	Model* GetModel();
 	bool IsObjectHidden();
 	void HideObject(bool hide);
 	void SetGameObject(GameObject* go);
 	GameObject* GetGameObject();
 private: 
-	GameObject* gameObject;
+	GameObject* mGameObject;
 	vector<SceneNode*> mChildren;
 	float mX, mY, mZ, mDx, mDz;
 	float mXAngle, mZAngle, mYAngle;

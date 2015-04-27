@@ -102,7 +102,10 @@ HRESULT SceneManager::initialiseGraphics()
 void SceneManager::RenderFrame(float dt)
 {
 	mInput->ReadInputStates();
-	if (mInput->IsKeyPressed(DIK_ESCAPE)) DestroyWindow(mHWnd);
+	if (mInput->IsKeyPressed(DIK_ESCAPE))
+	{
+		DestroyWindow(mHWnd);
+	}
 
 	if (mActivePlayerState == PlayerState::Alive)
 	{

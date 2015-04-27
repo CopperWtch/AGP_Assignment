@@ -31,13 +31,7 @@ LevelGenerator::LevelGenerator(int scaleMax, int scaleMin, int spanMax, int span
 
 LevelGenerator::~LevelGenerator()
 {
-	if (mLightSphere) delete mLightSphere;
-	if (mDarkSphere) delete mDarkSphere;
-	if (mTextureLight) delete mTextureLight;
-	if (mTextureDark) delete mTextureDark;
 	if (mSeed) delete mSeed;
-	if (mModelA) delete mModelA;
-	if (mModelB) delete mModelB;
 }
 
 SceneNode* LevelGenerator::Generate(Model* modelA)
@@ -205,6 +199,11 @@ Seed::Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, in
 	SetYPosMin(yPosMin);
 	SetLevelElements(levelElements);
 	SetBlockIDs(blocks);
+}
+
+Seed::~Seed()
+{
+	if(mBlocks) delete mBlocks;
 }
 
 void Seed::SetScaleMax(int val)

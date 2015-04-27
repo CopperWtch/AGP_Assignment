@@ -59,7 +59,7 @@ VOut ModelVS(float4 position : SV_POSITION, float2 texcoord : TEXCOORD, float3 n
 	float4 color3 = diffuseColor[2] * lightIntensity3;
 	float4 color4 = diffuseColor[3] * lightIntensity4;
 
-	output.color = (ambient_light_colour + (directional_light_colour*diffuse_amount)) * saturate(color1 + color2 + color3 + color4);
+	output.color = (ambient_light_colour + (directional_light_colour*diffuse_amount)) + saturate(color1 + color2 + color3 + color4);
 
 	return output;
 }

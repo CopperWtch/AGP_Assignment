@@ -20,6 +20,7 @@ class Seed
 public:
 	Seed();
 	Seed(int scaleMax, int scaleMin, int spanMax, int spanMin, int yPosMax, int yPosMin, int levelElements, vector<int>* blocks);
+	~Seed();
 	void SetScaleMax(int val);
 	void SetScaleMin(int val);
 	void SetSpanMax(int val);

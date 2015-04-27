@@ -56,11 +56,11 @@ Model::~Model()
 	if (mTexture) mTexture->Release();
 	if (mSampler) mSampler->Release();
 
-	if (mLight) delete mLight;
-	if (mpLight1) delete mpLight1;
-	if (mpLight2) delete mpLight2;
-	if (mpLight3) delete mpLight3;
-	if (mpLight4) delete mpLight4;
+	//if (mLight) delete mLight;
+	//if (mpLight1) delete mpLight1;
+	//if (mpLight2) delete mpLight2;
+	//if (mpLight3) delete mpLight3;
+	//if (mpLight4) delete mpLight4;
 
 }
 
