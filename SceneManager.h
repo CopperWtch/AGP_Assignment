@@ -24,6 +24,7 @@ Purpose: Header file for SceneManager.cpp
 #include "Player.h"
 #include "HUDScene.h"
 #include "MainMenuScene.h"
+#include "GameOverScene.h"
 
 
 class SceneManager
@@ -81,6 +82,7 @@ private:
 	//UI scenes
 	HUDScene* mHUD;
 	MainMenuScene* mMainMenu;
+	GameOverScene* mGameOver;
 
 	// render variables
 	float mMovementVelociy;

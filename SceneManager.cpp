@@ -44,7 +44,7 @@ void SceneManager::Initialise(HWND _hWnd, HINSTANCE _hInst)
 		DXTRACE_MSG("Failed to initialise graphics");
 	}
 
-	
+
 }
 
 // initialise camera, scenes and get the directX pointers
@@ -59,7 +59,7 @@ HRESULT SceneManager::initialiseGraphics()
 
 	// create camera
 	mCamera = new Camera(0, 0, 0, 0);
-	
+
 	// create Light
 	mAmbientLight = new Light();
 	mAmbientLight->SetLightColour(0.3f, 0.3f, 0.3f, 0.3f);
@@ -88,12 +88,13 @@ HRESULT SceneManager::initialiseGraphics()
 	mLevelTwo = LevelTwo::create();
 	mHUD = HUDScene::create();
 	mMainMenu = MainMenuScene::create();
+	mGameOver = GameOverScene::create();
 
 	// set active level
 	mLevelCounter = 1;
 	mActiveLevelSetting = LevelSetting::Setting1;
 	mNextLevel = false;
-	
+
 	// init render variables
 	mMovementVelociy = 12;
 	positionY = 0;
@@ -153,7 +154,7 @@ void SceneManager::RenderFrame(float dt)
 				isNextLevelDebugKey = false;
 			}
 		}
-		if (mInput->IsKeyReleased(DIK_END))
+		if (mInput->IsKeyReleased(DIK_END) && !(mMainMenu->GetIsActive()))
 		{
 			isNextLevelDebugKey = true;
 		}
@@ -196,14 +197,18 @@ void SceneManager::RenderFrame(float dt)
 
 	//debug dim light
 	if (mInput->IsKeyPressed(DIK_O)) mAmbientLight->DecreaseLight(.0001f, .0001f, .0001f, 0.f);
-	
+
 
 	//open menu on button press
 	if (mInput->IsKeyPressed(DIK_M))
 	{
 		mMainMenu->SetIsActive(true);
 	}
-	
+
+	if (mInput->IsKeyPressed(DIK_RETURN) && mActivePlayerState== PlayerState::Dead)
+	{
+		resetGame();
+	}
 
 	/*********************** view & projection ***********************/
 
@@ -213,7 +218,7 @@ void SceneManager::RenderFrame(float dt)
 	mImmediateContext->ClearDepthStencilView(mZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	// set view and projection
-	XMVECTOR playerPos = XMVectorSet(mRootNodePlayer->GetXPos(), mRootNodePlayer->GetYPos() + 5, mRootNodePlayer->GetZPos() -25, 0.0f);
+	XMVECTOR playerPos = XMVectorSet(mRootNodePlayer->GetXPos(), mRootNodePlayer->GetYPos() + 5, mRootNodePlayer->GetZPos() - 25, 0.0f);
 	mView = mCamera->GetViewMatrixThirdPerson(playerPos);
 	// 16:9 
 	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 16.0 / 9.0, 1.0, 100.0);
@@ -225,7 +230,7 @@ void SceneManager::RenderFrame(float dt)
 
 	// jump
 	positionY += velocityY * dt;
-	velocityY -= gravity * dt;        
+	velocityY -= gravity * dt;
 	mRootNodePlayer->SetYPos(positionY);
 
 	// if on ground
@@ -241,20 +246,29 @@ void SceneManager::RenderFrame(float dt)
 	// execute player (render)
 	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
-	//check if the menu is active
-	if (!(mMainMenu->GetIsActive()))
+	if (mActivePlayerState==PlayerState::Alive)
 	{
-		// render LevelScenes
-		renderLevelScene(dt);
-		//unpause timer
-		Timer::getInstance()->PauseTime(false);
+		//check if the menu is active
+		if (!(mMainMenu->GetIsActive()))
+		{
+			// render LevelScenes
+			renderLevelScene(dt);
+			//unpause timer
+			Timer::getInstance()->PauseTime(false);
+
+		}
+		else
+		{
+			Timer::getInstance()->PauseTime(true);
+			mMainMenu->RenderScene(dt);
+		}
 	}
 	else
 	{
-		Timer::getInstance()->PauseTime(true);
-		mMainMenu->RenderScene(dt);
+		mGameOver->RenderScene(dt);
 	}
-		
+
+
 
 
 	// Display what has just been rendered
@@ -297,7 +311,7 @@ void SceneManager::renderLevelScene(float dt)
 		}
 
 		mGameScene->RenderScene(dt);
-		
+
 		//render HUD
 		mHUD->RenderScene(dt);
 		break;
@@ -361,7 +375,9 @@ void SceneManager::resetGame()
 	delete mLevelTwo;
 	mGameScene = GameScene::create();
 	mLevelTwo = LevelTwo::create();
+	mHUD = HUDScene::create();
 
+	mMainMenu->SetIsActive(true);
 	//TODO: reset player hud values
 }
 

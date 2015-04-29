@@ -77,6 +77,7 @@
     <ClCompile Include="D3DManager.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HUDScene.cpp" />
     <ClCompile Include="ImageClass.cpp" />
@@ -109,6 +110,7 @@
     <ClInclude Include="D3DManager.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOverScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="HUDScene.h" />
     <ClInclude Include="ImageClass.h" />
