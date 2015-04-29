@@ -33,7 +33,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		DXTRACE_MSG("Failed to create Window");
 		return 0;
 	}
-	
+
 	SceneManager* sceneManager = new SceneManager();
 	sceneManager->Initialise(g_hWnd, g_hInst);
 
@@ -132,7 +132,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		if (wParam == VK_ESCAPE)
 			DestroyWindow(g_hWnd);
 		return 0;
+	case WM_NCHITTEST:
+	{
+		//check if the cursor is in the client window
+		static LRESULT r;
+		r = DefWindowProc(hWnd, WM_NCHITTEST, wParam, lParam);
 
+		// if (r == HTCLIENT && r != HTCAPTION)
+		//if (r == HTCLIENT)
+		//{
+		//	SceneData::GetInstance()->GetInput()->SetIsInWindow(true);
+		//}
+		//else
+		//{
+		//	SceneData::GetInstance()->GetInput()->SetIsInWindow(false);
+		//}
+		return r;
+	}
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

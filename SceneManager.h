@@ -23,6 +23,7 @@ Purpose: Header file for SceneManager.cpp
 #include "LevelTwo.h"
 #include "Player.h"
 #include "HUDScene.h"
+#include "MainMenuScene.h"
 
 
 class SceneManager
@@ -61,7 +62,7 @@ private:
 	enum PlayerState { Alive, Dead };
 	PlayerState mActivePlayerState;
 	//level
-	enum LevelSetting { Setting1, Setting2, Setting3 };
+	enum LevelSetting { Menu, Setting1, Setting2, Setting3 };
 	LevelSetting mActiveLevelSetting;
 	int mLevelCounter;
 	bool mNextLevel;
@@ -79,6 +80,7 @@ private:
 
 	//UI scenes
 	HUDScene* mHUD;
+	MainMenuScene* mMainMenu;
 
 	// render variables
 	float mMovementVelociy;

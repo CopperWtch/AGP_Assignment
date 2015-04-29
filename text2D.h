@@ -7,6 +7,8 @@
 #include <xnamath.h>
 #include <vector>
 #include "GameObject.h"
+#include "ImageClass.h"
+
 using namespace std;
 
 // store a sting with x and y coords (-1.0 to +1.0), and size (0.0+)
@@ -19,11 +21,11 @@ struct string_2d
 };
 
 // Define vertex structure
-struct POS_TEX_VERTEX
-{
-	XMFLOAT3 Pos;
-	XMFLOAT2 Texture;
-};
+//struct POS_TEX_VERTEX
+//{
+//	XMFLOAT3 Pos;
+//	XMFLOAT2 Texture;
+//};
 
 // increase if more characters requird
 const int MAX_CHARACTERS = 10000;

@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AGPRandom.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="D3DManager.cpp" />
@@ -85,6 +86,7 @@
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightManager.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="objfilemodel.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
@@ -101,6 +103,7 @@
   <ItemGroup>
     <ClInclude Include="AGPRandom.h" />
     <ClInclude Include="AGPSideScroller.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="D3DManager.h" />
@@ -115,6 +118,7 @@
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightManager.h" />
     <ClInclude Include="Macros.h" />
+    <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="objfilemodel.h" />
     <ClInclude Include="ParticleGenerator.h" />

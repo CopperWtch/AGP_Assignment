@@ -43,6 +43,8 @@ void SceneManager::Initialise(HWND _hWnd, HINSTANCE _hInst)
 	{
 		DXTRACE_MSG("Failed to initialise graphics");
 	}
+
+	
 }
 
 // initialise camera, scenes and get the directX pointers
@@ -83,6 +85,7 @@ HRESULT SceneManager::initialiseGraphics()
 	mGameScene = GameScene::create();
 	mLevelTwo = LevelTwo::create();
 	mHUD = HUDScene::create();
+	mMainMenu = MainMenuScene::create();
 
 	// set active level
 	mLevelCounter = 1;
@@ -257,6 +260,10 @@ void SceneManager::renderLevelScene(float dt)
 	// render correct scene depending on level
 	switch (mActiveLevelSetting)
 	{
+	case LevelSetting::Menu:
+		mMainMenu->RenderScene(dt);
+
+		break;
 	case LevelSetting::Setting1:
 		if (mNextLevel && mLevelCounter > 2)
 		{
@@ -265,6 +272,8 @@ void SceneManager::renderLevelScene(float dt)
 		}
 
 		mGameScene->RenderScene(dt);
+		
+		//render HUD
 		mHUD->RenderScene(dt);
 		break;
 	case LevelSetting::Setting2:
@@ -275,6 +284,8 @@ void SceneManager::renderLevelScene(float dt)
 		}
 
 		mLevelTwo->RenderScene(dt);
+
+		//render HUD
 		mHUD->RenderScene(dt);
 		break;
 	}

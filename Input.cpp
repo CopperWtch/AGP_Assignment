@@ -106,12 +106,18 @@ void Input::ReadInputStates()
 	}
 
 
-	// Ensure the mouse location doesn't exceed the screen width or height.
+	// Ensure the mouse location doesn't exceed the window width or height.
 	if (mMouse.x < 0)  { mMouse.x = 0; }
 	if (mMouse.y < 0)  { mMouse.y = 0; }
 
-	if (mMouse.x > 640)  { mMouse.x = 640; }
-	if (mMouse.y > 480) { mMouse.y = 480; }
+	//get window size
+	RECT rc;
+	GetClientRect(mHWnd, &rc);
+	UINT width = rc.right - rc.left;
+	UINT height = rc.bottom - rc.top;
+
+	if (mMouse.x > width)  { mMouse.x = width; }
+	if (mMouse.y > height) { mMouse.y = height; }
 
 	if (mMouse.x != 0)
 		bool stopHere = true;
