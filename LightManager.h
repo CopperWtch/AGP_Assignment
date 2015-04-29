@@ -28,7 +28,7 @@ private:
 	Light* ambientLight;
 
 public:
-	static LightManager * sharedLightManager();
+	static LightManager * GetInstance();
 
 	std::vector<PointLight*> getPointLights();
 	DirectionalLight* getDirectionalLight();
