@@ -64,7 +64,7 @@ HRESULT SceneManager::initialiseGraphics()
 	mAmbientLight = new Light();
 	mAmbientLight->SetLightColour(0.3f, 0.3f, 0.3f, 0.3f);
 	mDirectionalLight = new DirectionalLight();
-	mDirectionalLight->SetLightColour(0.9f, 0.9f, 0.9f, 0.9f);
+	mDirectionalLight->SetLightColour(0.5f, 0.5f, 0.5f, 0.5f);
 	mDirectionalLight->SetLightDirection(0.f, 0.f, -1.f);
 
 
@@ -190,6 +190,13 @@ void SceneManager::RenderFrame(float dt)
 			isResetKey = true;
 		}
 	}
+
+	//debug lighten
+	if (mInput->IsKeyPressed(DIK_L)) mAmbientLight->IncreaseLight(.0001f, .0001f, .0001f, 0.f);
+
+	//debug dim light
+	if (mInput->IsKeyPressed(DIK_O)) mAmbientLight->DecreaseLight(.0001f, .0001f, .0001f, 0.f);
+	
 
 	//open menu on button press
 	if (mInput->IsKeyPressed(DIK_M))
