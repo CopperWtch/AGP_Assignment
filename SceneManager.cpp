@@ -239,6 +239,8 @@ void SceneManager::RenderFrame(float dt)
 	{
 		// render LevelScenes
 		renderLevelScene(dt);
+		//unpause timer
+		Timer::getInstance()->PauseTime(false);
 	}
 	else
 	{
@@ -289,8 +291,6 @@ void SceneManager::renderLevelScene(float dt)
 
 		mGameScene->RenderScene(dt);
 		
-		//unpause timer
-		Timer::getInstance()->PauseTime(false);
 		//render HUD
 		mHUD->RenderScene(dt);
 		break;
@@ -303,8 +303,6 @@ void SceneManager::renderLevelScene(float dt)
 
 		mLevelTwo->RenderScene(dt);
 
-		//unpause timer
-		Timer::getInstance()->PauseTime(false);
 		//render HUD
 		mHUD->RenderScene(dt);
 		break;
