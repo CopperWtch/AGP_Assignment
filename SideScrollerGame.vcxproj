@@ -77,6 +77,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="ImageClass.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="LevelTwo.cpp" />
@@ -104,6 +105,7 @@
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="ImageClass.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="LevelTwo.h" />
