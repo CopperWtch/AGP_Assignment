@@ -47,6 +47,8 @@ bool Button::IsClicked(float mouseX, float mouseY)
 	//mouseY = (float)(480 / 2) - (float)mouseY;
 	//mouseX /= 640;
 	//mouseY /= 480;
+
+	//NOT FINAL
 	mouseX = ((2.0f * (float)mouseX) / (float)640) - 1.0f;
 	mouseY = (((2.0f * (float)mouseY) / (float)480) - 1.0f) * -1.0f;
 

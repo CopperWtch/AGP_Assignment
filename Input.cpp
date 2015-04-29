@@ -18,6 +18,7 @@ Input::~Input()
 {
 	if (mDirectInput) mDirectInput->Release();
 	if (mKeyboardDevice) mKeyboardDevice->Release();
+	if (mMouse.mMouseDevice) mMouse.mMouseDevice->Release();
 	mHWnd = nullptr; // TODO: do you do that to delete objects?
 	mHInst = nullptr;
 
@@ -28,6 +29,14 @@ Input::~Input()
 //////////////////////////////////////////////////////////////////////////////////////
 HRESULT Input::InitialiseInput()
 {
+	//Initialise mouse data
+	mMouse.pin = 0;
+	mMouse.pinstate = 0;
+
+	mMouse.x = 0;
+	mMouse.y = 0;
+
+	//Initialise Keyboard input
 	HRESULT hr;
 	ZeroMemory(mKeyboardKeysState, sizeof(mKeyboardKeysState));
 	hr = DirectInput8Create(mHInst, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&mDirectInput, NULL);
@@ -44,6 +53,20 @@ HRESULT Input::InitialiseInput()
 
 	hr = mKeyboardDevice->Acquire();
 	if (FAILED(hr)) return hr;
+
+	//Initialise mouse input
+	mDirectInput->CreateDevice(GUID_SysMouse, &mMouse.mMouseDevice, NULL);
+	if (FAILED(hr)) return hr;
+
+	hr = mMouse.mMouseDevice->SetDataFormat(&c_dfDIMouse);
+	if (FAILED(hr)) return hr;
+
+	hr = mMouse.mMouseDevice->SetCooperativeLevel(mHWnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	if (FAILED(hr)) return hr;
+
+	hr = mMouse.mMouseDevice->Acquire();
+	if (FAILED(hr)) return hr;
+
 
 	return S_OK;
 
@@ -63,6 +86,48 @@ void Input::ReadInputStates()
 			mKeyboardDevice->Acquire();
 		}
 	}
+
+	//Sarah Bulk
+	//read mouse input
+	hr = mMouse.mMouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&(mMouse.mMouseState));
+	if (FAILED(hr))
+	{
+		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
+		{
+			mMouse.mMouseDevice->Acquire();
+		}
+	}
+
+	//update values only if the cursor is inside the window
+	if (bIsInWindow)
+	{
+		mMouse.x += mMouse.mMouseState.lX;
+		mMouse.y += mMouse.mMouseState.lY;
+	}
+
+
+	// Ensure the mouse location doesn't exceed the screen width or height.
+	if (mMouse.x < 0)  { mMouse.x = 0; }
+	if (mMouse.y < 0)  { mMouse.y = 0; }
+
+	if (mMouse.x > 640)  { mMouse.x = 640; }
+	if (mMouse.y > 480) { mMouse.y = 480; }
+
+	if (mMouse.x != 0)
+		bool stopHere = true;
+
+	mMouse.pin = 0;
+
+	// has a single-click occured?
+	if (mMouse.mMouseState.rgbButtons[0] && !mMouse.pinstate) {
+		mMouse.pinstate = 1;
+		mMouse.pin = 1;
+	}
+
+	// reset 'pin' state
+	if (!mMouse.mMouseState.rgbButtons[0])
+		mMouse.pinstate = 0;
+	///////////////////////////////////////////
 }
 
 bool Input::IsKeyPressed(unsigned char DI_keycode)
@@ -75,4 +140,42 @@ bool Input::IsKeyPressed(unsigned char DI_keycode)
 bool Input::IsKeyReleased(unsigned char DI_keycode)
 {
 	return !((mKeyboardKeysState[DI_keycode]) & 0x80);
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Sarah Bulk
+// Return is click event occured
+//////////////////////////////////////////////////////////////////////////////////////
+bool Input::IsMouseClicked()
+{
+	if (mMouse.pin == 1)
+		return true;
+	else
+		return false;
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+// Sarah Bulk
+// Access modifiers
+//////////////////////////////////////////////////////////////////////////////////////
+bool Input::IsInWindow()
+{ 
+	return bIsInWindow; 
+}
+
+void Input::SetIsInWindow(bool b)
+{ 
+	bIsInWindow = b; 
+}
+
+HWND Input::GetMHWnd()
+{ 
+	return mHWnd; 
+}
+
+mouseData Input::GetMouseData()
+{ 
+	return mMouse; 
 }
