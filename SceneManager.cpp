@@ -60,10 +60,10 @@ HRESULT SceneManager::initialiseGraphics()
 	
 	// create Light
 	mAmbientLight = new Light();
-	mAmbientLight->SetLightColour(0.5f, 0.5f, 0.5f, 0.5f);
+	mAmbientLight->SetLightColour(0.3f, 0.3f, 0.3f, 0.3f);
 	mDirectionalLight = new DirectionalLight();
-	mDirectionalLight->SetLightColour(0.5f, 0.5f, 0.5f, 0.5f);
-	mDirectionalLight->SetLightDirection(0.f, -1.f, 0.f);
+	mDirectionalLight->SetLightColour(0.9f, 0.9f, 0.9f, 0.9f);
+	mDirectionalLight->SetLightDirection(0.f, 0.f, -1.f);
 
 
 	// init player object

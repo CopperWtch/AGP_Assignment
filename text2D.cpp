@@ -120,9 +120,6 @@ Text2D::Text2D(string filename, ID3D11Device* device, ID3D11DeviceContext* conte
 
 	pD3DDevice->CreateBlendState(&BlendStateDescription, &pBlendAlphaEnable);
 
-
-
-
 }
 
 // add a string with position and size to the list

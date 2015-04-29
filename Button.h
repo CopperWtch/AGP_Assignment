@@ -1,0 +1,38 @@
+/**
+AGP Assignment
+Button.h
+Purpose: Header file for Button.cpp
+
+@author Sarah Bulk
+*/
+
+#pragma once
+
+#ifndef _BUTTON_H_
+#define _BUTTON_H_
+
+#include "AGPSideScroller.h"
+#include "ImageClass.h"
+
+class Button : public GameObject
+{
+public:
+	Button();
+	Button(ImageClass* obj);
+	~Button();
+
+private:
+	//image component
+	ImageClass* mImg;
+	//relative position of the image
+	float minX, maxX, minY, maxY;
+
+public:
+	void SetComponent(ImageClass* obj){ this->mImg = obj; };
+	ImageClass* GetComponent(){ return mImg; };
+
+	bool IsClicked(float mouseX, float mouseY);
+
+};
+
+#endif

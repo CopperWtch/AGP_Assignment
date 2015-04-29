@@ -58,10 +58,8 @@ private:
 	ID3D11VertexShader*		pVShader;
 	ID3D11PixelShader*		pPShader;
 	ID3D11InputLayout*		pInputLayout;
-	ID3D11SamplerState*			pSampler;
+	ID3D11SamplerState*		pSampler;
 
-	//int m_screenWidth;
-	//int m_screenHeight;
 	float left, right, top, bottom;
 
 	ID3D11DepthStencilState* pDepthEnabledStencilState;		// state to turn on Z buffer

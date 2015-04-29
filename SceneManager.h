@@ -68,6 +68,7 @@ private:
 	//scene
 	Light *mAmbientLight;
 	DirectionalLight* mDirectionalLight;
+	PointLight* mPointLight;
 	D3DManager* mD3DManager;
 	Camera* mCamera;
 	Input* mInput;

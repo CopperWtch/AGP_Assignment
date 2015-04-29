@@ -3,6 +3,7 @@
 Player::Player(Model* playermodel)
 {
 	mPlayerModel = playermodel;
+
 }
 
 Player::~Player()
