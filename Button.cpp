@@ -60,3 +60,8 @@ bool Button::IsClicked(float mouseX, float mouseY)
 	else
 		return false;
 }
+
+bool Button::Display(ID3D11DeviceContext* deviceContext, float x, float y, float sizeW, float sizeH)
+{
+	return mImg->Render(deviceContext, x, y, sizeW, sizeH);
+}

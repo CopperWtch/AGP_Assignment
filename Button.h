@@ -33,6 +33,7 @@ public:
 
 	bool IsClicked(float mouseX, float mouseY);
 
+	bool Display(ID3D11DeviceContext* deviceContext, float x, float y, float sizeW, float sizeH);
 };
 
 #endif
