@@ -40,12 +40,12 @@ LightManager::LightManager()
 //////////////////////////////////////////////////////////////////////////////////////
 // Setters
 //////////////////////////////////////////////////////////////////////////////////////
-void LightManager::addPointLight(PointLight* p)
+void LightManager::AddPointLight(PointLight* p)
 {
 	pointLights.push_back(p);
 };
 
-void LightManager::removePointLight(PointLight* p)
+void LightManager::RemovePointLight(PointLight* p)
 {
 	for (int i = 0; i < pointLights.size(); i++)
 	{
@@ -54,12 +54,12 @@ void LightManager::removePointLight(PointLight* p)
 	}
 };
 
-void LightManager::setDirectionalLight(DirectionalLight* d)
+void LightManager::SetDirectionalLight(DirectionalLight* d)
 {
 	directionalLight = d;
 };
 
-void LightManager::setAmbientLight(Light* l)
+void LightManager::SetAmbientLight(Light* l)
 {
 	ambientLight = l;
 };
@@ -67,15 +67,15 @@ void LightManager::setAmbientLight(Light* l)
 //////////////////////////////////////////////////////////////////////////////////////
 // Getters
 //////////////////////////////////////////////////////////////////////////////////////
-std::vector<PointLight*> LightManager::getPointLights()
+std::vector<PointLight*> LightManager::GetPointLights()
 {
 	return pointLights;
 };
-DirectionalLight* LightManager::getDirectionalLight()
+DirectionalLight* LightManager::GetDirectionalLight()
 {
 	return directionalLight;
 };
-Light* LightManager::getAmbientLight()
+Light* LightManager::GetAmbientLight()
 {
 	return ambientLight;
 };

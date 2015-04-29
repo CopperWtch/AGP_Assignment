@@ -149,10 +149,10 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	
 	//Get the light data from the Light manager
-	mLightManager = LightManager::sharedLightManager();
-	mAmbientLight = mLightManager->getAmbientLight();
-	mDirectionalLight = mLightManager->getDirectionalLight();
-	mPointLights = mLightManager->getPointLights();
+	mLightManager = LightManager::GetInstance();
+	mAmbientLight = mLightManager->GetAmbientLight();
+	mDirectionalLight = mLightManager->GetDirectionalLight();
+	mPointLights = mLightManager->GetPointLights();
 
 	MODEL_CONSTANT_BUFFER model_cb_values;
 	model_cb_values.WorldViewProjection = (*world)*(*view)*(*projection);

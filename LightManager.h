@@ -30,14 +30,14 @@ private:
 public:
 	static LightManager * GetInstance();
 
-	std::vector<PointLight*> getPointLights();
-	DirectionalLight* getDirectionalLight();
-	Light* getAmbientLight();
+	std::vector<PointLight*> GetPointLights();
+	DirectionalLight* GetDirectionalLight();
+	Light* GetAmbientLight();
 
-	void addPointLight(PointLight* p);
-	void removePointLight(PointLight* p);
-	void setDirectionalLight(DirectionalLight* d);
-	void setAmbientLight(Light* l);
+	void AddPointLight(PointLight* p);
+	void RemovePointLight(PointLight* p);
+	void SetDirectionalLight(DirectionalLight* d);
+	void SetAmbientLight(Light* l);
 
 
 };

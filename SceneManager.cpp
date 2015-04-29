@@ -66,9 +66,6 @@ HRESULT SceneManager::initialiseGraphics()
 	mDirectionalLight->SetLightDirection(0.f, -1.f, 0.f);
 
 
-	//data->SetDirectionalLight(mDirectionalLight);
-	//data->SetAmbientLight(mAmbientLight);
-
 	// init player object
 	initPlayer();
 	mActivePlayerState = PlayerState::Alive;
@@ -79,13 +76,13 @@ HRESULT SceneManager::initialiseGraphics()
 	data->SetDevice(mD3DManager->GetDevice());
 	data->SetImmediateContext(mImmediateContext);
 	data->SetCamera(mCamera);
-	//data->SetLight(mLight);
-	LightManager::sharedLightManager()->setDirectionalLight(mDirectionalLight);
-	LightManager::sharedLightManager()->setAmbientLight(mAmbientLight);
+	LightManager::GetInstance()->SetDirectionalLight(mDirectionalLight);
+	LightManager::GetInstance()->SetAmbientLight(mAmbientLight);
 
 	// create level scenes
 	mGameScene = GameScene::create();
 	mLevelTwo = LevelTwo::create();
+	mHUD = HUDScene::create();
 
 	// set active level
 	mLevelCounter = 1;
@@ -268,6 +265,7 @@ void SceneManager::renderLevelScene(float dt)
 		}
 
 		mGameScene->RenderScene(dt);
+		mHUD->RenderScene(dt);
 		break;
 	case LevelSetting::Setting2:
 		if (mNextLevel && mLevelCounter > 2)
@@ -277,6 +275,7 @@ void SceneManager::renderLevelScene(float dt)
 		}
 
 		mLevelTwo->RenderScene(dt);
+		mHUD->RenderScene(dt);
 		break;
 	}
 }

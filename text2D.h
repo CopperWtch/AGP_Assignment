@@ -6,6 +6,7 @@
 #include <dxerr.h>
 #include <xnamath.h>
 #include <vector>
+#include "GameObject.h"
 using namespace std;
 
 // store a sting with x and y coords (-1.0 to +1.0), and size (0.0+)
@@ -36,18 +37,20 @@ private:
 	ID3D11Device*           pD3DDevice;
 	ID3D11DeviceContext*    pImmediateContext;
 
-	ID3D11ShaderResourceView*	pTexture;    
-	ID3D11SamplerState*			pSampler; 
+	ID3D11ShaderResourceView*	pTexture;
+	ID3D11SamplerState*			pSampler;
 
 	POS_TEX_VERTEX vertices[MAX_CHARACTERS * 6];	// system memory vertex list, to be copied to vertex buffer
-	
-	ID3D11Buffer*			pVertexBuffer;          
-	ID3D11VertexShader*		pVShader;         
-	ID3D11PixelShader*		pPShader;          
-	ID3D11InputLayout*		pInputLayout; 
- 
+
+	ID3D11Buffer*			pVertexBuffer;
+	ID3D11VertexShader*		pVShader;
+	ID3D11PixelShader*		pPShader;
+	ID3D11InputLayout*		pInputLayout;
+
 	ID3D11DepthStencilState* pDepthEnabledStencilState;		// state to turn on Z buffer
 	ID3D11DepthStencilState* pDepthDisabledStencilState;	// state to turn off Z buffer
+	ID3D11BlendState*		 pBlendAlphaEnable;
+	ID3D11BlendState*		 pBlendAlphaDisable;
 
 public:
 	Text2D(string filename, ID3D11Device* device, ID3D11DeviceContext* context); // pass in filename of font, device and context
@@ -56,10 +59,13 @@ public:
 	// add a string with position and size to the list
 	// positions are from -1.0 to +1.0 for x and y, represents top left of string on screen
 	// size is fraction of screen size
-	void AddText(string s, float x, float y, float size) ;
+	void AddText(string s, float x, float y, float size);
 
 	// render all strings at once
 	void RenderText();
 
+	//display text
+	void DisplayText(string s, float x, float y, float size, string filename, ID3D11Device* device, ID3D11DeviceContext* context);
+
 };
-	
+
