@@ -1,7 +1,19 @@
+/**
+AGP Assignment
+PointLight.h
+Purpose: Header file for PointLight.cpp
+
+@author Sarah Bulk
+*/
+
+#ifndef __POINTLIGHT_H__
+#define __POINTLIGHT_H__
+
+
 #pragma once
 #define _XM_NO_INTRINSICS_
 #define XM_NO_ALIGNMENT
-#include "GameObject.h"
+#include "Light.h"
 #include <d3d11.h>
 #include <d3dx11.h>
 #include <dxerr.h>
@@ -11,12 +23,11 @@
 #include <vector>
 
 
-class PointLight
+class PointLight : public Light
 {
 private:
 
-	XMVECTOR point_light_colour;
-	XMVECTOR point_light_position;
+	XMVECTOR pointLightPosition;
 
 public:
 	PointLight();
@@ -24,9 +35,9 @@ public:
 	PointLight(const PointLight&);
 	~PointLight();
 
-	void SetLightPosition(float x, float y , float z);
-	void SetColour(float r, float g, float b,float a);
-	XMVECTOR GetPointLightColour();
+	void SetLightPosition(float x, float y, float z);
 	XMVECTOR GetPointLightPosition();
 
 };
+
+#endif

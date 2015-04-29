@@ -11,6 +11,8 @@ Purpose: Header file for Model.cpp
 #include "GameObject.h"
 #include "Light.h"
 #include "PointLight.h"
+#include "DirectionalLight.h"
+#include "LightManager.h"
 
 class Model : public GameObject
 {
@@ -54,8 +56,7 @@ public:
 	void LookAtXZ(float x, float z);
 	void MoveForward(float distance);
 
-	void SetLightData(Light* lightObject);
-	void SetPointLights(PointLight* light1, PointLight* light2, PointLight* light3, PointLight* light4);
+
 private:
 	ID3D11Device *mD3DDevice;
 	ID3D11DeviceContext *mImmediateContext;
@@ -68,8 +69,10 @@ private:
 	ID3D11ShaderResourceView *mTexture;
 	ID3D11SamplerState *mSampler;
 
-	Light*	mLight;
-	PointLight *mpLight1, *mpLight2, *mpLight3, *mpLight4;
+	Light*	mAmbientLight;
+	DirectionalLight*	mDirectionalLight;
+	std::vector<PointLight*> mPointLights;
+	LightManager* mLightManager;
 
 	float mX, mY, mZ, mDX, mDZ;
 	float mXAngle, mZAngle, mYAngle;

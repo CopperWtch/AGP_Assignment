@@ -38,7 +38,8 @@ private:
 	SceneNode *mNode3;
 	SceneData* data;
 
-	Light *mlight;
+	Light *mAmbient;
+	DirectionalLight *mDirectional;
 	PointLight* mPlight1;
 	PointLight* mPlight2;
 	PointLight* mPlight3;

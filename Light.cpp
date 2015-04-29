@@ -1,19 +1,16 @@
+/**
+AGP Assignment
+Light.cpp
+Purpose: Base light class that can be created as an ambient light
+
+@author Sarah Bulk
+*/
+
 #include "Light.h"
-
-
-Light::Light(XMVECTOR lightDirection, XMVECTOR directionalColour, XMVECTOR ambientColour)
-{
-	directional_light_shines_from = lightDirection;
-	directional_light_colour = directionalColour;
-	ambient_light_colour = ambientColour;
-
-}
 
 Light::Light()
 {
-	directional_light_shines_from = XMVectorSet(0.0f, 0.0f, -1.0f, 0.0f);
-	directional_light_colour = XMVectorSet(0.5f, 0.5f, 0.5f, 0.5f);
-	ambient_light_colour = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
+	lightColour = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 }
 
 
@@ -21,34 +18,46 @@ Light::Light(const Light& other)
 {
 }
 
+Light::Light(XMVECTOR colour)
+{
+	this->lightColour = colour;
+}
 
 Light::~Light()
 {
 }
 
-void Light::SetDirectionalLight(XMVECTOR direction, XMVECTOR colour)
+void Light::SetLightColour(float r, float g, float b, float a)
 {
-	directional_light_shines_from = direction;
-	directional_light_colour = colour;
+	lightColour = XMVectorSet(r, g, b, a);
+}
 
+XMVECTOR Light::GetLightColour()
+{
+	return lightColour;
+}
+
+void Light::IncreaseLight(float r, float g, float b, float a)
+{
+	if (lightColour.x < 1.5f)
+	{
+		XMVECTOR amount = XMVectorSet(r, g, b, a);
+		lightColour = lightColour + amount;
+	}
+}
+
+void Light::DecreaseLight(float r, float g, float b, float a)
+{
+	if (lightColour.x > -0.5f)
+	{
+		XMVECTOR amount = XMVectorSet(r, g, b, a);
+		lightColour = lightColour - amount;
+	}
 
 }
 
-void Light::SetAmbientLight(XMVECTOR colour)
+float Light::GetLightRatio()
 {
-	ambient_light_colour = colour;
-}
-
-XMVECTOR Light::GetLightDirection()
-{
-	return directional_light_shines_from;
-}
-XMVECTOR Light::GetDirectionalLightColour()
-{
-	return directional_light_colour;
-}
-
-XMVECTOR Light::GetAmbientLightColour()
-{
-	return ambient_light_colour;
+	float light_amount = (lightColour.x + 0.5f) / 2 * 100;
+	return (lightColour.x + 0.5f) / 2 * 100;
 }

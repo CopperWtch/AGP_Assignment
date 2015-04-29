@@ -65,7 +65,8 @@ private:
 	int mLevelCounter;
 	bool mNextLevel;
 	//scene
-	Light* mLight;
+	Light *mAmbientLight;
+	DirectionalLight* mDirectionalLight;
 	D3DManager* mD3DManager;
 	Camera* mCamera;
 	Input* mInput;

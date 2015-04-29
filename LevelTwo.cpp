@@ -89,7 +89,6 @@ void LevelTwo::initLevel()
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/plastic.jpg", NULL, NULL, &mTexture, NULL);
 	mCube->LoadObjModel("assets/cube.obj", mTexture);
-	mCube->SetLightData(mLight);
 
 	mRootNodeLevel = new SceneNode();
 

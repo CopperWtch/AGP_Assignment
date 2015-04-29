@@ -146,14 +146,12 @@ void LevelGenerator::initLightSpheres()
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(SceneData::GetInstance()->GetDevice(), "assets/white.jpg", NULL, NULL, &mTextureLight, NULL);
 	mLightSphere->LoadObjModel("assets/sphere.obj", mTextureLight);
-	mLightSphere->SetLightData(SceneData::GetInstance()->GetLight());
 
 	mDarkSphere = new Model(SceneData::GetInstance()->GetDevice(), SceneData::GetInstance()->GetImmediateContext());
 
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(SceneData::GetInstance()->GetDevice(), "assets/black.jpg", NULL, NULL, &mTextureDark, NULL);
 	mDarkSphere->LoadObjModel("assets/sphere.obj", mTextureDark);
-	mDarkSphere->SetLightData(SceneData::GetInstance()->GetLight());
 }
 
 

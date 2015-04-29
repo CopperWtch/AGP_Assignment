@@ -51,14 +51,12 @@ void GameScene::initLevel()
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/stone.jpg", NULL, NULL, &mTexture, NULL);
 	mCube->LoadObjModel("assets/cube.obj", mTexture);
-	mCube->SetLightData(mLight);
 
 	mCube2 = new Model(mD3DDevice, mImmediateContext);
 
 	//textrue
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/metal.jpg", NULL, NULL, &mTexture, NULL);
 	mCube2->LoadObjModel("assets/cube.obj", mTexture);
-	mCube2->SetLightData(mLight);
 
 	mRootNodeLevel = new SceneNode();
 

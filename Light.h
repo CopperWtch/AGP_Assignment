@@ -1,3 +1,14 @@
+/**
+AGP Assignment
+Light.h
+Purpose: Header file for Light.cpp
+
+@author Sarah Bulk
+*/
+
+#ifndef __LIGHT_H__
+#define __LIGHT_H__
+
 #pragma once
 #define _XM_NO_INTRINSICS_
 #define XM_NO_ALIGNMENT
@@ -11,23 +22,23 @@
 #include <vector>
 
 
-class Light
+class Light : public GameObject
 {
 private:
-	XMVECTOR directional_light_shines_from;
-	XMVECTOR directional_light_colour;
-	XMVECTOR ambient_light_colour;
+	XMVECTOR lightColour;
 
 public:
 	Light();
-	Light(XMVECTOR lightDirection, XMVECTOR directionalColour, XMVECTOR ambientColour);
 	Light(const Light&);
+	Light(XMVECTOR colour);
 	~Light();
 
-	void SetDirectionalLight(XMVECTOR direction, XMVECTOR colour);
-	void SetAmbientLight(XMVECTOR colour);
-	XMVECTOR GetLightDirection();
-	XMVECTOR GetDirectionalLightColour();
-	XMVECTOR GetAmbientLightColour();
+	void SetLightColour(float x, float y, float z, float w);
+	XMVECTOR GetLightColour();
 
+	void IncreaseLight(float r, float g, float b, float a);
+	void DecreaseLight(float r, float g, float b, float a);
+	float GetLightRatio();
 };
+
+#endif

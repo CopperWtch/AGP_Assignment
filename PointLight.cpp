@@ -1,10 +1,17 @@
+/**
+AGP Assignment
+PointLight.cpp
+Purpose: Point Light that can be created to affect the world
+
+@author Sarah Bulk
+*/
+
 #include "PointLight.h"
 
 
-PointLight::PointLight(XMVECTOR colour, XMVECTOR position)
+PointLight::PointLight(XMVECTOR colour, XMVECTOR position) : Light(colour)
 {
-	point_light_colour = colour;
-	point_light_position = position;
+	pointLightPosition = position;
 }
 
 PointLight::PointLight()
@@ -23,23 +30,13 @@ PointLight::~PointLight()
 {
 }
 
-void PointLight::SetLightPosition(float x,float y,float z)
+void PointLight::SetLightPosition(float x, float y, float z)
 {
-	point_light_position = XMVectorSet(x,y,z, 1.0f);
+	pointLightPosition = XMVectorSet(x, y, z, 1.0f);
 
 
-}
-
-void PointLight::SetColour(float r, float g, float b,float a)
-{
-	point_light_colour = XMVectorSet(r, g, b, a);
-}
-
-XMVECTOR PointLight::GetPointLightColour()
-{
-	return point_light_colour;
 }
 XMVECTOR PointLight::GetPointLightPosition()
 {
-	return point_light_position;
+	return pointLightPosition;
 }

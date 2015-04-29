@@ -25,9 +25,12 @@ Purpose: Header file for all important includes
 #include "ParticleGenerator.h"
 #include "Camera.h"
 #include "Light.h"
+#include "DirectionalLight.h"
+#include "PointLight.h"
 #include "PointLight.h"
 #include "LevelGenerator.h"
 #include "AGPRandom.h"
 #include "SceneData.h"
+#include "LightManager.h"
 
 #endif

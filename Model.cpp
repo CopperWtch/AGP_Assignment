@@ -21,8 +21,6 @@ struct MODEL_CONSTANT_BUFFER
 
 	XMVECTOR point_position[NUM_LIGHTS];
 	XMVECTOR point_colour[NUM_LIGHTS];
-	//XMVECTOR point_light_colour; //16bytes
-	//XMVECTOR point_light_position; //16bytes //total: 144 bytes
 	//240?
 };
 
@@ -38,12 +36,6 @@ Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext)
 	mZAngle = 0.0f;
 	mScale = 1.0f;
 	mRotation = 0.0f;
-
-	mpLight1 = 0;
-	mpLight2 = 0;
-	mpLight3 = 0;
-	mpLight4 = 0;
-	mLight = 0;
 }
 
 Model::~Model()
@@ -55,12 +47,6 @@ Model::~Model()
 	if (mConstantBuffer) mConstantBuffer->Release();
 	if (mTexture) mTexture->Release();
 	if (mSampler) mSampler->Release();
-
-	//if (mLight) delete mLight;
-	//if (mpLight1) delete mpLight1;
-	//if (mpLight2) delete mpLight2;
-	//if (mpLight3) delete mpLight3;
-	//if (mpLight4) delete mpLight4;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -162,6 +148,12 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 //////////////////////////////////////////////////////////////////////////////////////
 void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	
+	//Get the light data from the Light manager
+	mLightManager = LightManager::sharedLightManager();
+	mAmbientLight = mLightManager->getAmbientLight();
+	mDirectionalLight = mLightManager->getDirectionalLight();
+	mPointLights = mLightManager->getPointLights();
+
 	MODEL_CONSTANT_BUFFER model_cb_values;
 	model_cb_values.WorldViewProjection = (*world)*(*view)*(*projection);
 
@@ -174,46 +166,29 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 
 	
 
-	if (mLight != nullptr)
+	if (mAmbientLight)
 	{
+		XMVECTOR ambColour = mAmbientLight->GetLightColour();
+		model_cb_values.ambient_light_colour = ambColour;
 
-		XMVECTOR dirColour = mLight->GetDirectionalLightColour();
-		XMVECTOR ambColour = mLight->GetAmbientLightColour();
-		XMVECTOR dirVector = mLight->GetLightDirection();
 
-		//XMVECTOR pointColour = mLight->GetPointLightColour();
-		//XMVECTOR pointVector = mLight->GetPointLightPosition();
-
-		/*model_cb_values.point_light_colour = pointColour;
-		model_cb_values.point_light_position = XMVector3Transform(pointVector, inverse);;*/
+	}
+	if (mDirectionalLight)
+	{
+		XMVECTOR dirColour = mDirectionalLight->GetLightColour();
+		XMVECTOR dirVector = mDirectionalLight->GetLightDirection();
 
 		model_cb_values.directional_light_colour = dirColour;
-		model_cb_values.ambient_light_colour = ambColour;
 		model_cb_values.directional_light_vector = XMVector3Transform(dirVector, transpose);
 		model_cb_values.directional_light_vector = XMVector3Normalize(model_cb_values.directional_light_vector);
-
 	}
 
-	if (mpLight1)
+	for (int i = 0; i < mPointLights.size(); i++)
 	{
-		model_cb_values.point_colour[0] = mpLight1->GetPointLightColour();
-		model_cb_values.point_position[0] = XMVector3Transform(mpLight1->GetPointLightPosition(), inverse);
+		model_cb_values.point_colour[i] = mPointLights[i]->GetLightColour();
+		model_cb_values.point_position[i] = XMVector3Transform(mPointLights[i]->GetPointLightPosition(), inverse);
 	}
-	if (mpLight2)
-	{
-		model_cb_values.point_colour[1] = mpLight2->GetPointLightColour();
-		model_cb_values.point_position[1] = XMVector3Transform(mpLight2->GetPointLightPosition(), inverse);
-	}
-	if (mpLight3)
-	{
-		model_cb_values.point_colour[2] = mpLight3->GetPointLightColour();
-		model_cb_values.point_position[2] = XMVector3Transform(mpLight3->GetPointLightPosition(), inverse);
-	}
-	if (mpLight4)
-	{
-		model_cb_values.point_colour[3] = mpLight4->GetPointLightColour();
-		model_cb_values.point_position[3] = XMVector3Transform(mpLight4->GetPointLightPosition(), inverse);
-	}
+
 
 	//upload the new values for the constant buffer
 	mImmediateContext->VSSetConstantBuffers(0, 1, &mConstantBuffer);
@@ -397,24 +372,5 @@ void Model::IncRotation(float num)
 void Model::DecRotation(float num)
 { 
 	mRotation -= num; 
-}
-
-//Set General Light Light
-void Model::SetLightData(Light* lightObject)
-{
-	mLight = lightObject;
-}
-
-void Model::SetPointLights(PointLight* light1, PointLight* light2, PointLight* light3, PointLight* light4)
-{
-	if (!mpLight1)
-		mpLight1 = light1;
-	if (!mpLight2)
-		mpLight2 = light2;
-	if (!mpLight3)
-		mpLight3 = light3;
-	if (!mpLight4)
-		mpLight4 = light4;
-
 }
 

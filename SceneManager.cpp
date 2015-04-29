@@ -59,8 +59,15 @@ HRESULT SceneManager::initialiseGraphics()
 	mCamera = new Camera(0, 0, 0, 0);
 	
 	// create Light
-	mLight = new Light();
-	mLight->SetAmbientLight(XMVectorSet(1.0f, 1.0f, 1.0f, 0.5f));
+	mAmbientLight = new Light();
+	mAmbientLight->SetLightColour(0.5f, 0.5f, 0.5f, 0.5f);
+	mDirectionalLight = new DirectionalLight();
+	mDirectionalLight->SetLightColour(0.5f, 0.5f, 0.5f, 0.5f);
+	mDirectionalLight->SetLightDirection(0.f, -1.f, 0.f);
+
+
+	//data->SetDirectionalLight(mDirectionalLight);
+	//data->SetAmbientLight(mAmbientLight);
 
 	// init player object
 	initPlayer();
@@ -72,7 +79,9 @@ HRESULT SceneManager::initialiseGraphics()
 	data->SetDevice(mD3DManager->GetDevice());
 	data->SetImmediateContext(mImmediateContext);
 	data->SetCamera(mCamera);
-	data->SetLight(mLight);
+	//data->SetLight(mLight);
+	LightManager::sharedLightManager()->setDirectionalLight(mDirectionalLight);
+	LightManager::sharedLightManager()->setAmbientLight(mAmbientLight);
 
 	// create level scenes
 	mGameScene = GameScene::create();
@@ -233,8 +242,6 @@ void SceneManager::initPlayer()
 	D3DX11CreateShaderResourceViewFromFile(mD3DDevice, "assets/chuck.bmp", NULL, NULL, &mTexture, NULL);
 
 	mPlayerModel->LoadObjModel("assets/chuck.obj", mTexture);
-
-	mPlayerModel->SetLightData(mLight);
 
 	mPlayer = new Player(mPlayerModel);
 

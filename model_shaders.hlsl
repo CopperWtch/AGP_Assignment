@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+model_shaders.hlsl
+Purpose: shader for the models
+
+@author Sarah Bulk
+*/
+
 /////////////
 // DEFINES //
 /////////////
@@ -28,22 +36,22 @@ struct VOut
 VOut ModelVS(float4 position : SV_POSITION, float2 texcoord : TEXCOORD, float3 normal : NORMAL)
 {
 	VOut output;
-	
+
 	output.position = mul(WVPMatrix, position);
 	output.texcoord = texcoord;
-	
+
 	float diffuse_amount = dot(directional_light_vector, normal);
 	diffuse_amount = saturate(diffuse_amount);
-	
+
 
 	// Determine the light positions based on the position of the lights and the position of the vertex in the world.
 	float4 lightPos1 = lightPosition[0] - position;
-	float4 lightPos2 = lightPosition[1] - position;
-	float4 lightPos3 = lightPosition[2] - position;
-	float4 lightPos4 = lightPosition[3] - position;
+		float4 lightPos2 = lightPosition[1] - position;
+		float4 lightPos3 = lightPosition[2] - position;
+		float4 lightPos4 = lightPosition[3] - position;
 
-	// Normalize the light position vectors.
-	lightPos1 = normalize(lightPos1);
+		// Normalize the light position vectors.
+		lightPos1 = normalize(lightPos1);
 	lightPos2 = normalize(lightPos2);
 	lightPos3 = normalize(lightPos3);
 	lightPos4 = normalize(lightPos4);
@@ -55,11 +63,16 @@ VOut ModelVS(float4 position : SV_POSITION, float2 texcoord : TEXCOORD, float3 n
 
 	// Determine the diffuse color amount of each of the four lights.
 	float4 color1 = diffuseColor[0] * lightIntensity1;
-	float4 color2 = diffuseColor[1] * lightIntensity2;
-	float4 color3 = diffuseColor[2] * lightIntensity3;
-	float4 color4 = diffuseColor[3] * lightIntensity4;
+		float4 color2 = diffuseColor[1] * lightIntensity2;
+		float4 color3 = diffuseColor[2] * lightIntensity3;
+		float4 color4 = diffuseColor[3] * lightIntensity4;
 
-	output.color = (ambient_light_colour + (directional_light_colour*diffuse_amount)) * saturate(color1 + color2 + color3 + color4);
+		float pColour = saturate(color1 + color2 + color3 + color4);
+
+	if (pColour == 0)
+		output.color = (ambient_light_colour + (directional_light_colour*diffuse_amount));
+	else
+		output.color = (ambient_light_colour + (directional_light_colour*diffuse_amount))*pColour;
 
 	return output;
 }
