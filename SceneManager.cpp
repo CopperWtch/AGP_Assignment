@@ -92,7 +92,8 @@ HRESULT SceneManager::initialiseGraphics()
 
 	// set active level
 	mLevelCounter = 1;
-	mActiveLevelSetting = LevelSetting::Setting1;
+	mActiveSceneState = SceneState::MenuStart;
+	mPreviousSceneState = SceneState::MenuStart;
 	mNextLevel = false;
 
 	// init render variables
@@ -104,6 +105,7 @@ HRESULT SceneManager::initialiseGraphics()
 	isDoubleJump = true;
 	isNextLevelDebugKey = true;
 	isDieDebugKey = true;
+	isMenuKey = true;
 
 	return S_OK;
 }
@@ -154,7 +156,7 @@ void SceneManager::RenderFrame(float dt)
 				isNextLevelDebugKey = false;
 			}
 		}
-		if (mInput->IsKeyReleased(DIK_END) && !(mMainMenu->GetIsActive()))
+		if (mInput->IsKeyReleased(DIK_END))
 		{
 			isNextLevelDebugKey = true;
 		}
@@ -202,12 +204,36 @@ void SceneManager::RenderFrame(float dt)
 	//open menu on button press
 	if (mInput->IsKeyPressed(DIK_M))
 	{
-		mMainMenu->SetIsActive(true);
+		if (isMenuKey)
+		{
+			if (mActiveSceneState == SceneState::MenuDead || mActiveSceneState == SceneState::MenuStart)
+			{
+				mActiveSceneState = mPreviousSceneState;
+			}
+			else
+			{
+				mPreviousSceneState = mActiveSceneState;
+				mActiveSceneState = SceneState::MenuStart;
+			}
+			isMenuKey = false;
+		}
+	}
+	if (mInput->IsKeyReleased(DIK_M))
+	{
+		isMenuKey = true;
 	}
 
-	if (mInput->IsKeyPressed(DIK_RETURN) && mActivePlayerState== PlayerState::Dead)
+	//interact with menu via pressing buttons
+	if (mInput->IsKeyPressed(DIK_P))
 	{
-		resetGame();
+		if (mActiveSceneState == SceneState::MenuStart && mPreviousSceneState == SceneState::MenuStart)
+			mActiveSceneState = SceneState::Level1;
+	}
+
+	if (mInput->IsKeyPressed(DIK_Q))
+	{
+		if (mActiveSceneState == SceneState::MenuDead || mActiveSceneState == SceneState::MenuStart)
+			DestroyWindow(mInput->GetMHWnd());
 	}
 
 	/*********************** view & projection ***********************/
@@ -246,30 +272,7 @@ void SceneManager::RenderFrame(float dt)
 	// execute player (render)
 	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
-	if (mActivePlayerState==PlayerState::Alive)
-	{
-		//check if the menu is active
-		if (!(mMainMenu->GetIsActive()))
-		{
-			// render LevelScenes
-			renderLevelScene(dt);
-			//unpause timer
-			Timer::getInstance()->PauseTime(false);
-
-		}
-		else
-		{
-			Timer::getInstance()->PauseTime(true);
-			mMainMenu->RenderScene(dt);
-		}
-	}
-	else
-	{
-		mGameOver->RenderScene(dt);
-	}
-
-
-
+	renderScenes(dt);
 
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);
@@ -297,37 +300,45 @@ void SceneManager::initPlayer()
 	mRootNodePlayer->SetYPos(1);
 }
 
-void SceneManager::renderLevelScene(float dt)
+void SceneManager::renderScenes(float dt)
 {
-	// render correct scene depending on level
-
-	switch (mActiveLevelSetting)
+	switch (mActiveSceneState)
 	{
-	case LevelSetting::Setting1:
-		if (mNextLevel && mLevelCounter > 2)
+	case SceneState::MenuStart:
+		mMainMenu->RenderScene(dt);
+		break;
+	case SceneState::Level1:
+		if (mNextLevel)
 		{
 			mGameScene->ReGenerateLevel();
 			mNextLevel = false;
 		}
-
 		mGameScene->RenderScene(dt);
-
-		//render HUD
-		mHUD->RenderScene(dt);
 		break;
-	case LevelSetting::Setting2:
-		if (mNextLevel && mLevelCounter > 2)
+	case SceneState::Level2:
+		if (mNextLevel)
 		{
 			mLevelTwo->ReGenerateLevel();
 			mNextLevel = false;
 		}
-
 		mLevelTwo->RenderScene(dt);
-
-		//render HUD
-		mHUD->RenderScene(dt);
+		break;
+	case SceneState::MenuDead:
+		mGameOver->RenderScene(dt);
 		break;
 	}
+
+	if (mActiveSceneState == SceneState::MenuDead || mActiveSceneState == SceneState::MenuStart)
+	{
+		Timer::getInstance()->PauseTime(true);
+	}
+	else
+	{
+		//render HUD
+		mHUD->RenderScene(dt);
+		Timer::getInstance()->PauseTime(false);
+	}
+
 }
 
 void SceneManager::nextLevel()
@@ -341,10 +352,10 @@ void SceneManager::nextLevel()
 
 void SceneManager::nextLevelSetting()
 {
-	if (mActiveLevelSetting == LevelSetting::Setting1)
-		mActiveLevelSetting = LevelSetting::Setting2;
-	else if (mActiveLevelSetting == LevelSetting::Setting2)
-		mActiveLevelSetting = LevelSetting::Setting1;
+	if (mActiveSceneState == SceneState::Level1)
+		mActiveSceneState = SceneState::Level2;
+	else if (mActiveSceneState == SceneState::Level2)
+		mActiveSceneState = SceneState::Level1;
 	/*else if (mActiveLevelSetting == LevelSetting::Setting3)
 		mActiveLevelSetting = LevelSetting::Setting1;*/
 }
@@ -352,16 +363,17 @@ void SceneManager::nextLevelSetting()
 void SceneManager::killPlayer()
 {
 	//TODO: HUD Message Here
+	mActiveSceneState = SceneState::MenuDead;
 	mActivePlayerState = PlayerState::Dead;
 }
 
 void SceneManager::resetGame()
 {
 	mLevelCounter = 1;
-	mActiveLevelSetting = LevelSetting::Setting1;
+	mActiveSceneState = SceneState::MenuStart;
 	mNextLevel = false;
 	mActivePlayerState = PlayerState::Alive;
-
+	mPreviousSceneState = SceneState::MenuStart;
 	mRootNodePlayer->SetXPos(0);
 	mRootNodePlayer->SetYPos(1);
 	mRootNodePlayer->SetXAngle(0);
@@ -377,7 +389,6 @@ void SceneManager::resetGame()
 	mLevelTwo = LevelTwo::create();
 	mHUD = HUDScene::create();
 
-	mMainMenu->SetIsActive(true);
 	//TODO: reset player hud values
 }
 

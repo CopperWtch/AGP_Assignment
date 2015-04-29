@@ -25,8 +25,8 @@ bool GameOverScene::Init()
 
 void GameOverScene::RenderScene(float dt)
 {
-	Timer* mTimer = Timer::getInstance();
-	mTimer->PauseTime(true);
+	/*Timer* mTimer = Timer::getInstance();
+	mTimer->PauseTime(true);*/
 
 
 	//headline

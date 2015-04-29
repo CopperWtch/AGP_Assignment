@@ -43,7 +43,7 @@ private:
 	void killPlayer();
 	void nextLevelSetting();
 	void nextLevel();
-	void renderLevelScene(float dt);
+	void renderScenes(float dt);
 	void resetGame();
 
 	HWND mHWnd;
@@ -63,8 +63,9 @@ private:
 	enum PlayerState { Alive, Dead };
 	PlayerState mActivePlayerState;
 	//level
-	enum LevelSetting { Setting1, Setting2, Setting3 };
-	LevelSetting mActiveLevelSetting;
+	enum SceneState { Level1, Level2, MenuStart, MenuDead };
+	SceneState mActiveSceneState;
+	SceneState mPreviousSceneState;
 	int mLevelCounter;
 	bool mNextLevel;
 	//scene
@@ -96,6 +97,7 @@ private:
 	bool isNextLevelDebugKey;
 	bool isDieDebugKey;
 	bool isResetKey;
+	bool isMenuKey;
 };
 
 #endif

@@ -25,8 +25,8 @@ bool MainMenuScene::Init()
 
 void MainMenuScene::RenderScene(float dt)
 {
-	Timer* mTimer = Timer::getInstance();
-	mTimer->PauseTime(true);
+	/*Timer* mTimer = Timer::getInstance();
+	mTimer->PauseTime(true);*/
 
 	//render background image
 	mBackground->Render(mImmediateContext, -1.0, 1.0, 2.0, 2.0);
@@ -49,7 +49,7 @@ void MainMenuScene::RenderScene(float dt)
 		//not finalised input , still buggy
 		if (mBtnStart->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
 		{
-			bIsActive = false;
+			//bIsActive = false;
 		}
 
 		if (mBtnQuit->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
@@ -60,16 +60,6 @@ void MainMenuScene::RenderScene(float dt)
 		
 	}
 
-	//interact with menu via pressing buttons
-	if (mInput->IsKeyPressed(DIK_P))
-	{
-		bIsActive = false;
-	}
-
-	if (mInput->IsKeyPressed(DIK_Q))
-	{
-		DestroyWindow(mInput->GetMHWnd());
-	}
 
 	mTextMenu->RenderText();
 
@@ -90,19 +80,19 @@ void MainMenuScene::initMenu()
 
 	mBackground = new ImageClass(mD3DDevice, mImmediateContext, "assets/bg.png");
 
-	bIsActive = true;
+	//bIsActive = true;
 
 	mRootNode = new SceneNode();
 
 
 }
 
-bool MainMenuScene::GetIsActive()
-{
-	return bIsActive;
-}
-
-void MainMenuScene::SetIsActive(bool isActive)
-{
-	bIsActive = isActive;
-}
+//bool MainMenuScene::GetIsActive()
+//{
+//	return bIsActive;
+//}
+//
+//void MainMenuScene::SetIsActive(bool isActive)
+//{
+//	bIsActive = isActive;
+//}
