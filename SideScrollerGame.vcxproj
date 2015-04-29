@@ -81,6 +81,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HUDScene.cpp" />
     <ClCompile Include="ImageClass.cpp" />
+    <ClCompile Include="InGameMenuScene.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LevelGenerator.cpp" />
     <ClCompile Include="LevelTwo.cpp" />
@@ -114,6 +115,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="HUDScene.h" />
     <ClInclude Include="ImageClass.h" />
+    <ClInclude Include="InGameMenuScene.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="LevelGenerator.h" />
     <ClInclude Include="LevelTwo.h" />

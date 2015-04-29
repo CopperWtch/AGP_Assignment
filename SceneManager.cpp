@@ -89,6 +89,7 @@ HRESULT SceneManager::initialiseGraphics()
 	mHUD = HUDScene::create();
 	mMainMenu = MainMenuScene::create();
 	mGameOver = GameOverScene::create();
+	mInGameMenu = InGameMenuScene::create();
 
 	// set active level
 	mLevelCounter = 1;
@@ -206,14 +207,14 @@ void SceneManager::RenderFrame(float dt)
 	{
 		if (isMenuKey)
 		{
-			if (mActiveSceneState == SceneState::MenuDead || mActiveSceneState == SceneState::MenuStart)
+			if (mActiveSceneState == SceneState::MenuInGame)
 			{
 				mActiveSceneState = mPreviousSceneState;
 			}
-			else
+			else if (mActiveSceneState != SceneState::MenuDead && mActiveSceneState != SceneState::MenuStart)
 			{
 				mPreviousSceneState = mActiveSceneState;
-				mActiveSceneState = SceneState::MenuStart;
+				mActiveSceneState = SceneState::MenuInGame;
 			}
 			isMenuKey = false;
 		}
@@ -307,6 +308,9 @@ void SceneManager::renderScenes(float dt)
 	case SceneState::MenuStart:
 		mMainMenu->RenderScene(dt);
 		break;
+	case SceneState::MenuInGame:
+		mInGameMenu->RenderScene(dt);
+		break;
 	case SceneState::Level1:
 		if (mNextLevel)
 		{
@@ -328,13 +332,12 @@ void SceneManager::renderScenes(float dt)
 		break;
 	}
 
-	if (mActiveSceneState == SceneState::MenuDead || mActiveSceneState == SceneState::MenuStart)
+	if (mActiveSceneState == SceneState::MenuDead || mActiveSceneState == SceneState::MenuStart || mActiveSceneState == SceneState::MenuInGame)
 	{
 		Timer::getInstance()->PauseTime(true);
 	}
 	else
 	{
-		//render HUD
 		mHUD->RenderScene(dt);
 		Timer::getInstance()->PauseTime(false);
 	}
