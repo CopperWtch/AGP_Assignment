@@ -25,8 +25,6 @@ bool MainMenuScene::Init()
 
 void MainMenuScene::RenderScene(float dt)
 {
-	/*Timer* mTimer = Timer::getInstance();
-	mTimer->PauseTime(true);*/
 
 	//render background image
 	mBackground->Render(mImmediateContext, -1.0, 1.0, 2.0, 2.0);
@@ -35,30 +33,30 @@ void MainMenuScene::RenderScene(float dt)
 	mTextMenu->AddText("MENU", -0.25, +0.8, .1);
 
 	//Render everything
-	txtStart->Render(mImmediateContext, -0.4, +0.0, .6, .2);
-	txtQuit->Render(mImmediateContext, -0.4, -0.4, .6, .2);
+	mBtnStart->Display(mImmediateContext, -0.4, +0.0, .6, .2);
+	mBtnQuit->Display(mImmediateContext, -0.4, -0.4, .6, .2);
 
 
+	//can't currently work
+	//mInput = mSceneData->GetInput();
 
-	mInput = mSceneData->GetInput();
+	//mInput->ReadInputStates();
+	//if (mInput->IsMouseClicked())
+	//{
 
-	mInput->ReadInputStates();
-	if (mInput->IsMouseClicked())
-	{
+	//	//not finalised input , still buggy
+	//	if (mBtnStart->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
+	//	{
+	//		//bIsActive = false;
+	//	}
 
-		//not finalised input , still buggy
-		if (mBtnStart->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
-		{
-			//bIsActive = false;
-		}
+	//	if (mBtnQuit->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
+	//	{
+	//		DestroyWindow(mInput->GetMHWnd());
+	//	}
 
-		if (mBtnQuit->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
-		{
-			DestroyWindow(mInput->GetMHWnd());
-		}
-
-		
-	}
+	//	
+	//}
 
 
 	mTextMenu->RenderText();
@@ -80,19 +78,7 @@ void MainMenuScene::initMenu()
 
 	mBackground = new ImageClass(mD3DDevice, mImmediateContext, "assets/bg.png");
 
-	//bIsActive = true;
-
 	mRootNode = new SceneNode();
 
 
 }
-
-//bool MainMenuScene::GetIsActive()
-//{
-//	return bIsActive;
-//}
-//
-//void MainMenuScene::SetIsActive(bool isActive)
-//{
-//	bIsActive = isActive;
-//}

@@ -25,8 +25,6 @@ public:
 	virtual void RenderScene(float dt);
 	CREATE_FUNC(MainMenuScene);
 
-	//bool GetIsActive();
-	//void SetIsActive(bool isActive);
 
 private:
 	void initMenu();
@@ -46,8 +44,6 @@ private:
 
 	Text2D* mTextMenu;
 	SceneNode* mRootNode;
-
-	//bool bIsActive;
 
 
 };
