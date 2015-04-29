@@ -40,34 +40,36 @@ void MainMenuScene::RenderScene(float dt)
 
 
 
-	//mInput = mSceneData->GetInput();
+	mInput = mSceneData->GetInput();
 
-	//mInput->ReadInputStates();
-	//if (mInput->IsMouseClicked())
-	//{
-		//mSceneData->SetLevel(1);
-		//if (mBtnStart->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
-		//{
-		//	mSceneData->SetLevel(1);
-		//}
+	mInput->ReadInputStates();
+	if (mInput->IsMouseClicked())
+	{
 
-		//if (mBtnQuit->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
-		//{
-		//	DestroyWindow(mInput->GetMHWnd());
-		//}
+		//not finalised input , still buggy
+		if (mBtnStart->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
+		{
+			bIsActive = false;
+		}
 
-		//not finalised input 
-	//}
+		if (mBtnQuit->IsClicked(mInput->GetMouseData().x, mInput->GetMouseData().y));
+		{
+			DestroyWindow(mInput->GetMHWnd());
+		}
 
-	//if (mInput->IsKeyPressed(DIK_P))
-	//{
-	//	mSceneData->SetLevel(1);
-	//}
+		
+	}
 
-	//if (mInput->IsKeyPressed(DIK_Q))
-	//{
-	//	DestroyWindow(mInput->GetMHWnd());
-	//}
+	//interact with menu via pressing buttons
+	if (mInput->IsKeyPressed(DIK_P))
+	{
+		bIsActive = false;
+	}
+
+	if (mInput->IsKeyPressed(DIK_Q))
+	{
+		DestroyWindow(mInput->GetMHWnd());
+	}
 
 	mTextMenu->RenderText();
 
@@ -88,7 +90,19 @@ void MainMenuScene::initMenu()
 
 	mBackground = new ImageClass(mD3DDevice, mImmediateContext, "assets/bg.png");
 
+	bIsActive = true;
+
 	mRootNode = new SceneNode();
 
 
+}
+
+bool MainMenuScene::GetIsActive()
+{
+	return bIsActive;
+}
+
+void MainMenuScene::SetIsActive(bool isActive)
+{
+	bIsActive = isActive;
 }

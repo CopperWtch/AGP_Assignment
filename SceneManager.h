@@ -62,7 +62,7 @@ private:
 	enum PlayerState { Alive, Dead };
 	PlayerState mActivePlayerState;
 	//level
-	enum LevelSetting { Menu, Setting1, Setting2, Setting3 };
+	enum LevelSetting { Setting1, Setting2, Setting3 };
 	LevelSetting mActiveLevelSetting;
 	int mLevelCounter;
 	bool mNextLevel;

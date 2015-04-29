@@ -138,15 +138,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		static LRESULT r;
 		r = DefWindowProc(hWnd, WM_NCHITTEST, wParam, lParam);
 
-		// if (r == HTCLIENT && r != HTCAPTION)
-		//if (r == HTCLIENT)
-		//{
-		//	SceneData::GetInstance()->GetInput()->SetIsInWindow(true);
-		//}
-		//else
-		//{
-		//	SceneData::GetInstance()->GetInput()->SetIsInWindow(false);
-		//}
+		 if (r == HTCLIENT && r != HTCAPTION)
+		if (r == HTCLIENT)
+		{
+			SceneData::GetInstance()->GetInput()->SetIsInWindow(true);
+		}
+		else
+		{
+			SceneData::GetInstance()->GetInput()->SetIsInWindow(false);
+		}
 		return r;
 	}
 	default:

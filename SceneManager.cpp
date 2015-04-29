@@ -78,6 +78,8 @@ HRESULT SceneManager::initialiseGraphics()
 	data->SetDevice(mD3DManager->GetDevice());
 	data->SetImmediateContext(mImmediateContext);
 	data->SetCamera(mCamera);
+	data->SetInput(mInput);
+
 	LightManager::GetInstance()->SetDirectionalLight(mDirectionalLight);
 	LightManager::GetInstance()->SetAmbientLight(mAmbientLight);
 
@@ -188,6 +190,12 @@ void SceneManager::RenderFrame(float dt)
 			isResetKey = true;
 		}
 	}
+
+	//open menu on button press
+	if (mInput->IsKeyPressed(DIK_M))
+	{
+		mMainMenu->SetIsActive(true);
+	}
 	
 
 	/*********************** view & projection ***********************/
@@ -226,8 +234,19 @@ void SceneManager::RenderFrame(float dt)
 	// execute player (render)
 	mRootNodePlayer->execute(&XMMatrixIdentity(), &mView, &mProjection);
 
-	// render LevelScenes
-	renderLevelScene(dt);
+	//check if the menu is active
+	if (!(mMainMenu->GetIsActive()))
+	{
+		// render LevelScenes
+		renderLevelScene(dt);
+	}
+	else
+	{
+		Timer::getInstance()->PauseTime(true);
+		mMainMenu->RenderScene(dt);
+	}
+		
+
 
 	// Display what has just been rendered
 	mSwapChain->Present(0, 0);
@@ -258,12 +277,9 @@ void SceneManager::initPlayer()
 void SceneManager::renderLevelScene(float dt)
 {
 	// render correct scene depending on level
+
 	switch (mActiveLevelSetting)
 	{
-	case LevelSetting::Menu:
-		mMainMenu->RenderScene(dt);
-
-		break;
 	case LevelSetting::Setting1:
 		if (mNextLevel && mLevelCounter > 2)
 		{
@@ -273,6 +289,8 @@ void SceneManager::renderLevelScene(float dt)
 
 		mGameScene->RenderScene(dt);
 		
+		//unpause timer
+		Timer::getInstance()->PauseTime(false);
 		//render HUD
 		mHUD->RenderScene(dt);
 		break;
@@ -285,6 +303,8 @@ void SceneManager::renderLevelScene(float dt)
 
 		mLevelTwo->RenderScene(dt);
 
+		//unpause timer
+		Timer::getInstance()->PauseTime(false);
 		//render HUD
 		mHUD->RenderScene(dt);
 		break;

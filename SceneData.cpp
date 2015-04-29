@@ -54,6 +54,11 @@ Light* SceneData::GetLight()
 	return mLight;
 }
 
+Input* SceneData::GetInput()
+{
+	return mInput;
+}
+
 void SceneData::SetCamera(Camera* camera)
 {
 	mCamera = camera;
@@ -79,3 +84,7 @@ void SceneData::SetLight(Light* light)
 	mLight = light;
 }
 
+void SceneData::SetInput(Input* input)
+{
+	mInput = input;
+}
