@@ -90,50 +90,54 @@ void Input::ReadInputStates()
 	/*************Start Sarahs Code**************/
 	//Sarah Bulk
 	//read mouse input
-	hr = mMouse.mMouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&(mMouse.mMouseState));
-	if (FAILED(hr))
+	if (mMouse.mMouseDevice != nullptr)
 	{
-		if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
+		hr = mMouse.mMouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&(mMouse.mMouseState));
+		if (FAILED(hr))
 		{
-			mMouse.mMouseDevice->Acquire();
+			if ((hr == DIERR_INPUTLOST) || (hr == DIERR_NOTACQUIRED))
+			{
+				mMouse.mMouseDevice->Acquire();
+			}
 		}
+
+		//update values only if the cursor is inside the window
+		if (bIsInWindow)
+		{
+			mMouse.x += mMouse.mMouseState.lX;
+			mMouse.y += mMouse.mMouseState.lY;
+		}
+
+
+		// Ensure the mouse location doesn't exceed the window width or height.
+		if (mMouse.x < 0)  { mMouse.x = 0; }
+		if (mMouse.y < 0)  { mMouse.y = 0; }
+
+		//get window size
+		RECT rc;
+		GetClientRect(mHWnd, &rc);
+		UINT width = rc.right - rc.left;
+		UINT height = rc.bottom - rc.top;
+
+		if (mMouse.x > width)  { mMouse.x = width; }
+		if (mMouse.y > height) { mMouse.y = height; }
+
+		if (mMouse.x != 0)
+			bool stopHere = true;
+
+		mMouse.pin = 0;
+
+		// has a single-click occured?
+		if (mMouse.mMouseState.rgbButtons[0] && !mMouse.pinstate) {
+			mMouse.pinstate = 1;
+			mMouse.pin = 1;
+		}
+
+		// reset 'pin' state
+		if (!mMouse.mMouseState.rgbButtons[0])
+			mMouse.pinstate = 0;
 	}
-
-	//update values only if the cursor is inside the window
-	if (bIsInWindow)
-	{
-		mMouse.x += mMouse.mMouseState.lX;
-		mMouse.y += mMouse.mMouseState.lY;
-	}
-
-
-	// Ensure the mouse location doesn't exceed the window width or height.
-	if (mMouse.x < 0)  { mMouse.x = 0; }
-	if (mMouse.y < 0)  { mMouse.y = 0; }
-
-	//get window size
-	RECT rc;
-	GetClientRect(mHWnd, &rc);
-	UINT width = rc.right - rc.left;
-	UINT height = rc.bottom - rc.top;
-
-	if (mMouse.x > width)  { mMouse.x = width; }
-	if (mMouse.y > height) { mMouse.y = height; }
-
-	if (mMouse.x != 0)
-		bool stopHere = true;
-
-	mMouse.pin = 0;
-
-	// has a single-click occured?
-	if (mMouse.mMouseState.rgbButtons[0] && !mMouse.pinstate) {
-		mMouse.pinstate = 1;
-		mMouse.pin = 1;
-	}
-
-	// reset 'pin' state
-	if (!mMouse.mMouseState.rgbButtons[0])
-		mMouse.pinstate = 0;
+	
 	///////////////////////////////////////////
 	/*************End Sarahs Code**************/
 }
