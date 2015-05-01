@@ -90,14 +90,11 @@
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="objfilemodel.cpp" />
-    <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="SceneData.cpp" />
-    <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="text2D.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
@@ -124,14 +121,12 @@
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="objfilemodel.h" />
-    <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneData.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneNode.h" />
-    <ClInclude Include="TestScene.h" />
     <ClInclude Include="text2D.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

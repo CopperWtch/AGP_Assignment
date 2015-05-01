@@ -12,15 +12,12 @@ Purpose: Header file for Scene.cpp // class to inherit from to create a scene
 
 #include <d3d11.h>
 
-
+// abstract base class
 class Scene
 {
 public:
-	Scene();
-	~Scene();
-	static Scene *create(void);
-	bool Init();
-	void RenderScene(float dt);
+	virtual bool Init() = 0;
+	virtual void RenderScene(float dt) = 0;
 };
 
 #endif

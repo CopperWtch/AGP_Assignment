@@ -21,7 +21,7 @@ struct MODEL_CONSTANT_BUFFER
 
 	XMVECTOR point_position[NUM_LIGHTS];
 	XMVECTOR point_colour[NUM_LIGHTS];
-	//240?
+	//total 240 bytes
 };
 
 Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext)
@@ -153,6 +153,7 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 //////////////////////////////////////////////////////////////////////////////////////
 void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	
+	/************************Start Sarahs Code************************/
 	//Get the light data from the Light manager
 	mLightManager = LightManager::GetInstance();
 	mAmbientLight = mLightManager->GetAmbientLight();
@@ -169,14 +170,10 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 	XMMATRIX inverse;
 	inverse = XMMatrixInverse(&determinant, *world);
 
-	
-
 	if (mAmbientLight)
 	{
 		XMVECTOR ambColour = mAmbientLight->GetLightColour();
 		model_cb_values.ambient_light_colour = ambColour;
-
-
 	}
 	if (mDirectionalLight)
 	{
@@ -193,7 +190,7 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 		model_cb_values.point_colour[i] = mPointLights[i]->GetLightColour();
 		model_cb_values.point_position[i] = XMVector3Transform(mPointLights[i]->GetPointLightPosition(), inverse);
 	}
-
+	/************************End Sarahs Code************************/
 
 	//upload the new values for the constant buffer
 	mImmediateContext->VSSetConstantBuffers(0, 1, &mConstantBuffer);
