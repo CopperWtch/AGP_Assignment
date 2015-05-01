@@ -28,8 +28,6 @@ Input::~Input()
 //////////////////////////////////////////////////////////////////////////////////////
 HRESULT Input::InitialiseInput()
 {
-
-
 	//Initialise Keyboard input
 	HRESULT hr;
 	ZeroMemory(mKeyboardKeysState, sizeof(mKeyboardKeysState));
@@ -164,7 +162,6 @@ bool Input::IsMouseClicked()
 		return true;
 	else
 		return false;
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -186,7 +183,7 @@ HWND Input::GetMHWnd()
 	return mHWnd; 
 }
 
-mouseData Input::GetMouseData()
+Input::mouseData Input::GetMouseData()
 { 
 	return mMouse; 
 }

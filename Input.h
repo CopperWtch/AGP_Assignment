@@ -8,21 +8,29 @@ Purpose: Header file for Input.cpp
 
 #include <dinput.h>
 
-//Sarah Bulk
-//struct to store the mouse data
-struct mouseData
-{
-	IDirectInputDevice8 *mMouseDevice;
-	int x, y,
-		pinstate,
-		pin;
-	DIMOUSESTATE mMouseState;
-};
-/////////////////////////////////
-
-
 class Input
 {
+private:
+	HWND mHWnd;
+	HINSTANCE mHInst;
+	IDirectInput8 *mDirectInput;
+	IDirectInputDevice8 *mKeyboardDevice;
+	unsigned char mKeyboardKeysState[256];
+
+	bool bIsInWindow;
+	//Sarah Bulk
+	//struct to store the mouse data
+	struct mouseData
+	{
+		IDirectInputDevice8 *mMouseDevice;
+		int x, y,
+			pinstate,
+			pin;
+		DIMOUSESTATE mMouseState;
+	};
+	mouseData mMouse;
+	/////////////////////////////////
+
 public:
 	Input(HWND _hWnd, HINSTANCE _hInst);
 	~Input();
@@ -40,14 +48,4 @@ public:
 	void SetIsInWindow(bool b);
 	HWND GetMHWnd();
 	/////////////////////////////////
-
-private:
-	HWND mHWnd;
-	HINSTANCE mHInst;
-	IDirectInput8 *mDirectInput;
-	IDirectInputDevice8 *mKeyboardDevice;
-	unsigned char mKeyboardKeysState[256];
-
-	bool bIsInWindow;
-	mouseData mMouse;
 };
