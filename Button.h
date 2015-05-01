@@ -14,13 +14,12 @@ Purpose: Header file for Button.cpp
 #include "AGPSideScroller.h"
 #include "ImageClass.h"
 
-class Button : public GameObject
+class Button
 {
 public:
 	Button();
 	Button(ImageClass* obj);
 	~Button();
-	virtual std::string GetName();
 private:
 	//image component
 	ImageClass* mImg;
