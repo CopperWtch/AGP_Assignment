@@ -17,6 +17,7 @@ class Player : public GameObject
 public:
 	Player(Model* playermodel);
 	~Player();
+	virtual void GetName();
 	void Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection);
 private:
 	Model* mPlayerModel;

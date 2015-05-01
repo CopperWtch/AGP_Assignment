@@ -20,7 +20,7 @@ public:
 	Button();
 	Button(ImageClass* obj);
 	~Button();
-
+	virtual void GetName();
 private:
 	//image component
 	ImageClass* mImg;

@@ -19,6 +19,7 @@ class Model : public GameObject
 public:
 	Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext);
 	Model::~Model();
+	virtual void GetName();
 	int LoadObjModel(char *filename, ID3D11ShaderResourceView *texture);
 	void Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection);
 	void SetXPos(float num);

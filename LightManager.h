@@ -21,7 +21,7 @@ class LightManager : public GameObject
 public:
 	~LightManager();
 	LightManager();
-
+	virtual void GetName();
 private:
 	std::vector<PointLight*> pointLights;
 	DirectionalLight* directionalLight;

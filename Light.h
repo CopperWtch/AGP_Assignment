@@ -32,7 +32,7 @@ public:
 	Light(const Light&);
 	Light(XMVECTOR colour);
 	~Light();
-
+	virtual void GetName();
 	void SetLightColour(float x, float y, float z, float w);
 	XMVECTOR GetLightColour();
 

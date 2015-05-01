@@ -53,8 +53,10 @@ XMMATRIX Camera::GetViewMatrix()
 	return XMMatrixLookAtLH(mPosition, mLookat, Up());
 }
 
+// third person view matrix calculation
 XMMATRIX Camera::GetViewMatrixThirdPerson(XMVECTOR pos)
 {
+	// look at is the position of the player
 	mLookat = XMVectorSet(pos.x, pos.y, 0, 0.0);
 	return XMMatrixLookAtLH(pos, mLookat, Up());
 }
