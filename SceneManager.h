@@ -18,7 +18,6 @@ Purpose: Header file for SceneManager.cpp
 #include <dxerr.h>
 
 #include "D3DManager.h"
-#include "TestScene.h"
 #include "GameScene.h"
 #include "LevelTwo.h"
 #include "Player.h"

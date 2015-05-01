@@ -1,25 +1,30 @@
 /**
 AGP Assignment
 SceneData.cpp
-Purpose: 
+Purpose: contains a lot of important pointer for the scenes
+This includes:
+Camera
+D3DDevice
+ImmediateContext
+Projection
+View
+Input
 
 @author Marcel Zobus
 */
 
 #include "SceneData.h"
 
-
+// static instance 
 static SceneData* dataInstance = NULL;
+
+// constructor
 SceneData::SceneData()
 {
 
 }
 
-SceneData::~SceneData()
-{
-
-}
-
+// get instance for the singleton
 SceneData* SceneData::GetInstance()
 {
 	if (dataInstance == NULL)
@@ -28,6 +33,8 @@ SceneData* SceneData::GetInstance()
 	}
 	return dataInstance;
 }
+
+// getter and setter
 
 Camera* SceneData::GetCamera()
 {
@@ -49,11 +56,6 @@ XMMATRIX* SceneData::GetView()
 {
 	return mView;
 }
-Light* SceneData::GetLight()
-{
-	return mLight;
-}
-
 Input* SceneData::GetInput()
 {
 	return mInput;
@@ -79,11 +81,6 @@ void SceneData::SetView(XMMATRIX* view)
 {
 	mView = view;
 }
-void SceneData::SetLight(Light* light)
-{
-	mLight = light;
-}
-
 void SceneData::SetInput(Input* input)
 {
 	mInput = input;

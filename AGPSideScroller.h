@@ -22,7 +22,6 @@ Purpose: Header file for all important includes of the framework
 #include "SceneNode.h"
 #include "Model.h"
 #include "Input.h"
-#include "ParticleGenerator.h"
 #include "Camera.h"
 #include "Light.h"
 #include "DirectionalLight.h"

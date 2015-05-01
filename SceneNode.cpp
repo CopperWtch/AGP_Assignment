@@ -9,6 +9,7 @@ Purpose: SceneNode Object
 #include "SceneNode.h"
 #include "Player.h"
 
+// constructor sets default values
 SceneNode::SceneNode()
 {
 	//mModel = NULL;
@@ -26,6 +27,7 @@ SceneNode::SceneNode()
 	mHideObject = false;
 }
 
+// destructor
 SceneNode::~SceneNode()
 {
 	for (int i = mChildren.size() - 1; i >= 0; i--)
@@ -35,10 +37,12 @@ SceneNode::~SceneNode()
 	}
 }
 
+// add child node to this node
 void SceneNode::addChildNode(SceneNode *n)
 {
 	mChildren.push_back(n);
 }
+// detach child node from this node
 bool SceneNode::detatchNode(SceneNode *n)
 {
 	//traverse tree to find node to detatch
@@ -54,6 +58,7 @@ bool SceneNode::detatchNode(SceneNode *n)
 	return false; //node not in this tree
 }
 
+// render this node and its contents
 void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 {
 	// the local wiorkd matrix will be used to calc the local transformations for this node
@@ -72,7 +77,6 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 	local_world *= *world;
 
 	// only draw if there is a model attached 
-	//if (!mHideObject && mModel) mModel->Draw(&local_world, view, projection);
 	if (!mHideObject && mGameObject)
 	{
 		Model* model = dynamic_cast<Model*>(mGameObject);
@@ -88,6 +92,11 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 		//	local_view *= XMMatrixTranslation(mX, mY, mZ);
 			player->Draw(&local_world, view, projection);
 		}
+		Light* light = dynamic_cast<Light*>(mGameObject);
+		if (light != nullptr)
+		{
+			// light rendering?
+		}
 	}
 
 
@@ -102,16 +111,6 @@ void SceneNode::execute(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection)
 //////////////////////////////////////////////////////////////////////////////////////
 //	Getter and Setter
 //////////////////////////////////////////////////////////////////////////////////////
-
-// mModel
-//void SceneNode::SetModel(Model *m) 
-//{
-//	mModel = m; 
-//}
-//Model* SceneNode::GetModel() 
-//{ 
-//	return mModel;
-//}
 
 vector<SceneNode*> SceneNode::GetChildren()
 {

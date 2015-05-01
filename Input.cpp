@@ -28,6 +28,8 @@ Input::~Input()
 //////////////////////////////////////////////////////////////////////////////////////
 HRESULT Input::InitialiseInput()
 {
+
+
 	//Initialise Keyboard input
 	HRESULT hr;
 	ZeroMemory(mKeyboardKeysState, sizeof(mKeyboardKeysState));

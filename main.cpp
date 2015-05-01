@@ -1,3 +1,13 @@
+/**
+AGP Assignment
+main.cpp
+Purpose: main class of the game
+has the update loop and calls the scenemanager
+calculates the deltatime for the scenes
+
+@author Marcel Zobus
+*/
+
 #include "SceneManager.h"
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -34,6 +44,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		return 0;
 	}
 
+	// create sceneManager
 	SceneManager* sceneManager = new SceneManager();
 	sceneManager->Initialise(g_hWnd, g_hInst);
 
@@ -54,19 +65,19 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		else
 		{
 			float currentTime = (float)timeGetTime();
-			// Calculate the delta time (in seconds)
+			// calculate the delta time (in seconds)
 			float deltaTime = (currentTime - previousTime) / 1000.0f;
 			previousTime = currentTime;
 
-			// Cap the delta (useful for debugging)
-			//deltaTime = min(deltaTime, maxTimeStep);
+			// cap the delta if fixed update time
+			// deltaTime = min(deltaTime, maxTimeStep);
 
-			// If there are no messages to handle on the message queue,
 			// update render our game.
 			sceneManager->RenderFrame(deltaTime);
 		}
 	}
 
+	// call shutdown
 	sceneManager->ShutDown3D();
 
 	return (int)msg.wParam;
@@ -95,7 +106,7 @@ HRESULT InitialiseWindow(HINSTANCE hInstance, int nCmdShow)
 
 	// Create window
 	g_hInst = hInstance;
-	//RECT rc = { 0, 0, 640, 480 };
+	// 720p resolution
 	RECT rc = { 0, 0, 1280, 720 };
 	AdjustWindowRect(&rc, WS_OVERLAPPEDWINDOW, FALSE);
 	g_hWnd = CreateWindow(Name, g_GameName, WS_OVERLAPPEDWINDOW,
