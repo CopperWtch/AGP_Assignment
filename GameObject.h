@@ -10,11 +10,13 @@ Purpose: Header file for GameObject.cpp // base class for all objects in the gam
 #ifndef _GAMEOBJECT_H_
 #define _GAMEOBJECT_H_
 
+#include <string>
+
 // abstract base class 
 class GameObject
 {
 public:
-	virtual void GetName() = 0; //pure virtual function
+	virtual std::string GetName() = 0; //pure virtual function
 };
 
 #endif

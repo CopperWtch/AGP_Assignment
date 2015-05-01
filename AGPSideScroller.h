@@ -1,7 +1,7 @@
 /**
 AGP Assignment
 AGPSideScroller.h
-Purpose: Header file for all important includes
+Purpose: Header file for all important includes of the framework
 
 @author Marcel Zobus
 */

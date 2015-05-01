@@ -33,9 +33,9 @@ Button::~Button()
 
 }
 
-void Button::GetName()
+std::string Button::GetName()
 {
-
+	return "Button";
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

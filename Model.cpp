@@ -49,9 +49,9 @@ Model::~Model()
 	if (mSampler) mSampler->Release();
 }
 
-void Model::GetName()
+std::string Model::GetName()
 {
-
+	return "Model";
 }
 
 //////////////////////////////////////////////////////////////////////////////////////

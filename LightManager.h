@@ -16,12 +16,12 @@ Purpose: Header file for LightManager.h
 #include <vector>
 #pragma once
 
-class LightManager : public GameObject
+class LightManager /*: public GameObject*/
 {
 public:
 	~LightManager();
 	LightManager();
-	virtual void GetName();
+	//virtual std::string GetName();
 private:
 	std::vector<PointLight*> pointLights;
 	DirectionalLight* directionalLight;

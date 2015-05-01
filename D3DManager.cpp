@@ -8,7 +8,6 @@ Purpose: Manages the DirectX initialisation
 
 #include "D3DManager.h"
 
-
 D3DManager::D3DManager()
 {
 	mDriverType = D3D_DRIVER_TYPE_NULL;
@@ -19,6 +18,7 @@ D3DManager::D3DManager()
 	mBackBufferRTView = NULL;
 }
 
+// start method. Calls initialisation methods and fails if they went wrong
 void D3DManager::Start(HWND _hWnd)
 {
 	mHWnd = _hWnd;
@@ -28,9 +28,8 @@ void D3DManager::Start(HWND _hWnd)
 	}
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////
-// Create D3D device and swap chain
+// Create D3D device, backbuffer, zbuffer
 //////////////////////////////////////////////////////////////////////////////////////
 HRESULT D3DManager::initialiseD3D()
 {
@@ -151,7 +150,6 @@ HRESULT D3DManager::initialiseD3D()
 	return S_OK;
 }
 
-
 //////////////////////////////////////////////////////////////////////////////////////
 // Clean up D3D objects
 //////////////////////////////////////////////////////////////////////////////////////
@@ -162,7 +160,6 @@ void D3DManager::ShutdownD3D()
 	if (mD3DDevice) mD3DDevice->Release();
 	if (mBackBufferRTView) mBackBufferRTView->Release();
 }
-
 
 ID3D11Device* D3DManager::GetDevice()
 {
@@ -177,6 +174,7 @@ IDXGISwapChain* D3DManager::GetSwapChain()
 {
 	return mSwapChain;
 }
+
 ID3D11RenderTargetView* D3DManager::GetBackBufferRTView()
 {
 	return mBackBufferRTView;

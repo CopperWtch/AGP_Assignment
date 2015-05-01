@@ -1,3 +1,6 @@
+// not our work.
+// taken from the tutorial resources
+
 // turn off fopen warnings
 #define _CRT_SECURE_NO_WARNINGS
 

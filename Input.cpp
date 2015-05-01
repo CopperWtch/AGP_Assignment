@@ -21,7 +21,6 @@ Input::~Input()
 	if (mMouse.mMouseDevice) mMouse.mMouseDevice->Release();
 	mHWnd = nullptr; // TODO: do you do that to delete objects?
 	mHInst = nullptr;
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -29,13 +28,6 @@ Input::~Input()
 //////////////////////////////////////////////////////////////////////////////////////
 HRESULT Input::InitialiseInput()
 {
-	//Initialise mouse data
-	mMouse.pin = 0;
-	mMouse.pinstate = 0;
-
-	mMouse.x = 0;
-	mMouse.y = 0;
-
 	//Initialise Keyboard input
 	HRESULT hr;
 	ZeroMemory(mKeyboardKeysState, sizeof(mKeyboardKeysState));
@@ -54,6 +46,14 @@ HRESULT Input::InitialiseInput()
 	hr = mKeyboardDevice->Acquire();
 	if (FAILED(hr)) return hr;
 
+	/*************Start Sarahs Code**************/
+	//Initialise mouse data
+	mMouse.pin = 0;
+	mMouse.pinstate = 0;
+
+	mMouse.x = 0;
+	mMouse.y = 0;
+
 	//Initialise mouse input
 	mDirectInput->CreateDevice(GUID_SysMouse, &mMouse.mMouseDevice, NULL);
 	if (FAILED(hr)) return hr;
@@ -66,7 +66,7 @@ HRESULT Input::InitialiseInput()
 
 	hr = mMouse.mMouseDevice->Acquire();
 	if (FAILED(hr)) return hr;
-
+	/*************End Sarahs Code**************/
 
 	return S_OK;
 
@@ -87,6 +87,7 @@ void Input::ReadInputStates()
 		}
 	}
 
+	/*************Start Sarahs Code**************/
 	//Sarah Bulk
 	//read mouse input
 	hr = mMouse.mMouseDevice->GetDeviceState(sizeof(DIMOUSESTATE), (LPVOID)&(mMouse.mMouseState));
@@ -134,15 +135,17 @@ void Input::ReadInputStates()
 	if (!mMouse.mMouseState.rgbButtons[0])
 		mMouse.pinstate = 0;
 	///////////////////////////////////////////
+	/*************End Sarahs Code**************/
 }
 
+
+// returns a bool if the given key is pressed
 bool Input::IsKeyPressed(unsigned char DI_keycode)
 {
 	return mKeyboardKeysState[DI_keycode] & 0x80;
 }
 
-
-// not working yet
+// returns a bool if the given key is released
 bool Input::IsKeyReleased(unsigned char DI_keycode)
 {
 	return !((mKeyboardKeysState[DI_keycode]) & 0x80);

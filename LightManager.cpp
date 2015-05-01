@@ -37,10 +37,10 @@ LightManager::LightManager()
 {
 };
 
-void LightManager::GetName()
-{
-
-}
+//std::string LightManager::GetName()
+//{
+//	return "LightManager";
+//}
 
 //////////////////////////////////////////////////////////////////////////////////////
 // Setters

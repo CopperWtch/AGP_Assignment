@@ -21,19 +21,21 @@ Camera::Camera(float x, float y, float z, float camera_rotation){
 //////////////////////////////////////////////////////////////////////////////////////
 // Transform Camera
 //////////////////////////////////////////////////////////////////////////////////////
-
+// rotates the camera
 void Camera::Rotate(float number_of_degrees)
 {
 	mCameraRotation += number_of_degrees;
 	CalcDXDY();
 }
 
+// calculates the forward direction
 void Camera::Forward(float distance)
 {
 	mX += distance * mDX;
 	mZ += distance * mDZ;
 }
 
+// moves the cam to the left and right by the given value
 void Camera::MoveLeftRight(float distance)
 {
 	XMVECTOR crossProduct = XMVector3Cross(mPosition, mLookat);
@@ -41,11 +43,13 @@ void Camera::MoveLeftRight(float distance)
 	mZ += crossProduct.z * distance;
 }
 
+// return an up vector 
 XMVECTOR Camera::Up()
 {
 	return XMVectorSet(0.0, 0.1, 0.0, 0.0);
 }
 
+// returns a view matrix for a free space camera
 XMMATRIX Camera::GetViewMatrix()
 {
 	mPosition = XMVectorSet(mX, mY, mZ, 0.0);
@@ -61,6 +65,7 @@ XMMATRIX Camera::GetViewMatrixThirdPerson(XMVECTOR pos)
 	return XMMatrixLookAtLH(pos, mLookat, Up());
 }
 
+// calculates DX and DY
 void Camera::CalcDXDY()
 {
 	mDX = sin(XMConvertToRadians(mCameraRotation));
@@ -70,7 +75,6 @@ void Camera::CalcDXDY()
 //////////////////////////////////////////////////////////////////////////////////////
 // Getter and Setter
 //////////////////////////////////////////////////////////////////////////////////////
-
 float Camera::GetX()
 {
 	return mX;
@@ -90,5 +94,3 @@ XMFLOAT3 Camera::GetPosition()
 {
 	return XMFLOAT3(GetX(), GetY(), GetZ());
 }
-
-

@@ -76,7 +76,6 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="D3DManager.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="HUDScene.cpp" />
