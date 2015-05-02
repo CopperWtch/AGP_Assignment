@@ -28,15 +28,21 @@ class PointLight : public Light
 private:
 
 	XMVECTOR pointLightPosition;
+	float range;
+	XMFLOAT3 attenuation;
 
 public:
 	PointLight();
-	PointLight(XMVECTOR colour, XMVECTOR position);
+	PointLight(XMVECTOR colour, XMVECTOR position, float range);
 	PointLight(const PointLight&);
 	~PointLight();
 
 	void SetLightPosition(float x, float y, float z);
 	XMVECTOR GetPointLightPosition();
+
+
+	void SetRange(float r);
+	float GetRange();
 
 };
 

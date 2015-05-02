@@ -19,9 +19,10 @@ struct MODEL_CONSTANT_BUFFER
 	XMVECTOR directional_light_colour; //16bytes
 	XMVECTOR ambient_light_colour; //16bytes
 
-	XMVECTOR point_position[NUM_LIGHTS];
-	XMVECTOR point_colour[NUM_LIGHTS];
-	//total 240 bytes
+	XMVECTOR point_position[NUM_LIGHTS]; //16 bytes
+	XMVECTOR point_colour[NUM_LIGHTS]; //16 bytes
+	float	 point_range[NUM_LIGHTS]; //4 bytes
+	//total 256 bytes
 };
 
 Model::Model(ID3D11Device *_d3DDevice, ID3D11DeviceContext *_immediateContext)
@@ -68,7 +69,7 @@ int Model::LoadObjModel(char *filename, ID3D11ShaderResourceView *_mTexture0)
 	D3D11_BUFFER_DESC constant_buffer_desc;
 	ZeroMemory(&constant_buffer_desc, sizeof(constant_buffer_desc));
 	constant_buffer_desc.Usage = D3D11_USAGE_DEFAULT; //can use UpdateSubresource() to update
-	constant_buffer_desc.ByteWidth = 240; //MUST be a multiple of 16, calculate from CB struct
+	constant_buffer_desc.ByteWidth = 256; //MUST be a multiple of 16, calculate from CB struct
 	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER; // use as a constant buffer
 
 	hr = mD3DDevice->CreateBuffer(&constant_buffer_desc, NULL, &mConstantBuffer);
@@ -187,8 +188,14 @@ void Model::Draw(XMMATRIX *world, XMMATRIX *view, XMMATRIX *projection){
 
 	for (int i = 0; i < mPointLights.size(); i++)
 	{
-		model_cb_values.point_colour[i] = mPointLights[i]->GetLightColour();
-		model_cb_values.point_position[i] = XMVector3Transform(mPointLights[i]->GetPointLightPosition(), inverse);
+		//consider the max count of point lights
+		if (i < NUM_LIGHTS)
+		{
+			model_cb_values.point_colour[i] = mPointLights[i]->GetLightColour();
+			model_cb_values.point_position[i] = XMVector3Transform(mPointLights[i]->GetPointLightPosition(), inverse);
+			model_cb_values.point_range[i] = mPointLights[i]->GetRange();
+		}
+
 	}
 	/************************End Sarahs Code************************/
 

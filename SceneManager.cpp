@@ -65,10 +65,14 @@ HRESULT SceneManager::initialiseGraphics()
 
 	// create Light
 	mAmbientLight = new Light();
-	mAmbientLight->SetLightColour(0.3f, 0.3f, 0.3f, 0.3f);
+	mAmbientLight->SetLightColour(0.1f, 0.1f, 0.1f, 0.1f);
 	mDirectionalLight = new DirectionalLight();
-	mDirectionalLight->SetLightColour(0.5f, 0.5f, 0.5f, 0.5f);
+	mDirectionalLight->SetLightColour(0.6f, 0.6f, 0.6f, 0.6f);
 	mDirectionalLight->SetLightDirection(0.f, 0.f, -1.f);
+	mPointLight = new PointLight();
+	mPointLight->SetLightColour(1.0f, 1.0f, 1.0f, 1.0f);
+	mPointLight->SetLightPosition(1.f,1.f,1.f);
+	mPointLight->SetRange(3.f);
 
 	// init player object
 	initPlayer();
@@ -85,6 +89,7 @@ HRESULT SceneManager::initialiseGraphics()
 	// fill LightManager
 	LightManager::GetInstance()->SetDirectionalLight(mDirectionalLight);
 	LightManager::GetInstance()->SetAmbientLight(mAmbientLight);
+	LightManager::GetInstance()->AddPointLight(mPointLight);
 
 	// create level scenes
 	mGameScene = GameScene::create();
@@ -281,6 +286,9 @@ void SceneManager::RenderFrame(float dt)
 		isJump = false;
 		isDoubleJump = true;
 	}
+
+	//update light position to fit player position
+	mPointLight->SetLightPosition(mRootNodePlayer->GetXPos(),mRootNodePlayer->GetYPos(), mRootNodePlayer->GetZPos()+0.5f);
 
 	/********************************************** Render Player and Scenes **********************************************/
 	// execute player (render)

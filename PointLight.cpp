@@ -11,9 +11,10 @@ Purpose: Point Light that can be created to affect the world
 //////////////////////////////////////////////////////////////////////////////////////
 // Constructors
 //////////////////////////////////////////////////////////////////////////////////////
-PointLight::PointLight(XMVECTOR colour, XMVECTOR position) : Light(colour)
+PointLight::PointLight(XMVECTOR colour, XMVECTOR position,float r) : Light(colour)
 {
 	pointLightPosition = position;
+	range = r;
 }
 
 PointLight::PointLight()
@@ -44,4 +45,14 @@ void PointLight::SetLightPosition(float x, float y, float z)
 XMVECTOR PointLight::GetPointLightPosition()
 {
 	return pointLightPosition;
+}
+
+void PointLight::SetRange(float r)
+{
+	range = r;
+}
+
+float PointLight::GetRange()
+{
+	return range;
 }
