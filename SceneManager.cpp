@@ -257,9 +257,7 @@ void SceneManager::RenderFrame(float dt)
 	mImmediateContext->ClearRenderTargetView(mBackBufferRTView, rgba_clear_colour);
 	mImmediateContext->ClearDepthStencilView(mZBuffer, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	mImmediateContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-	// set view and projection
-	XMVECTOR playerPos = XMVectorSet(mRootNodePlayer->GetXPos(), mRootNodePlayer->GetYPos() + 5, mRootNodePlayer->GetZPos() - 25, 0.0f);
-	mView = mCamera->GetViewMatrixThirdPerson(playerPos);
+	// set projection
 	// 16:9 projection
 	mProjection = XMMatrixPerspectiveFovLH(XMConvertToRadians(45.0), 16.0 / 9.0, 1.0, 100.0);
 
@@ -286,6 +284,10 @@ void SceneManager::RenderFrame(float dt)
 		isJump = false;
 		isDoubleJump = true;
 	}
+
+	// set view after player because of the jump
+	XMVECTOR playerPos = XMVectorSet(mRootNodePlayer->GetXPos(), mRootNodePlayer->GetYPos() + 5, mRootNodePlayer->GetZPos() - 25, 0.0f);
+	mView = mCamera->GetViewMatrixThirdPerson(playerPos);
 
 	//update light position to fit player position
 	mPointLight->SetLightPosition(mRootNodePlayer->GetXPos(),mRootNodePlayer->GetYPos(), mRootNodePlayer->GetZPos()+0.5f);
