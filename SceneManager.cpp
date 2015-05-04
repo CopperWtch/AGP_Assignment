@@ -176,10 +176,13 @@ void SceneManager::RenderFrame(float dt)
 		// press delete to kill the player (debug function)
 		if (mInput->IsKeyPressed(DIK_DELETE))
 		{
-			if (isDieDebugKey)
+			if (mActiveSceneState != SceneState::MenuDead && mActiveSceneState != SceneState::MenuStart && mActiveSceneState != SceneState::MenuInGame)
 			{
-				killPlayer();
-				isDieDebugKey = false;
+				if (isDieDebugKey)
+				{
+					killPlayer();
+					isDieDebugKey = false;
+				}
 			}
 		}
 		if (mInput->IsKeyReleased(DIK_DELETE))
@@ -238,11 +241,11 @@ void SceneManager::RenderFrame(float dt)
 		// press insert to restart the game
 		if (mInput->IsKeyPressed(DIK_INSERT))
 		{
-			if (isResetKey)
-			{
-				resetGame();
-				isResetKey = false;
-			}
+				if (isResetKey)
+				{
+					resetGame();
+					isResetKey = false;
+				}
 		}
 		if (mInput->IsKeyReleased(DIK_INSERT))
 		{
