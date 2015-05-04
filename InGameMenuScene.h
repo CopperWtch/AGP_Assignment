@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+InGameMenuScene.h
+Purpose: InGameMenuScene header file 
+
+@author Sarah Bulk
+*/
+
 #pragma once
 
 #ifndef _INGAMEMENUSCENE_H_

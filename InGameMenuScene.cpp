@@ -1,3 +1,11 @@
+/**
+AGP Assignment
+InGameMenuScene.cpp
+Purpose: Renders the in game menu
+
+@author Sarah Bulk
+*/
+
 #include "InGameMenuScene.h"
 
 InGameMenuScene::~InGameMenuScene()
